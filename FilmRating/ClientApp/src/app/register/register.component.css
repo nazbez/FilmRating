@@ -1,0 +1,15 @@
+em{
+    color: #e71515;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.ng-invalid.ng-touched{
+    border-color: red;
+}
+
+.card{
+    margin-top: 20px;
+    background-color: #fff;
+    /*box-shadow: 1px 1px 1px #cabcbc;*/
+}

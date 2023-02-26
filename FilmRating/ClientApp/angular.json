@@ -16,6 +16,9 @@
             "tsConfig": "tsconfig.json",
             "aot": true
           },
+          "styles": [
+            "src/styles.css"
+          ],
           "configurations": {
             "production": {
               "optimization": true,
