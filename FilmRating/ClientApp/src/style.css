@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 a {
     color: #0366d6;
 }
@@ -21,4 +24,14 @@ code {
 
 h1 {
     color: red;
+}
+
+.close.mat-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    line-height: 14px;
+    min-width: auto;
+    float: right
 }

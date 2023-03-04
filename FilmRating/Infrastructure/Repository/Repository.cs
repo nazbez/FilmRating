@@ -23,7 +23,7 @@ public class Repository<TEntity, T> : IRepository<TEntity, T>
         context.SaveChanges();
     }
 
-    public TEntity? FindById(int id)
+    public TEntity? FindById(T id)
     {
         return dbSet.Find(id);
     }
@@ -33,10 +33,12 @@ public class Repository<TEntity, T> : IRepository<TEntity, T>
         return dbSet.AsNoTracking().ToList();
     }
 
-    public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties)
+    public IEnumerable<TEntity> Get(Func<TEntity, bool>? predicate = null!, params Expression<Func<TEntity, object>>[] includeProperties)
     {
         var query =  Include(includeProperties);
-        return query.Where(predicate).ToList();
+        return predicate is null 
+            ? query.ToList()
+            : query.Where(predicate).ToList();
     }
     
     public void Remove(TEntity item)
@@ -53,7 +55,7 @@ public class Repository<TEntity, T> : IRepository<TEntity, T>
     
     private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
     {
-        IQueryable<TEntity> query = dbSet.AsNoTracking();
+        var query = dbSet.AsNoTracking();
         return includeProperties
             .Aggregate(
                 query, 

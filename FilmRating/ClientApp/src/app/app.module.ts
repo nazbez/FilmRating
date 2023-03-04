@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from "./home/home.component";
 import { RegisterComponent } from "./register/register.component";
 import { LoginComponent } from "./login/login.component";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
     declarations: [
@@ -26,8 +27,13 @@ import { LoginComponent } from "./login/login.component";
             {path: '', component: HomeComponent, pathMatch: 'full'},
             {path: 'register', component: RegisterComponent},
             {path: 'login', component: LoginComponent},
+            {
+                path: 'artist-management',
+                loadChildren: () => import('./artist-management/artist-management.module').then(m => m.ArtistManagementModule)
+            }
         ]),
         ReactiveFormsModule,
+        MatCheckboxModule,
     ],
     providers: [],
     bootstrap: [AppComponent]

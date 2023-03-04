@@ -10,6 +10,8 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
+      <PackageReference Include="Mapster" Version="7.3.0" />
+      <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
       <PackageReference Include="MediatR" Version="12.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
@@ -37,6 +39,19 @@
       <Compile Update="Features\Authentication\Services\IdentityService.cs">
         <DependentUpon>IIdentityService.cs</DependentUpon>
       </Compile>
+      <Compile Update="Features\Film\Genre\Persistence\GenreEntityMap.cs">
+        <DependentUpon>GenreEntity.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Film\Artist\Persistence\ArtistRoleEntityMap.cs">
+        <DependentUpon>ArtistRoleEntity.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Film\Artist\Persistence\ArtistEntityMap.cs">
+        <DependentUpon>ArtistEntity.cs</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot" />
     </ItemGroup>
 
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">

@@ -9,8 +9,9 @@ import { LoginModel } from "../../login/login.model";
 })
 export class AuthenticationService {
     constructor(private http: HttpClient) { }
+    
     public register = (body: RegisterModel) => {
-        return this.http.post<AuthenticationResultModel> ('api/Authentication/Register', body);
+        return this.http.post<AuthenticationResultModel>('api/Authentication/Register', body);
     }
 
     public login = (body: LoginModel) => {

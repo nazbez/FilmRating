@@ -7,9 +7,9 @@ public interface IRepository<TEntity, T>
     where T: struct
 {
     void Create(TEntity item);
-    TEntity? FindById(int id);
+    TEntity? FindById(T id);
     IEnumerable<TEntity> Get();
-    IEnumerable<TEntity> Get(Func<TEntity,bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
+    IEnumerable<TEntity> Get(Func<TEntity, bool>? predicate = null!, params Expression<Func<TEntity, object>>[] includeProperties);
     void Remove(TEntity item);
     void Update(TEntity item);
 }

@@ -1,0 +1,36 @@
+﻿<div style="text-align: right;">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<div class="text-center">
+    <form [formGroup]="newArtistFormGroup" autocomplete="off" novalidate (ngSubmit)="save(newArtistFormGroup.value)">
+        <div mat-dialog-content>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="First name" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('firstName') && hasError('firstName', 'required')">First name is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Last name" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('lastName') && hasError('lastName', 'required')">Last name is required</em>
+                </div>
+            </div>
+            <div *ngFor="let role of roles; let i=index" class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" [value]="role.id" (change)="onCheckChange($event)">
+                    {{role.name}}
+                </label>
+            </div>
+        </div>
+        <div mat-dialog-actions class="mb-3 row justify-content-center">
+            <button type="submit" mat-button [disabled]="!newArtistFormGroup.valid">Save</button>
+        </div>
+    </form>
+</div>

@@ -14,11 +14,11 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.json",
-            "aot": true
+            "aot": true,
+            "styles": [
+              "src/style.css"
+            ]
           },
-          "styles": [
-            "src/styles.css"
-          ],
           "configurations": {
             "production": {
               "optimization": true,
@@ -38,5 +38,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "c9a160c8-9abd-47cd-8d30-828c678cc501"
   }
 }
