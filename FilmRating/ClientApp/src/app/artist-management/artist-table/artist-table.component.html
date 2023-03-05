@@ -15,10 +15,17 @@
         <td mat-cell *matCellDef="let element">{{mapRoles(element.roles)}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="updateItem">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <a class="manage-artist" (click)="updateArtist(element.id)">Update</a>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="deleteItem">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-            <a class="remove" (click)="removeArtist(element.id)">Remove</a>
+            <a class="manage-artist" (click)="removeArtist(element.id)">Remove</a>
         </td>
     </ng-container>
 

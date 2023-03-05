@@ -24,7 +24,7 @@
             </div>
             <div *ngFor="let role of roles; let i=index" class="form-check form-check-inline">
                 <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" [value]="role.id" (change)="onCheckChange($event)">
+                    <input class="form-check-input" [checked]="isChecked(role.id)" type="checkbox" [value]="role.id" (change)="onCheckChange($event)">
                     {{role.name}}
                 </label>
             </div>

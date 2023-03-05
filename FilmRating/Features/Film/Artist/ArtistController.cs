@@ -21,6 +21,14 @@ public class ArtistController : Controller
         var result = await mediator.Send(command);
         return Ok(result);
     }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, ArtistUpdateModel model)
+    {
+        var command = new ArtistUpdateCommand(id, model);
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
     
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)

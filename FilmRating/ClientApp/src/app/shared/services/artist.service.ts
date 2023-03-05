@@ -2,6 +2,7 @@
 import { HttpClient } from "@angular/common/http";
 import { ArtistModel, ArtistRoleModel } from "../models/artist.model";
 import { CreateArtistModel } from "../models/create-artist.model";
+import { UpdateArtistModel } from "../models/update-artist.model";
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,10 @@ export class ArtistService {
 
     public create = (newArtist: CreateArtistModel) => {
         return this.http.post<ArtistModel>('api/Artist', newArtist);
+    }
+    
+    public update = (id: string, updatedArtist: UpdateArtistModel) => {
+        return this.http.put<ArtistModel>('api/Artist/' + id, updatedArtist);
     }
     
     public delete = (id: string) => {

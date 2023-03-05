@@ -3,7 +3,7 @@ import { ArtistModel, ArtistRoleModel } from "../../shared/models/artist.model";
 import { ArtistService } from "../../shared/services/artist.service";
 import { MatTable } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
-import { AddArtistComponent } from "../add-artist/add-artist.component";
+import { ManageArtistComponent } from "../manage-artist/manage-artist.component";
 
 @Component({
     selector: 'app-artist-table',
@@ -11,7 +11,7 @@ import { AddArtistComponent } from "../add-artist/add-artist.component";
     styleUrls: ['./artist-table.component.css']
 })
 export class ArtistTableComponent {
-    displayedColumns: string[] = ['fullName', 'jobs', 'deleteItem'];
+    displayedColumns: string[] = ['fullName', 'jobs', 'updateItem', 'deleteItem'];
     artists: ArtistModel[];
 
     constructor(public artistService: ArtistService, public dialog: MatDialog) {
@@ -24,8 +24,9 @@ export class ArtistTableComponent {
     @ViewChild(MatTable) table: MatTable<ArtistModel>;
 
     createNewArtist() {
-        const dialogRef = this.dialog.open(AddArtistComponent, {
+        const dialogRef = this.dialog.open(ManageArtistComponent, {
             width: '600px',
+            data: undefined
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -36,11 +37,21 @@ export class ArtistTableComponent {
         });
     }
     
-    mapRoles(roles: ArtistRoleModel[]) {
-        if (roles.length === 0) 
-            return '-'
+    updateArtist(id: string) {
+        let artist = this.artists.find(x => x.id === id);
         
-        return roles.map(x => x.name).join(', ');
+        const dialogRef = this.dialog.open(ManageArtistComponent, {
+            width: '600px',
+            data: artist
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (typeof result === 'object') {
+                this.artists = this.artists.filter(x => x.id !== id);
+                this.artists.push(result);
+                this.table.renderRows();
+            }
+        });
     }
 
     removeArtist(id: string) {
@@ -48,6 +59,13 @@ export class ArtistTableComponent {
             .subscribe(_ => {
                 this.artists = this.artists.filter(x => x.id !== id);
                 this.table.renderRows();
-        })
+            })
+    }
+    
+    mapRoles(roles: ArtistRoleModel[]) {
+        if (roles.length === 0) 
+            return '-'
+        
+        return roles.map(x => x.name).join(', ');
     }
 }
