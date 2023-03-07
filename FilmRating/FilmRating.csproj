@@ -48,6 +48,9 @@
       <Compile Update="Features\Film\Artist\Persistence\ArtistEntityMap.cs">
         <DependentUpon>ArtistEntity.cs</DependentUpon>
       </Compile>
+      <Compile Update="Features\Film\Persistence\FilmEntityMap.cs">
+        <DependentUpon>FilmEntity.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

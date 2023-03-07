@@ -9,6 +9,8 @@ public class ArtistEntity : IEntity<Guid>
     public string LastName { get; private set; } = null!;
 
     public ICollection<ArtistRoleEntity> Roles { get; private set; } = new HashSet<ArtistRoleEntity>();
+    public ICollection<FilmEntity> DirectorFilms { get; private set; } = new HashSet<FilmEntity>();
+    public ICollection<FilmEntity> ActorFilms { get; private set; } = new HashSet<FilmEntity>();
 
     public void UpdateFirstName(string firstName) =>
         FirstName = firstName;
