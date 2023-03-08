@@ -1,4 +1,5 @@
 using FilmRating.Infrastructure.Injection;
+using FilmRating.Infrastructure.Pipeline;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization(); 
+
+app.UseFluentValidationExceptionHandler();
 
 app.UseEndpoints(endpoints =>
 {

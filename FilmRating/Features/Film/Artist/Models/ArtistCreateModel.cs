@@ -1,6 +1,8 @@
-﻿namespace FilmRating.Features.Film.Artist;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FilmRating.Features.Film.Artist;
 
 public record ArtistCreateModel(
-    string FirstName, 
-    string LastName, 
+    [Required] string FirstName, 
+    [Required] string LastName, 
     IEnumerable<int> RoleIds);

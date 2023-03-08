@@ -4,10 +4,10 @@ using MediatR;
 
 namespace FilmRating.Features.Film.Artist;
 
-public record ArtistDeleteCommand(Guid Id) : IRequest
+public record ArtistDeleteCommand(Guid Id) : IRequest<Unit>
 {
     [UsedImplicitly]
-    public class ArtistDeleteCommandHandler : IRequestHandler<ArtistDeleteCommand>
+    public class ArtistDeleteCommandHandler : IRequestHandler<ArtistDeleteCommand, Unit>
     {
         private readonly IRepository<ArtistEntity, Guid> artistRepository;
 
@@ -16,7 +16,7 @@ public record ArtistDeleteCommand(Guid Id) : IRequest
             this.artistRepository = artistRepository;
         }
 
-        public Task Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
         {
             var artist = artistRepository.FindById(request.Id);
 
@@ -25,7 +25,7 @@ public record ArtistDeleteCommand(Guid Id) : IRequest
                 artistRepository.Remove(artist);
             }
             
-            return Task.CompletedTask;
+            return Task.FromResult(Unit.Value);
         }
     }
 }

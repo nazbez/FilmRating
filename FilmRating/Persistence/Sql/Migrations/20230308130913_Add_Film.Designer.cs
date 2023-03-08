@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmRating.Migrations
 {
     [DbContext(typeof(FilmRatingDbContext))]
-    [Migration("20230307200357_Add_Film")]
+    [Migration("20230308130913_Add_Film")]
     partial class Add_Film
     {
         /// <inheritdoc />
@@ -115,7 +115,7 @@ namespace FilmRating.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Budget")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<Guid>("DirectorId")
                         .HasColumnType("uniqueidentifier");
