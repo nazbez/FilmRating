@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using JetBrains.Annotations;
+using Mapster;
 
 namespace FilmRating.Features.Film.Artist;
 
@@ -8,6 +9,7 @@ public record ArtistVm(
     string LastName,
     IEnumerable<ArtistRoleVm> Roles)
 {
+    [UsedImplicitly]
     public class MapperConfig : IRegister
     {
         public void Register(TypeAdapterConfig config)
@@ -19,6 +21,7 @@ public record ArtistVm(
 
 public record ArtistRoleVm(int Id, string Name)
 {
+    [UsedImplicitly]
     public class MapperConfig : IRegister
     {
         public void Register(TypeAdapterConfig config)

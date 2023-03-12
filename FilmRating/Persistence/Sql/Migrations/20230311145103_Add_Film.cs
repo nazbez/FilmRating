@@ -18,7 +18,7 @@ namespace FilmRating.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Year = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
                     ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Budget = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     Duration = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -47,21 +47,21 @@ namespace FilmRating.Migrations
                 name: "Film_Actor",
                 columns: table => new
                 {
-                    ActorId = table.Column<int>(type: "int", nullable: false),
-                    FilmId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    ActorFilmsId = table.Column<int>(type: "int", nullable: false),
+                    ActorsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Film_Actor", x => new { x.ActorId, x.FilmId });
+                    table.PrimaryKey("PK_Film_Actor", x => new { x.ActorFilmsId, x.ActorsId });
                     table.ForeignKey(
-                        name: "FK_Film_Actor_Artist_ActorId",
-                        column: x => x.FilmId,
+                        name: "FK_Film_Actor_Artist_ActorsId",
+                        column: x => x.ActorsId,
                         principalTable: "Artist",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Film_Actor_Film_FilmId",
-                        column: x => x.ActorId,
+                        name: "FK_Film_Actor_Film_ActorFilmsId",
+                        column: x => x.ActorFilmsId,
                         principalTable: "Film",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -78,9 +78,9 @@ namespace FilmRating.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Film_Actor_ActorId",
+                name: "IX_Film_Actor_ActorsId",
                 table: "Film_Actor",
-                column: "ActorId");
+                column: "ActorsId");
         }
 
         /// <inheritdoc />

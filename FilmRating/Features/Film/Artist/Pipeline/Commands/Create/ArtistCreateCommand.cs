@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using MapsterMapper;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
 
 namespace FilmRating.Features.Film.Artist;
 
@@ -14,39 +13,30 @@ public record ArtistCreateCommand(
     [UsedImplicitly]
     public class ArtistCreateCommandHandler : IRequestHandler<ArtistCreateCommand, ArtistVm>
     {
-        private readonly IRepository<ArtistEntity, Guid> artistRepository;
-        private readonly IRepository<ArtistRoleEntity, int> artistRoleRepository;
         private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ArtistCreateCommandHandler(
-            IRepository<ArtistEntity, Guid> artistRepository,
-            IRepository<ArtistRoleEntity, int> artistRoleRepository,
-            IMapper mapper)
+        public ArtistCreateCommandHandler(IMapper  mapper, IUnitOfWork unitOfWork)
         {
-            this.artistRepository = artistRepository;
-            this.artistRoleRepository = artistRoleRepository;
             this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
         }
 
-        public Task<ArtistVm> Handle(ArtistCreateCommand request, CancellationToken cancellationToken)
+        public async Task<ArtistVm> Handle(ArtistCreateCommand request, CancellationToken cancellationToken)
         {
-            var roles = artistRoleRepository.Get(r =>
-                request.RoleIds.Any(i => i == r.Id))
+            var roles = unitOfWork.Repository<ArtistRoleEntity, int>().Find(
+                    new ArtistRoleGetByIdsSpecification(request.RoleIds))
                 .ToList();
 
-            var artist = ArtistEntity.Create(request.FirstName, request.LastName);
+            var artist = ArtistEntity.Create(request.FirstName, request.LastName, roles);
             
-            artistRepository.Create(artist);
+            unitOfWork.Repository<ArtistEntity, Guid>().Add(artist);
 
-            if (!roles.IsNullOrEmpty())
-            {
-                artist.UpdateRoles(roles);
-                artistRepository.Update(artist);
-            }
+            await unitOfWork.CompleteAsync(cancellationToken);
 
             var artistVm = mapper.Map<ArtistVm>(artist);
 
-            return Task.FromResult(artistVm);
+            return artistVm;
         }
     }
 }

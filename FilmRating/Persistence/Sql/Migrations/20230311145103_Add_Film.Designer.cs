@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmRating.Migrations
 {
     [DbContext(typeof(FilmRatingDbContext))]
-    [Migration("20230308130913_Add_Film")]
+    [Migration("20230311145103_Add_Film")]
     partial class Add_Film
     {
         /// <inheritdoc />
@@ -139,8 +139,8 @@ namespace FilmRating.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("Year")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

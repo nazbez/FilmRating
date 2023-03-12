@@ -21,7 +21,7 @@ public record ArtistRolesQuery : IRequest<IEnumerable<ArtistRoleVm>>
 
         public Task<IEnumerable<ArtistRoleVm>> Handle(ArtistRolesQuery request, CancellationToken cancellationToken)
         {
-            var artists = artistRoleRepository.Get();
+            var artists = artistRoleRepository.Find();
 
             var artistVms = mapper.Map<IEnumerable<ArtistRoleVm>>(artists);
             

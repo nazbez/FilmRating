@@ -10,40 +10,38 @@ public record ArtistUpdateCommand(Guid Id, ArtistUpdateModel Model) : IRequest<A
     [UsedImplicitly]
     public class ArtistUpdateCommandHandler : IRequestHandler<ArtistUpdateCommand, ArtistVm>
     {
-        private readonly IRepository<ArtistEntity, Guid> artistRepository;
-        private readonly IRepository<ArtistRoleEntity, int> artistRoleRepository;
         private readonly IMapper mapper;
+        private readonly IUnitOfWork unitOfWork;
 
         public ArtistUpdateCommandHandler(
-            IRepository<ArtistEntity, Guid> artistRepository, 
-            IRepository<ArtistRoleEntity, int> artistRoleRepository,
-            IMapper mapper)
+            IMapper mapper, 
+            IUnitOfWork unitOfWork)
         {
-            this.artistRepository = artistRepository;
-            this.artistRoleRepository = artistRoleRepository;
             this.mapper = mapper;
+            this.unitOfWork = unitOfWork;
         }
 
-        public Task<ArtistVm> Handle(ArtistUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<ArtistVm> Handle(ArtistUpdateCommand request, CancellationToken cancellationToken)
         {
             var (firstName, lastName, roleIds) = request.Model;
             
-            var roles = artistRoleRepository.Get(r =>
-                    roleIds.Any(i => i == r.Id))
+            var roles = unitOfWork.Repository<ArtistRoleEntity, int>()
+                .Find(new ArtistRoleGetByIdsSpecification(roleIds))
                 .ToList();
 
-            var artist = artistRepository.Get(
-                x => x.Id == request.Id,
-                x => x.Roles)
+            var artist = unitOfWork.Repository<ArtistEntity, Guid>()
+                .Find(new ArtistGetByIdSpecification(request.Id, true))
                 .FirstOrDefault();
 
             var updatedArtist = UpdateArtist(artist!, firstName, lastName, roles);
             
-            artistRepository.Update(updatedArtist);
+            unitOfWork.Repository<ArtistEntity, Guid>().Update(updatedArtist);
+
+            await unitOfWork.CompleteAsync(cancellationToken);
 
             var artistVm = mapper.Map<ArtistVm>(updatedArtist);
 
-            return Task.FromResult(artistVm);
+            return artistVm;
         }
 
         private static ArtistEntity UpdateArtist(

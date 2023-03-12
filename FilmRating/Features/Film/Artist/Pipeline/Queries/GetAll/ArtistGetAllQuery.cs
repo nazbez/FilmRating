@@ -21,7 +21,7 @@ public record ArtistGetAllQuery : IRequest<IEnumerable<ArtistVm>>
 
         public Task<IEnumerable<ArtistVm>> Handle(ArtistGetAllQuery request, CancellationToken cancellationToken)
         {
-            var artists = artistRepository.Get(includeProperties: entity => entity.Roles);
+            var artists = artistRepository.Find(new ArtistGetAllSpecification());
 
             var artistVms = mapper.Map<IEnumerable<ArtistVm>>(artists);
             

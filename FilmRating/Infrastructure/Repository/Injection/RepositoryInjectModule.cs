@@ -17,6 +17,7 @@ public class RepositoryInjectModule : IInjectModule
         services.AddDefaultIdentity<IdentityUser>()
             .AddEntityFrameworkStores<FilmRatingDbContext>();
         
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
     }
 }

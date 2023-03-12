@@ -14,12 +14,8 @@ public class ArtistRoleIdsValidator : AbstractValidator<IEnumerable<int>>
             .DependentRules(() =>
             {
                 RuleFor(roleIds => roleIds)
-                    .Must(roleIds =>
-                    {
-                        var allRoles = artistRoleRepository.Get();
-
-                        return roleIds.All(r => allRoles.Any(x => x.Id == r));
-                    })
+                    .Must(roleIds => 
+                        artistRoleRepository.Contains(new ArtistRoleGetByIdsSpecification(roleIds)))
                     .WithMessage(ErrorMessage);
             });
     }

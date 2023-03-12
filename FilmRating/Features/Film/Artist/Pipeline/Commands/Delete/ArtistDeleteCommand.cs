@@ -9,23 +9,24 @@ public record ArtistDeleteCommand(Guid Id) : IRequest<Unit>
     [UsedImplicitly]
     public class ArtistDeleteCommandHandler : IRequestHandler<ArtistDeleteCommand, Unit>
     {
-        private readonly IRepository<ArtistEntity, Guid> artistRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ArtistDeleteCommandHandler(IRepository<ArtistEntity, Guid> artistRepository)
+        public ArtistDeleteCommandHandler(IUnitOfWork unitOfWork)
         {
-            this.artistRepository = artistRepository;
+            this.unitOfWork = unitOfWork;
         }
 
-        public Task<Unit> Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
         {
-            var artist = artistRepository.FindById(request.Id);
+            var artist = unitOfWork.Repository<ArtistEntity, Guid>().FindById(request.Id);
 
             if (artist is not null)
             {
-                artistRepository.Remove(artist);
+                unitOfWork.Repository<ArtistEntity, Guid>().Remove(artist);
+                await unitOfWork.CompleteAsync(cancellationToken);
             }
             
-            return Task.FromResult(Unit.Value);
+            return Unit.Value;
         }
     }
 }

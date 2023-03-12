@@ -9,56 +9,70 @@ public class Repository<TEntity, T> : IRepository<TEntity, T>
     where T: struct
 {
     private readonly FilmRatingDbContext context;
-    private readonly DbSet<TEntity> dbSet;
 
     public Repository(FilmRatingDbContext context)
     {
         this.context = context;
-        dbSet = this.context.Set<TEntity>();
+    }
+
+    public void Add(TEntity entity)
+    {
+        context.Set<TEntity>().Add(entity);
+    }
+
+    public void AddRange(IEnumerable<TEntity> entities)
+    {
+        context.Set<TEntity>().AddRange(entities);
     }
     
-    public void Create(TEntity item)
+    public bool Contains(ISpecification<TEntity> specification = null!)
     {
-        dbSet.Add(item);
-        context.SaveChanges();
+        return Count(specification) > 0;
+    }
+
+    public bool Contains(Expression<Func<TEntity, bool>> predicate)
+    {
+        return Count(predicate) > 0;
+    }
+
+    public int Count(ISpecification<TEntity> specification = null!)
+    {
+        return ApplySpecification(specification).Count();
+    }
+
+    public int Count(Expression<Func<TEntity, bool>> predicate)
+    {
+        return context.Set<TEntity>().Where(predicate).Count();
+    }
+    
+    public IEnumerable<TEntity> Find(ISpecification<TEntity> specification = null!)
+    {
+        return ApplySpecification(specification);
     }
 
     public TEntity? FindById(T id)
     {
-        return dbSet.Find(id);
-    }
-
-    public IEnumerable<TEntity> Get()
-    {
-        return dbSet.AsNoTracking().ToList();
-    }
-
-    public IEnumerable<TEntity> Get(Func<TEntity, bool>? predicate = null!, params Expression<Func<TEntity, object>>[] includeProperties)
-    {
-        var query =  Include(includeProperties);
-        return predicate is null 
-            ? query.ToList()
-            : query.Where(predicate).ToList();
+        return context.Set<TEntity>().Find(id);
     }
     
-    public void Remove(TEntity item)
+    public void Remove(TEntity entity)
     {
-        dbSet.Remove(item);
-        context.SaveChanges();
+        context.Set<TEntity>().Remove(entity);
     }
 
-    public void Update(TEntity item)
+    public void RemoveRange(IEnumerable<TEntity> entities)
     {
-        context.Entry(item).State = EntityState.Modified;
-        context.SaveChanges();
+        context.Set<TEntity>().RemoveRange(entities);
     }
-    
-    private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)
+
+    public void Update(TEntity entity)
     {
-        var query = dbSet.AsNoTracking();
-        return includeProperties
-            .Aggregate(
-                query, 
-                (current, includeProperty) => current.Include(includeProperty));
+        context.Set<TEntity>().Attach(entity);
+        context.Entry(entity).State = EntityState.Modified;
+    }
+
+    private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
+    {
+        return SpecificationEvaluator<TEntity, T>.GetQuery(context.Set<TEntity>().AsQueryable(), spec);
     }
 }

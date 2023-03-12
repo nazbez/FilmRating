@@ -136,8 +136,8 @@ namespace FilmRating.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("Year")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

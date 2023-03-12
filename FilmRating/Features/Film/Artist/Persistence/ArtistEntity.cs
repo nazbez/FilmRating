@@ -21,11 +21,12 @@ public class ArtistEntity : IEntity<Guid>
     public void UpdateRoles(ICollection<ArtistRoleEntity> roles) =>
         Roles = roles;
 
-    public static ArtistEntity Create(string firstName, string lastName) =>
+    public static ArtistEntity Create(string firstName, string lastName, ICollection<ArtistRoleEntity> roles) =>
         new()
         {
             Id = Guid.NewGuid(),
             FirstName = firstName,
             LastName = lastName,
+            Roles = roles
         };
 }
