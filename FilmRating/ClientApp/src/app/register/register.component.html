@@ -1,6 +1,10 @@
 <div class="card text-center">
     <div class="card-body">
         <h4 class="card-title">Register</h4>
+        <div *ngIf="showError" class="alert alert-danger" role="alert">
+            <span [innerHTML]="errorMessage"></span>
+        </div>
+        
         <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)" class="form-narrow">
             <div class="mb-3 row justify-content-center">
                 <div class="col-md-5">
@@ -32,6 +36,10 @@
             <div class="mb-3 row justify-content-center">
                 <div class="col-md-5">
                     <input type="password" id="confirm" formControlName="confirm" class="form-control" placeholder="Confirm password" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('confirm') && hasError('confirm', 'required')">Confirmation is required</em>
+                    <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
                 </div>
             </div>
             <br>

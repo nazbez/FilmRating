@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace FilmRating.Persistence.Sql;
 
+[UsedImplicitly]
 public class FilmRatingDbContextFactory : IDesignTimeDbContextFactory<FilmRatingDbContext>
 {
     public FilmRatingDbContext CreateDbContext(string[] args)

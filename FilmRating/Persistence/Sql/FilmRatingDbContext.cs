@@ -1,11 +1,12 @@
-﻿using FilmRating.Infrastructure.Repository;
+﻿using FilmRating.Features.Authentication;
+using FilmRating.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Assembly;
 
 namespace FilmRating.Persistence.Sql;
 
-public class FilmRatingDbContext : IdentityDbContext
+public class FilmRatingDbContext : IdentityDbContext<User>
 {
     public FilmRatingDbContext(DbContextOptions<FilmRatingDbContext> options)
         : base(options)

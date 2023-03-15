@@ -14,7 +14,7 @@ public class AuthenticationController : Controller
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register([FromForm] RegisterModel model)
+    public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
         var result = await identityService.Register(model);
 
@@ -27,7 +27,7 @@ public class AuthenticationController : Controller
     }
 
     [HttpPost("Login")]
-    public async Task<IActionResult> Login([FromForm] LoginModel model)
+    public async Task<IActionResult> Login(LoginModel model)
     {
         var result = await identityService.Login(model.Email, model.Password);
 
@@ -36,6 +36,6 @@ public class AuthenticationController : Controller
             return BadRequest(result);
         }
 
-        return Ok(result.Token);
+        return Ok(result);
     }
 }

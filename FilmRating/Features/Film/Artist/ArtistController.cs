@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmRating.Features.Film.Artist;
 
 [ApiController]
+[Authorize(Roles = "Administrator")]
 [Route("api/[controller]")]
 public class ArtistController : Controller
 {

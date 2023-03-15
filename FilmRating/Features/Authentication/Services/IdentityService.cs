@@ -7,11 +7,11 @@ namespace FilmRating.Features.Authentication;
 
 public class IdentityService : IIdentityService
 {
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<User> userManager;
     private readonly AuthenticationConfiguration authenticationConfiguration;
 
     public IdentityService(
-        UserManager<IdentityUser> userManager,
+        UserManager<User> userManager,
         AuthenticationConfiguration authenticationConfiguration)
     {
         this.userManager = userManager;
@@ -30,10 +30,12 @@ public class IdentityService : IIdentityService
             };
         }
 
-        var newUser = new IdentityUser
+        var newUser = new User
         {
             Email = model.Email,
-            UserName = $"{model.FirstName} {model.LastName}",
+            UserName = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName
         };
 
         var createdUser = await userManager.CreateAsync(newUser, model.Password);
@@ -45,8 +47,10 @@ public class IdentityService : IIdentityService
                 ErrorMessages = createdUser.Errors.Select(e => e.Description)
             };
         }
+        
+        await userManager.AddToRoleAsync(newUser, "Administrator");
 
-        var authenticationResult = GenerateAuthenticationResult(newUser);
+        var authenticationResult = await GenerateAuthenticationResult(newUser);
 
         return authenticationResult;
     }
@@ -73,13 +77,16 @@ public class IdentityService : IIdentityService
             };
         }
 
-        var authenticationResult = GenerateAuthenticationResult(user);
+        var authenticationResult = await GenerateAuthenticationResult(user);
         
         return authenticationResult;
     }
 
-    private AuthenticationResultModel GenerateAuthenticationResult(IdentityUser user)
+    private async Task<AuthenticationResultModel> GenerateAuthenticationResult(User user)
     {
+        var roles = (await userManager.GetRolesAsync(user))
+            .Select(x => new Claim(ClaimTypes.Role, x));
+        
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -91,13 +98,15 @@ public class IdentityService : IIdentityService
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
                 new Claim("id", user.Id),
                 new Claim(JwtRegisteredClaimNames.Aud, authenticationConfiguration.Audience),
-                new Claim(JwtRegisteredClaimNames.Iss, authenticationConfiguration.Issuer)
+                new Claim(JwtRegisteredClaimNames.Iss, authenticationConfiguration.Issuer),
             }),
-            Expires = DateTime.UtcNow.AddHours(2),
+            Expires = DateTime.UtcNow.AddHours(authenticationConfiguration.ExpiryInHours),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(authenticationConfiguration.EncodedKey), 
                 SecurityAlgorithms.HmacSha256Signature)
         };
+        
+        tokenDescriptor.Subject.AddClaims(roles);
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
