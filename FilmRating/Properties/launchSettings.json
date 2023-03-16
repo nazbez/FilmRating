@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:19683",
+      "applicationUrl": "http://film-rating.local.com:19683",
       "sslPort": 44333
     }
   },
@@ -11,7 +11,7 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5095",
+      "applicationUrl": "http://film-rating.local.com:5095",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -19,7 +19,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7057;http://localhost:5095",
+      "applicationUrl": "https://film-rating.local.com:7057;http://film-rating.local.com:5095",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

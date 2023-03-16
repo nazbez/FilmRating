@@ -48,7 +48,7 @@ export function tokenGetter() {
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
-                allowedDomains: ["localhost:7057"],
+                allowedDomains: ["film-rating.local.com:7057", "film-rating.local.com:5095" ],
                 disallowedRoutes: []
             }
         }),
