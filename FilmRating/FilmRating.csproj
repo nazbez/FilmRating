@@ -55,10 +55,6 @@
       </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ClientApp\src\app\film\film-table" />
-    </ItemGroup>
-
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />

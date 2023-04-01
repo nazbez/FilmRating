@@ -48,7 +48,7 @@ public class IdentityService : IIdentityService
             };
         }
         
-        await userManager.AddToRoleAsync(newUser, "Administrator");
+        await userManager.AddToRoleAsync(newUser, "Critic");
 
         var authenticationResult = await GenerateAuthenticationResult(newUser);
 

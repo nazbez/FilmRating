@@ -11,7 +11,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from "./shared/guards/auth.guard";
-import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { AdminGuard } from "./shared/guards/admin.guard";
 
 export function tokenGetter() {
@@ -23,8 +22,7 @@ export function tokenGetter() {
         AppComponent,
         NavMenuComponent,
         RegisterComponent,
-        LoginComponent,
-        ForbiddenComponent
+        LoginComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -42,8 +40,7 @@ export function tokenGetter() {
                 path: 'artist-management',
                 loadChildren: () => import('./artist-management/artist-management.module').then(m => m.ArtistManagementModule),
                 canActivate: [AuthGuard, AdminGuard]
-            },
-            {path: 'forbidden', component: ForbiddenComponent}
+            }
         ]),
         JwtModule.forRoot({
             config: {

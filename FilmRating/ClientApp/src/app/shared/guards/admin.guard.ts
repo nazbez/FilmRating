@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
     if(this.authService.isUserAdmin())
       return true;
 
-    this.router.navigate(['/forbidden'], { queryParams: { returnUrl: state.url }});
+    this.router.navigate(['/'], { queryParams: { returnUrl: state.url }});
     return false;
   }
 }
