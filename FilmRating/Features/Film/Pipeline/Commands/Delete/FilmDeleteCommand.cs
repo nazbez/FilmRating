@@ -1,4 +1,5 @@
-﻿using FilmRating.Infrastructure.Repository;
+﻿using FilmRating.Infrastructure.AzureStorage;
+using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MediatR;
 
@@ -10,10 +11,12 @@ public record FilmDeleteCommand(int Id) : IRequest<Unit>
     public class FilmDeleteCommandHandler : IRequestHandler<FilmDeleteCommand, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IAzureStorageService azureStorageService;
 
-        public FilmDeleteCommandHandler(IUnitOfWork unitOfWork)
+        public FilmDeleteCommandHandler(IUnitOfWork unitOfWork, IAzureStorageService azureStorageService)
         {
             this.unitOfWork = unitOfWork;
+            this.azureStorageService = azureStorageService;
         }
 
         public async Task<Unit> Handle(FilmDeleteCommand request, CancellationToken cancellationToken)
@@ -23,6 +26,7 @@ public record FilmDeleteCommand(int Id) : IRequest<Unit>
 
             if (film != null)
             {
+                await azureStorageService.Delete(film.PhotoPath);
                 unitOfWork.Repository<FilmEntity, int>().Remove(film);
                 await unitOfWork.CompleteAsync(cancellationToken);
             }

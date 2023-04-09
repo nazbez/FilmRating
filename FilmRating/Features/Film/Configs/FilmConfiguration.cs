@@ -7,4 +7,5 @@ public class FilmConfiguration
     public int MinimumDurationInMinutes { get; set; }
     public int DirectorRoleId { get; set; }
     public int ActorRoleId { get; set; }
+    public string[] AllowedPhotoExtensions { get; set; } = Array.Empty<string>();
 }

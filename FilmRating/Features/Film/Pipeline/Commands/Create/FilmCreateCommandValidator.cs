@@ -12,6 +12,7 @@ public class FilmCreateCommandValidator : AbstractValidator<FilmCreateCommand>
                 cmd.Year, 
                 cmd.Budget, 
                 cmd.DurationInMinutes,
+                cmd.Photo,
                 cmd.GenreId, 
                 cmd.DirectorId,
                 cmd.ActorIds))

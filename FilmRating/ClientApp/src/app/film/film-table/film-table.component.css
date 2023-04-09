@@ -10,3 +10,16 @@
 td, th {
     width: 25%;
 }
+
+.film-photo {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.film-photo img {
+    width: 60px;
+    height: 80px;
+}

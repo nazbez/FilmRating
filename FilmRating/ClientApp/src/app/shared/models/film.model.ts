@@ -4,4 +4,5 @@
     year: number,
     rating: number
     genre: string,
+    photoPath: string
 }

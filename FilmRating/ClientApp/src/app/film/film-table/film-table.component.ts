@@ -11,7 +11,7 @@ import { FilmService } from "../../shared/services/film.service";
     styleUrls: ['./film-table.component.css']
 })
 export class FilmTableComponent implements OnInit {
-    displayedColumns = ['title', 'year', 'genre', 'rating'];
+    displayedColumns = ['photo', 'title', 'year', 'genre', 'rating'];
     dataSource: MatTableDataSource<FilmModel>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;

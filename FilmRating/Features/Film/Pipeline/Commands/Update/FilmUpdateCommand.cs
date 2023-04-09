@@ -1,4 +1,6 @@
 ﻿using FilmRating.Features.Film.Artist;
+using FilmRating.Infrastructure.AzureStorage;
+using FilmRating.Infrastructure.Extensions;
 using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MapsterMapper;
@@ -13,11 +15,13 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IAzureStorageService azureStorageService;
         
-        public FilmUpdateCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public FilmUpdateCommandHandler(IMapper mapper, IUnitOfWork unitOfWork, IAzureStorageService azureStorageService)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.azureStorageService = azureStorageService;
         }
         
         public async Task<FilmVm> Handle(FilmUpdateCommand request, CancellationToken cancellationToken)
@@ -30,24 +34,29 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
                 .Find(new FilmGetByIdSpecification(request.Id, withActors: true))
                 .First();
 
-            var updatedFilm = UpdateFilm(film, request.Model, actors);
+            await azureStorageService.Delete(film.PhotoPath.GetFileName());
+            var blobResult = await azureStorageService.Upload(request.Model.Photo);
+
+            var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
+
+            var updatedFilm = UpdateFilm(film, request.Model, actors, photoPath!);
             
             unitOfWork.Repository<FilmEntity, int>().Update(updatedFilm);
 
             await unitOfWork.CompleteAsync(cancellationToken);
 
             var filmVm = mapper.Map<FilmVm>(film);
-            
             return filmVm;
         }
 
-        private static FilmEntity UpdateFilm(FilmEntity film, FilmUpdateModel model, IList<ArtistEntity> actors)
+        private static FilmEntity UpdateFilm(FilmEntity film, FilmUpdateModel model, IList<ArtistEntity> actors, string photoPath)
         {
             film.UpdateTitle(model.Title);
             film.UpdateYear(model.Year);
             film.UpdateShortDescription(model.ShortDescription);
             film.UpdateBudget(model.Budget);
             film.UpdateDuration(TimeSpan.FromMinutes(model.DurationInMinutes));
+            film.UpdatePhotoPath(photoPath);
             film.UpdateGenreId(model.GenreId);
             film.UpdateDirectorId(model.DirectorId);
             film.UpdateActors(actors);

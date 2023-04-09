@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0-beta.1" />
       <PackageReference Include="FluentValidation" Version="11.5.1" />
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1" />
       <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" />
@@ -52,6 +53,9 @@
       </Compile>
       <Compile Update="Features\Film\Persistence\FilmEntityMap.cs">
         <DependentUpon>FilmEntity.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Infrastructure\AzureStorage\Services\AzureStorageService.cs">
+        <DependentUpon>IAzureStorageService.cs</DependentUpon>
       </Compile>
     </ItemGroup>
 

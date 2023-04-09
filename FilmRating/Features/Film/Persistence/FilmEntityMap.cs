@@ -28,6 +28,9 @@ public class FilmEntityMap : IEntityTypeConfiguration<FilmEntity>
         
         builder.Property(x => x.Duration)
             .IsRequired();
+
+        builder.Property(x => x.PhotoPath)
+            .IsRequired();
         
         builder.Property(x => x.Rating)
             .HasDefaultValue(0.0);

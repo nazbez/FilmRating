@@ -13,6 +13,7 @@ public class FilmEntity : IEntity<int>
     public decimal Budget { get; private set; }
     public TimeSpan Duration { get; private set; }
     public double Rating { get; private set; }
+    public string PhotoPath { get; private set; } = null!;
     public int GenreId { get; private set; }
     public Guid DirectorId { get; private set; }
 
@@ -36,6 +37,9 @@ public class FilmEntity : IEntity<int>
     public void UpdateDuration(TimeSpan duration) =>
         Duration = duration;
 
+    public void UpdatePhotoPath(string photoPath) =>
+        PhotoPath = photoPath;
+
     public void UpdateGenreId(int genreId) =>
         GenreId = genreId;
 
@@ -45,11 +49,13 @@ public class FilmEntity : IEntity<int>
     public void UpdateActors(ICollection<ArtistEntity> actors) =>
         Actors = actors;
 
-    public static FilmEntity Create(string title,
+    public static FilmEntity Create(
+        string title,
         int year,
         string shortDescription,
         decimal budget,
         TimeSpan duration,
+        string photoPath,
         int genreId,
         Guid directorId,
         ICollection<ArtistEntity> actors) =>
@@ -60,6 +66,7 @@ public class FilmEntity : IEntity<int>
             ShortDescription = shortDescription,
             Budget = budget,
             Duration = duration,
+            PhotoPath = photoPath,
             GenreId = genreId,
             DirectorId = directorId,
             Actors = actors

@@ -8,7 +8,8 @@ public record FilmVm(
     string Title,
     int Year,
     double Rating,
-    string Genre)
+    string Genre,
+    string? PhotoPath)
 {
     [UsedImplicitly]
     public class MapperConfig : IRegister

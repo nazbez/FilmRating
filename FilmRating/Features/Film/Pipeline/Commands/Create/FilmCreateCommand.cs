@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using FilmRating.Features.Film.Artist;
+using FilmRating.Infrastructure.AzureStorage;
 using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MapsterMapper;
@@ -15,20 +16,24 @@ public record FilmCreateCommand(
     int DurationInMinutes,
     int GenreId,
     Guid DirectorId,
-    IEnumerable<Guid> ActorIds) : IRequest<FilmVm>
-{ 
+    IEnumerable<Guid> ActorIds,
+    IFormFile Photo) : IRequest<FilmVm>
+{
     [UsedImplicitly]
     public class FilmCreateCommandHandler : IRequestHandler<FilmCreateCommand, FilmVm>
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
+        private readonly IAzureStorageService azureStorageService;
 
         public FilmCreateCommandHandler(
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork, 
+            IAzureStorageService azureStorageService)
         {
             this.mapper = mapper;
             this.unitOfWork = unitOfWork;
+            this.azureStorageService = azureStorageService;
         }
 
         public async Task<FilmVm> Handle(FilmCreateCommand request, CancellationToken cancellationToken)
@@ -37,12 +42,17 @@ public record FilmCreateCommand(
                 .Find(new ArtistGetByIdsSpecification(request.ActorIds))
                 .ToList();
 
+            var blobResult = await azureStorageService.Upload(request.Photo);
+
+            var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
+
             var film = FilmEntity.Create(
                 request.Title,
                 request.Year,
                 request.ShortDescription,
                 request.Budget,
                 TimeSpan.FromMinutes(request.DurationInMinutes),
+                photoPath!,
                 request.GenreId,
                 request.DirectorId,
                 actors);

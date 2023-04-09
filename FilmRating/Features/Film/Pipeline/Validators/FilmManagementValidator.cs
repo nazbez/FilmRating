@@ -1,5 +1,6 @@
 ﻿using FilmRating.Features.Film.Artist;
 using FilmRating.Features.Film.Genre;
+using FilmRating.Infrastructure.Extensions;
 using FilmRating.Infrastructure.Repository;
 using FluentValidation;
 
@@ -9,6 +10,7 @@ public record FilmManagementValidatorModel(
     int Year,
     decimal Budget,
     int DurationInMinutes,
+    IFormFile Photo,
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds);
@@ -29,6 +31,10 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
 
         RuleFor(m => m.DurationInMinutes)
             .GreaterThan(filmConfiguration.MinimumDurationInMinutes);
+
+        RuleFor(m => m.Photo.FileName)
+            .Must(f => filmConfiguration.AllowedPhotoExtensions.Any(x => x == f.GetExtension()))
+            .WithMessage(PhotoErrorMessage(filmConfiguration.AllowedPhotoExtensions));
 
         RuleFor(m => m.GenreId)
             .Must(id =>
@@ -64,6 +70,9 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
             })
             .WithMessage(_ => ActorsErrorMessage());
     }
+
+    private static string PhotoErrorMessage(string[] extensions) =>
+        $"Uploaded photo must have these extensions: {string.Join(';', extensions)}";
 
     private static string GenreErrorMessage(int id) =>
         $"There is no genre with id = {id}";

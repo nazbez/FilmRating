@@ -16,14 +16,14 @@ public class FilmController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(FilmCreateCommand command)
+    public async Task<IActionResult> Create([FromForm] FilmCreateCommand command)
     {
         var result = await mediator.Send(command);
         return Ok(result);
     }
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Update(int id, FilmUpdateModel model)
+    public async Task<IActionResult> Update(int id, [FromForm] FilmUpdateModel model)
     {
         var command = new FilmUpdateCommand(id, model);
         var result = await mediator.Send(command);
