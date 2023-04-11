@@ -12,6 +12,7 @@ import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from "./shared/guards/auth.guard";
 import { AdminGuard } from "./shared/guards/admin.guard";
+import { environment } from "../environments/environment";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -45,7 +46,7 @@ export function tokenGetter() {
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
-                allowedDomains: ["film-rating.local.com:7057", "film-rating.local.com:5095" ],
+                allowedDomains: [ environment.apiUrl ],
                 disallowedRoutes: []
             }
         }),

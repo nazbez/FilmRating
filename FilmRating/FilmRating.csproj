@@ -36,6 +36,9 @@
       <Content Update="Configs\appsettings.Development.json">
         <DependentUpon>appsettings.json</DependentUpon>
       </Content>
+      <Content Update="Configs\appsettings.Production.json">
+        <DependentUpon>appsettings.json</DependentUpon>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -61,7 +64,7 @@
 
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
         <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+        <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
 
         <ItemGroup>
             <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
