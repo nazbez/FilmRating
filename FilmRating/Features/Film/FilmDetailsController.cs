@@ -1,9 +1,9 @@
 ﻿using FilmRating.Features.Film.GetDetails;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmRating.Features.Film;
-
 
 [ApiController]
 // TODO Uncomment it when auth feature will be implemented [Authorize]
@@ -20,10 +20,8 @@ public class FilmDetailsController : Controller
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Details(int id)
     {
-        Console.WriteLine($"Getting details for id {id}");
         var query = new FilmGetDetailsQuery(id);
         var result = await mediator.Send(query);
-        Console.WriteLine($"Returning {result.ToString()}");
         return Ok(result);
     }
 }
