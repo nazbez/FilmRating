@@ -9,7 +9,7 @@ namespace FilmRating.Features.Film;
 public class FilmController : Controller
 {
     private readonly IMediator mediator;
-    
+
     public FilmController(IMediator mediator)
     {
         this.mediator = mediator;
@@ -42,6 +42,14 @@ public class FilmController : Controller
     public async Task<IActionResult> GetAll()
     {
         var query = new FilmGetAllQuery();
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> Get(int id)
+    {
+        var query = new FilmGetQuery(id);
         var result = await mediator.Send(query);
         return Ok(result);
     }
