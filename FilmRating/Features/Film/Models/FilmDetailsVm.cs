@@ -3,7 +3,6 @@ using Mapster;
 
 namespace FilmRating.Features.Film;
 
-// TODO: Can we use there just FilmEntity model?
 public record FilmDetailsVm
 (
     int Id,
@@ -11,7 +10,7 @@ public record FilmDetailsVm
     int Year,
     string ShortDescription,
     decimal Budget,
-    TimeSpan Duration,
+    double Duration,
     double Rating,
     string? PhotoPath,
     string Genre,
@@ -25,7 +24,8 @@ public record FilmDetailsVm
         {
             config.NewConfig<FilmEntity, FilmDetailsVm>()
                 .Map(dst => dst.Genre, src => src.Genre!.Name)
-                .Map(dst => dst.Director, src => $"{src.Director!.FirstName} {src.Director!.LastName}");
+                .Map(dst => dst.Director, src => $"{src.Director!.FirstName} {src.Director!.LastName}")
+                .Map(dst => dst.Duration, src => src.Duration.TotalMinutes);
         }
     }
 }

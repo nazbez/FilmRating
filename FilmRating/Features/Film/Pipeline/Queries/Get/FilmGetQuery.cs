@@ -3,12 +3,12 @@ using JetBrains.Annotations;
 using MapsterMapper;
 using MediatR;
 
-namespace FilmRating.Features.Film.GetDetails;
+namespace FilmRating.Features.Film;
 
-public record FilmGetDetailsQuery(int Id) : IRequest<FilmDetailsVm>
+public record FilmGetQuery(int Id) : IRequest<FilmDetailsVm>
 {
     [UsedImplicitly]
-    public class FilmGetAllQueryHandler : IRequestHandler<FilmGetDetailsQuery, FilmDetailsVm>
+    public class FilmGetAllQueryHandler : IRequestHandler<FilmGetQuery, FilmDetailsVm>
     {
         private readonly IRepository<FilmEntity, int> filmRepository;
         private readonly IMapper mapper;
@@ -21,7 +21,7 @@ public record FilmGetDetailsQuery(int Id) : IRequest<FilmDetailsVm>
             this.mapper = mapper;
         }
 
-        public Task<FilmDetailsVm> Handle(FilmGetDetailsQuery request, CancellationToken cancellationToken)
+        public Task<FilmDetailsVm> Handle(FilmGetQuery request, CancellationToken cancellationToken)
         {
             var film = filmRepository.Find(
                 new FilmGetByIdSpecification(request.Id, true, true, true)).First();
