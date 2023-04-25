@@ -1,8 +1,9 @@
-﻿using FilmRating.Infrastructure.Repository;
-using FluentValidation;
+﻿using FluentValidation;
+using JetBrains.Annotations;
 
 namespace FilmRating.Features.Film;
 
+[UsedImplicitly]
 public class FilmGetQueryValidator : AbstractValidator<FilmGetQuery>
 {
     public FilmGetQueryValidator(FilmExistsValidator filmExistsValidator)
