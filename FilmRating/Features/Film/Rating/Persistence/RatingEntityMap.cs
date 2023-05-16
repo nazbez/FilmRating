@@ -18,5 +18,7 @@ public class RatingEntityMap : IEntityTypeConfiguration<RatingEntity>
         builder.HasOne(x => x.Film)
             .WithMany(x => x.Ratings)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasOne(x => x.User);
     }
 }

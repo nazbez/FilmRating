@@ -7,7 +7,7 @@ namespace FilmRating.Features.Film.Rating.Models;
 public record RatingVm(
     int Id,
     int FilmId,
-    Guid UserId,
+    string UserId,
     int Rate)
 {
     [UsedImplicitly]

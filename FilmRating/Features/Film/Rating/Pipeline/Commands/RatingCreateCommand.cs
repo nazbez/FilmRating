@@ -10,7 +10,7 @@ namespace FilmRating.Features.Film.Rating.Pipeline.Commands;
 
 public record RatingCreateCommand(
     int FilmId,
-    Guid UserId,
+    string UserId,
     int Rate) : IRequest<RatingVm>
 {
     [UsedImplicitly]

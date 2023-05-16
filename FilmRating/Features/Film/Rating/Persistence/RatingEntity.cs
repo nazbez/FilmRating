@@ -8,13 +8,13 @@ public class RatingEntity : IEntity<int>
     public int Id { get; private set; }
     public int Rate { get; private set; }
     public int FilmId { get; private set; }
-    public Guid UserId { get; private set; }
+    public string UserId { get; private set; } = null!;
     public FilmEntity? Film { get; private set; } = null!;
     public User? User { get; private set; } = null!;
 
     public static RatingEntity Create(
     int filmId,
-    Guid userId,
+    string userId,
     int rate) =>
     new()
     {

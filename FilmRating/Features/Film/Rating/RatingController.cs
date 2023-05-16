@@ -20,11 +20,11 @@ public class RatingController : Controller
         this.mediator = mediator;
     }
 
-    // TODO: remove new Guid
+    // TODO: remove userId string
     [HttpPost]
     public async Task<IActionResult> Create(RatingCreateModel model)
     {
-        var command = new RatingCreateCommand(model.FilmId, new Guid("a7d892c7-62d2-4e1e-bdce-92ac5589ea11"), model.Rate);
+        var command = new RatingCreateCommand(model.FilmId, "a7d892c7-62d2-4e1e-bdce-92ac5589ea11", model.Rate);
         var result = await mediator.Send(command);
         return Ok(result);
     }

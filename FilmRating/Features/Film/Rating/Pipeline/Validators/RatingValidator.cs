@@ -8,14 +8,14 @@ namespace FilmRating.Features.Film.Rating.Pipeline.Validators;
 
 public record RatingValidatorModel(
     int FilmId,
-    Guid UserId,
+    string UserId,
     int Rate);
 
 public class RatingValidator : AbstractValidator<RatingValidatorModel>
 {
     public RatingValidator(
         IRepository<FilmEntity, int> filmRepository,
-        UserManager<User> userManager, 
+        UserManager<User> userManager,
         RatingConfiguration ratingConfiguration)
     {
         RuleFor(r => r.FilmId)
@@ -25,7 +25,7 @@ public class RatingValidator : AbstractValidator<RatingValidatorModel>
                 return film != null;
             })
             .WithMessage(r => FilmErrorMessage(r.FilmId))
-            .DependentRules(() => 
+            .DependentRules(() =>
             {
                 RuleFor(r => r.UserId)
                     .MustAsync(async (id, _) =>
@@ -46,6 +46,6 @@ public class RatingValidator : AbstractValidator<RatingValidatorModel>
     private static string FilmErrorMessage(int id) =>
         $"There is no film with id = {id}";
 
-    private static string UserErrorMessage(Guid id) =>
+    private static string UserErrorMessage(string id) =>
         $"There is no user with id = {id}";
 }*/
