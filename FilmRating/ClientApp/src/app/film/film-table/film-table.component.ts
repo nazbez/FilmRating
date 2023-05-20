@@ -4,6 +4,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { FilmService } from "../../shared/services/film.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-film-table',
@@ -17,7 +18,7 @@ export class FilmTableComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     
-    constructor(private filmService: FilmService) { }
+    constructor(private filmService: FilmService, private router: Router) { }
     
     ngOnInit() {
         this.filmService.getAll()
@@ -36,5 +37,9 @@ export class FilmTableComponent implements OnInit {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
+    }
+
+    openInfoPage(id) {
+        this.router.navigate(["film", id]);
     }
 }

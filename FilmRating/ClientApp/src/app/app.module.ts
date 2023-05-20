@@ -14,6 +14,9 @@ import { AuthGuard } from "./shared/guards/auth.guard";
 import { AdminGuard } from "./shared/guards/admin.guard";
 import { environment } from "../environments/environment";
 import { FooterComponent } from "./footer/footer.component";
+import { FilmInfoComponent } from "./film/film-info/film-info.component";
+import {FilmModule} from "./film/film.module";
+import {NgOptimizedImage} from "@angular/common";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -25,7 +28,8 @@ export function tokenGetter() {
         NavMenuComponent,
         RegisterComponent,
         LoginComponent,
-        FooterComponent
+        FooterComponent,
+        FilmInfoComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -33,7 +37,7 @@ export function tokenGetter() {
         FormsModule,
         RouterModule.forRoot([
             {
-                path: '', 
+                path: '',
                 loadChildren: () => import('./film/film.module').then(m => m.FilmModule),
                 pathMatch: 'full'
             },
@@ -43,17 +47,22 @@ export function tokenGetter() {
                 path: 'artist-management',
                 loadChildren: () => import('./artist-management/artist-management.module').then(m => m.ArtistManagementModule),
                 canActivate: [AuthGuard, AdminGuard]
+            },
+            {
+                path: 'film/:id',
+                component: FilmInfoComponent
             }
         ]),
         JwtModule.forRoot({
             config: {
                 tokenGetter: tokenGetter,
-                allowedDomains: [ environment.apiUrl ],
+                allowedDomains: [environment.apiUrl],
                 disallowedRoutes: []
             }
         }),
         ReactiveFormsModule,
         MatCheckboxModule,
+        NgOptimizedImage,
     ],
     providers: [
         {

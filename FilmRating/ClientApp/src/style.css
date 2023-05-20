@@ -35,3 +35,9 @@ h1 {
     min-width: auto;
     float: right
 }
+
+body{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
