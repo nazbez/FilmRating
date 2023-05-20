@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using FilmRating.Features.Film.Artist.GetByRole;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static FilmRating.Features.Film.Artist.ArtistRoleEntityConstants;
 
 namespace FilmRating.Features.Film.Artist;
 
@@ -41,15 +43,31 @@ public class ArtistController : Controller
     }
 
     [HttpGet("All")]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> All()
     {
         var query = new ArtistGetAllQuery();
         var result = await mediator.Send(query);
         return Ok(result);
     }
 
+    [HttpGet("Directors")]
+    public async Task<IActionResult> Directors()
+    {
+        var query = new ArtistGetByRoleQuery(DirectorId);
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+    
+    [HttpGet("Actors")]
+    public async Task<IActionResult> Actors()
+    {
+        var query = new ArtistGetByRoleQuery(ActorId);
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
     [HttpGet("Roles")]
-    public async Task<IActionResult> GetRoles()
+    public async Task<IActionResult> Roles()
     {
         var query = new ArtistRolesQuery();
         var result = await mediator.Send(query);

@@ -1,0 +1,102 @@
+﻿<div style="text-align: right;">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon">close</mat-icon>
+    </button>
+</div>
+<div class="text-center">
+    <form [formGroup]="filmFormGroup" autocomplete="off" novalidate (ngSubmit)="save(filmFormGroup.value)">
+        <div mat-dialog-content>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="text" id="title" formControlName="title" class="form-control" placeholder="Title" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('title') && hasError('title', 'required')">Title is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <mat-select placeholder="Year" formControlName="year" class="form-control">
+                        <mat-option *ngFor="let y of years" [value]=y>
+                            {{y}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div>
+                    <em *ngIf="validateControl('year') && hasError('year', 'required')">Year is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <textarea id="shortDescription" formControlName="shortDescription" class="form-control" placeholder="Short Description" cols="30" rows="7"></textarea>
+                </div>
+                <div>
+                    <em *ngIf="validateControl('shortDescription') && hasError('shortDescription', 'required')">Description is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="number" id="budget" formControlName="budget" step="1" oninput="validity.valid||(value='');" class="form-control" placeholder="Budget" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('budget') && hasError('budget', 'required')">Budget is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="number" id="durationInMinutes" formControlName="durationInMinutes" step="1" min="1" oninput="validity.valid||(value='');" class="form-control" placeholder="Duration In Minutes" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('durationInMinutes') && hasError('durationInMinutes', 'required')">Duration In Minutes is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <mat-select placeholder="Genre" formControlName="genre" class="form-control">
+                        <mat-option *ngFor="let g of genres" [value]=g.id>
+                             {{g.name}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div>
+                    <em *ngIf="validateControl('genre') && hasError('genre', 'required')">Genre is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <mat-select placeholder="Director" formControlName="director" class="form-control">
+                        <mat-option *ngFor="let d of directors" [value]="d.id">
+                            {{d.firstName}} {{d.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div>
+                    <em *ngIf="validateControl('director') && hasError('director', 'required')">Director is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <mat-select placeholder="Actors" multiple formControlName="actors" class="form-control">
+                        <mat-option *ngFor="let a of actors" [value]="a.id">
+                            {{a.firstName}} {{a.lastName}}
+                        </mat-option>
+                    </mat-select>
+                </div>
+                <div>
+                    <em *ngIf="validateControl('actors') && hasError('actors', 'required')">Actors is required</em>
+                </div>
+            </div>
+            <div class="mb-3 row justify-content-center">
+                <div>
+                    <input type="file" id="photo" formControlName="photo" (change)="onFileChange($event)" class="form-control" required accept="image/jpeg" />
+                </div>
+                <div>
+                    <em *ngIf="validateControl('photo') && hasError('photo', 'required')">Photo is required</em>
+                </div>
+            </div>
+        </div>
+        <div mat-dialog-actions class="mb-3 row justify-content-center">
+            <button type="submit" mat-button [disabled]="!filmFormGroup.valid">Save</button>
+        </div>
+    </form>
+</div>

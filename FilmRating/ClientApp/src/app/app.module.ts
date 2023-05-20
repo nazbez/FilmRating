@@ -13,6 +13,7 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { AuthGuard } from "./shared/guards/auth.guard";
 import { AdminGuard } from "./shared/guards/admin.guard";
 import { environment } from "../environments/environment";
+import { FooterComponent } from "./footer/footer.component";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -23,7 +24,8 @@ export function tokenGetter() {
         AppComponent,
         NavMenuComponent,
         RegisterComponent,
-        LoginComponent
+        LoginComponent,
+        FooterComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

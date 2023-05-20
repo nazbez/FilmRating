@@ -11,4 +11,12 @@ export class FilmService {
     public getAll = () => {
         return this.http.get<FilmModel[]>('api/Film/All');
     }
+    
+    public create = (form: FormData) => {
+        return this.http.post("api/Film", form)
+    }
+    
+    public getYears = () => {
+        return this.http.get<number[]>("api/Film/Years");
+    }
 }

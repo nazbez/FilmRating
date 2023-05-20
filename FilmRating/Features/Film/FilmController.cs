@@ -53,4 +53,12 @@ public class FilmController : Controller
         var result = await mediator.Send(query);
         return Ok(result);
     }
+
+    [HttpGet("Years")]
+    public async Task<IActionResult> GetYears()
+    {
+        var query = new FilmYearsGetQuery();
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
 }

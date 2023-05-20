@@ -1,0 +1,13 @@
+﻿.demo-button-container {
+    float: right;
+    padding-bottom: 16px;
+}
+
+.demo-button + .demo-button {
+    margin-left: 8px;
+}
+
+.manage-artist {
+    text-decoration: underline;
+    color: black;
+}

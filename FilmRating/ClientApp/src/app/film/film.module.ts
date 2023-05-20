@@ -7,11 +7,16 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
-import { NgIf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialogModule } from "@angular/material/dialog";
+import { AddFilmComponent } from "./add-film/add-film.component";
+import { AddFilmFormComponent } from "./add-film-form/add-film-form.component";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
-    declarations: [ FilmComponent, FilmTableComponent ],
+    declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent, AddFilmFormComponent ],
     exports: [ FilmComponent ],
     imports: [
         RouterModule.forChild([
@@ -24,6 +29,11 @@ import { MatButtonModule } from "@angular/material/button";
         MatIconModule,
         NgIf,
         MatButtonModule,
+        MatDialogModule,
+        FormsModule,
+        NgForOf,
+        ReactiveFormsModule,
+        MatSelectModule,
     ]
 })
 export class FilmModule {}
