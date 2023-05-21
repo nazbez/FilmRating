@@ -8,6 +8,7 @@ import { GenreModel } from "../../shared/models/genre.model";
 import { ArtistService } from "../../shared/services/artist.service";
 import { ArtistModel } from "../../shared/models/artist.model";
 import { HttpErrorResponse } from "@angular/common/http";
+import { FilmModel } from "../../shared/models/film.model";
 
 @Component({
     selector: 'app-add-film-form',
@@ -91,7 +92,7 @@ export class AddFilmFormComponent implements OnInit {
 
         this.filmService.create(formData)
             .subscribe({
-                next: (res: ArtistModel) => this.dialogRef.close(res),
+                next: (res: FilmModel) => this.dialogRef.close(res),
                 error: (err: HttpErrorResponse) => console.log(err.error.errors)
             })
     }

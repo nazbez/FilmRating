@@ -15,8 +15,10 @@ import { AdminGuard } from "./shared/guards/admin.guard";
 import { environment } from "../environments/environment";
 import { FooterComponent } from "./footer/footer.component";
 import { FilmInfoComponent } from "./film/film-info/film-info.component";
-import {FilmModule} from "./film/film.module";
-import {NgOptimizedImage} from "@angular/common";
+import { NgOptimizedImage } from "@angular/common";
+import { MatButtonModule } from "@angular/material/button";
+import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
+import {MatDialogModule} from "@angular/material/dialog";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -30,6 +32,7 @@ export function tokenGetter() {
         LoginComponent,
         FooterComponent,
         FilmInfoComponent,
+        ConfirmationDialogComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -63,6 +66,8 @@ export function tokenGetter() {
         ReactiveFormsModule,
         MatCheckboxModule,
         NgOptimizedImage,
+        MatButtonModule,
+        MatDialogModule,
     ],
     providers: [
         {

@@ -46,6 +46,8 @@ export class NavMenuComponent implements OnInit {
 
     public logout = () => {
         this.authService.logout();
-        this.router.navigate(["/"]);
+        this.router.navigateByUrl('/login', {skipLocationChange: true}).then(() => {
+            this.router.navigate(["/"]);
+        });
     }
 }

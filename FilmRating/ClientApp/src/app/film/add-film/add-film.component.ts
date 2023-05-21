@@ -1,6 +1,7 @@
 ﻿import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { AddFilmFormComponent } from "../add-film-form/add-film-form.component";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-add-film',
@@ -9,7 +10,7 @@ import { AddFilmFormComponent } from "../add-film-form/add-film-form.component";
 })
 export class AddFilmComponent {
 
-    constructor(public dialog: MatDialog) {
+    constructor(public dialog: MatDialog, private router: Router) {
     }
     
     createNewFilm() {
@@ -19,6 +20,7 @@ export class AddFilmComponent {
         });
 
         dialogRef.afterClosed().subscribe(result => {
+            this.router.navigate(['film', result.id])
         });
     }
 }

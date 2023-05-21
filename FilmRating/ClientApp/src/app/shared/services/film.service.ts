@@ -17,6 +17,10 @@ export class FilmService {
         return this.http.get<FilmDetailsModel>(`api/Film/${id}`)
     }
     
+    public delete = (id: number) => {
+        return this.http.delete(`api/Film/${id}`);
+    }
+    
     public create = (form: FormData) => {
         return this.http.post("api/Film", form)
     }
