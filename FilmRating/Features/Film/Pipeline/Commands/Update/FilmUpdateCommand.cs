@@ -5,6 +5,7 @@ using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MapsterMapper;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FilmRating.Features.Film;
 
@@ -33,11 +34,15 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
             var film = unitOfWork.Repository<FilmEntity, int>()
                 .Find(new FilmGetByIdSpecification(request.Id, withActors: true))
                 .First();
+            
+            var photoPath = string.Empty;
 
-            await azureStorageService.Delete(film.PhotoPath.GetFileName());
-            var blobResult = await azureStorageService.Upload(request.Model.Photo);
-
-            var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
+            if (request.Model.Photo != null)
+            {
+                await azureStorageService.Delete(film.PhotoPath.GetFileName());
+                var blobResult = await azureStorageService.Upload(request.Model.Photo);
+                photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
+            }
 
             var updatedFilm = UpdateFilm(film, request.Model, actors, photoPath!);
             
@@ -56,10 +61,14 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
             film.UpdateShortDescription(model.ShortDescription);
             film.UpdateBudget(model.Budget);
             film.UpdateDuration(TimeSpan.FromMinutes(model.DurationInMinutes));
-            film.UpdatePhotoPath(photoPath);
             film.UpdateGenreId(model.GenreId);
             film.UpdateDirectorId(model.DirectorId);
             film.UpdateActors(actors);
+
+            if (!photoPath.IsNullOrEmpty())
+            {
+                film.UpdatePhotoPath(photoPath);
+            }
 
             return film;
         }

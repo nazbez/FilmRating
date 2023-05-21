@@ -11,12 +11,11 @@ import { NgForOf, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { AddFilmComponent } from "./add-film/add-film.component";
-import { AddFilmFormComponent } from "./add-film-form/add-film-form.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 
 @NgModule({
-    declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent, AddFilmFormComponent ],
+    declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent ],
     exports: [ FilmComponent ],
     imports: [
         RouterModule.forChild([

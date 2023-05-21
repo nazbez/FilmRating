@@ -5,6 +5,8 @@ import { FilmDetailsModel } from "../../shared/models/film-details.model";
 import { AuthenticationService } from "../../shared/services/authentication.service";
 import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { ManageFilmFormComponent } from "../manage-film-form/manage-film-form.component";
+import { ArtistModel } from "../../shared/models/artist.model";
 
 @Component({
     selector: 'app-film-info',
@@ -36,6 +38,12 @@ export class FilmInfoComponent implements OnInit {
             this.isLoading = false;
         });
     }
+    
+    showActors(actors: ArtistModel[]): string {
+        return actors
+            .map(a => `${a.firstName} ${a.lastName}`)
+            .join(',');
+    }
 
     deleteFilm() {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -48,6 +56,21 @@ export class FilmInfoComponent implements OnInit {
                 this.filmService.delete(this.id)
                     .subscribe(_ => this.router.navigate(['/']));
             }
+        });
+    }
+
+    update() {
+        const dialogRef = this.dialog.open(ManageFilmFormComponent, {
+            width: '600px',
+            data: this.filmDetails
+        });
+
+        dialogRef.afterClosed().subscribe(result => 
+        {
+            this.filmService.get(this.id).subscribe(f => {
+                this.filmDetails = f;
+                this.isLoading = false;
+            });
         });
     }
 }

@@ -88,7 +88,7 @@
             </div>
             <div class="mb-3 row justify-content-center">
                 <div>
-                    <input type="file" id="photo" formControlName="photo" (change)="onFileChange($event)" class="form-control" required accept="image/jpeg" />
+                    <input type="file" id="photo" formControlName="photo" (change)="onFileChange($event)" class="form-control" [required]="!isUpdating" accept="image/jpeg" />
                 </div>
                 <div>
                     <em *ngIf="validateControl('photo') && hasError('photo', 'required')">Photo is required</em>

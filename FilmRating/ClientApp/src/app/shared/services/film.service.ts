@@ -25,6 +25,10 @@ export class FilmService {
         return this.http.post("api/Film", form)
     }
     
+    public update = (id: number, form: FormData) => {
+        return this.http.put(`api/Film/${id}`, form);
+    }
+    
     public getYears = () => {
         return this.http.get<number[]>("api/Film/Years");
     }

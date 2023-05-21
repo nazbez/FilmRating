@@ -18,7 +18,10 @@ import { FilmInfoComponent } from "./film/film-info/film-info.component";
 import { NgOptimizedImage } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { ConfirmationDialogComponent } from "./confirmation-dialog/confirmation-dialog.component";
-import {MatDialogModule} from "@angular/material/dialog";
+import { MatDialogModule } from "@angular/material/dialog";
+import { ManageFilmFormComponent } from "./film/manage-film-form/manage-film-form.component";
+import { MatIconModule } from "@angular/material/icon";
+import { MatSelectModule } from "@angular/material/select";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -32,7 +35,8 @@ export function tokenGetter() {
         LoginComponent,
         FooterComponent,
         FilmInfoComponent,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        ManageFilmFormComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -68,6 +72,8 @@ export function tokenGetter() {
         NgOptimizedImage,
         MatButtonModule,
         MatDialogModule,
+        MatIconModule,
+        MatSelectModule,
     ],
     providers: [
         {

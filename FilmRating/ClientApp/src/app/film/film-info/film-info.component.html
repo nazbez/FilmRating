@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-between align-items-center mt-6">
         <h2>{{filmDetails.title}}</h2>
         <div class="d-flex justify-content-end">
-            <button *ngIf="isUserAuthenticated && isUserAdmin" mat-raised-button class="btn">
+            <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
                 Edit
             </button>
             <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
@@ -17,11 +17,11 @@
             <div class="mx-5">
                 <p class="text-medium">Rating: {{filmDetails.rating}}</p>
                 <p class="text-medium">Year: {{filmDetails.year}}</p>
-                <p class="text-medium">Director: {{filmDetails.director}}</p>
-                <p class="text-medium">Genre: {{filmDetails.genre}}</p>
+                <p class="text-medium">Director: {{filmDetails.director.firstName}} {{filmDetails.director.lastName}}</p>
+                <p class="text-medium">Genre: {{filmDetails.genre.name}}</p>
                 <p class="text-medium">Duration: {{filmDetails.duration}} minutes</p>
                 <p class="text-medium">Budget:  {{filmDetails.budget}}$</p>
-                <p class="text-medium">Actors: {{filmDetails.actors.join(', ')}} and others</p>
+                <p class="text-medium">Actors: {{showActors(filmDetails.actors)}} and others</p>
             </div>
         </div>
     </div>

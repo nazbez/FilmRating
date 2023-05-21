@@ -17,7 +17,7 @@ public record FilmCreateCommand(
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds,
-    IFormFile Photo) : IRequest<FilmVm>
+    [Required] IFormFile Photo) : IRequest<FilmVm>
 {
     [UsedImplicitly]
     public class FilmCreateCommandHandler : IRequestHandler<FilmCreateCommand, FilmVm>

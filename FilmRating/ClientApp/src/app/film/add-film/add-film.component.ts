@@ -1,6 +1,6 @@
 ﻿import { Component } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { AddFilmFormComponent } from "../add-film-form/add-film-form.component";
+import { ManageFilmFormComponent } from "../manage-film-form/manage-film-form.component";
 import { Router } from "@angular/router";
 
 @Component({
@@ -14,7 +14,7 @@ export class AddFilmComponent {
     }
     
     createNewFilm() {
-        const dialogRef = this.dialog.open(AddFilmFormComponent, {
+        const dialogRef = this.dialog.open(ManageFilmFormComponent, {
             width: '600px',
             data: undefined
         });
