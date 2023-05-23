@@ -5,7 +5,7 @@ using MediatR;
 
 namespace FilmRating.Features.Film;
 
-public record FilmGetAllQuery : IRequest<IEnumerable<FilmVm>>
+public record FilmGetAllQuery(int skip, int take) : IRequest<IEnumerable<FilmVm>>
 {
     [UsedImplicitly]
     public class FilmGetAllQueryHandler : IRequestHandler<FilmGetAllQuery, IEnumerable<FilmVm>>
@@ -24,7 +24,9 @@ public record FilmGetAllQuery : IRequest<IEnumerable<FilmVm>>
         public Task<IEnumerable<FilmVm>> Handle(FilmGetAllQuery request, CancellationToken cancellationToken)
         {
             var films = filmRepository.Find(
-                new FilmGetAllSpecification(true, true, true));
+                new FilmGetAllSpecification(true, true, true))
+                .Skip(request.skip)
+                .Take(request.take);
 
             var filmVms = mapper.Map<IEnumerable<FilmVm>>(films);
 
