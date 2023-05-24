@@ -15,3 +15,7 @@
     text-decoration: underline;
     color: black;
 }
+
+td, th {
+    font-size: 16px
+}
