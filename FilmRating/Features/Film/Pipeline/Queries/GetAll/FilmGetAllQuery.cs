@@ -24,9 +24,13 @@ public record FilmGetAllQuery(int skip, int take) : IRequest<IEnumerable<FilmVm>
         public Task<IEnumerable<FilmVm>> Handle(FilmGetAllQuery request, CancellationToken cancellationToken)
         {
             var films = filmRepository.Find(
-                new FilmGetAllSpecification(true, true, true))
-                .Skip(request.skip)
-                .Take(request.take);
+                new FilmGetAllSpecification(true, true, true));
+
+            if (request.skip > 0)
+                films = films.Skip(request.skip);
+
+            if (request.take > 0)
+                films = films.Take(request.take);
 
             var filmVms = mapper.Map<IEnumerable<FilmVm>>(films);
 

@@ -39,7 +39,7 @@ public class FilmController : Controller
     }
 
     [HttpGet("All")]
-    public async Task<IActionResult> GetAll(int skip = 0, int take = 5)
+    public async Task<IActionResult> GetAll(int skip, int take)
     {
         var query = new FilmGetAllQuery(skip, take);
         var result = await mediator.Send(query);
