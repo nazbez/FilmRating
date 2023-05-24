@@ -40,4 +40,14 @@ body{
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    font-family: Roboto, sans-serif !important
 }
+
+.text-medium {
+    font-size: 16px
+}
+
+.nav-link:hover, .table-link:hover {
+    cursor: pointer;
+    color: #6F42C1 !important
+} 

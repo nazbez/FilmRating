@@ -1,5 +1,5 @@
 ﻿<mat-form-field>
-    <mat-label>Filter</mat-label>
+    <mat-label class="text-medium">Filter</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex. The Godfather" #input>
 </mat-form-field>
 
@@ -16,7 +16,7 @@
 
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
-            <td mat-cell *matCellDef="let row"> {{row.title}} </td>
+            <td mat-cell *matCellDef="let row" class="table-link"> {{row.title}} </td>
         </ng-container>
         
         <ng-container matColumnDef="year">
