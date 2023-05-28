@@ -8,10 +8,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace FilmRating.Features.Film;
 
-public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm>
+public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmDetailsVm>
 {
     [UsedImplicitly]
-    public class FilmUpdateCommandHandler : IRequestHandler<FilmUpdateCommand, FilmVm>
+    public class FilmUpdateCommandHandler : IRequestHandler<FilmUpdateCommand, FilmDetailsVm>
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork unitOfWork;
@@ -24,7 +24,7 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
             this.azureStorageService = azureStorageService;
         }
         
-        public async Task<FilmVm> Handle(FilmUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<FilmDetailsVm> Handle(FilmUpdateCommand request, CancellationToken cancellationToken)
         {
             var actors = unitOfWork.Repository<ArtistEntity, Guid>()
                 .Find(new ArtistGetByIdsSpecification(request.Model.ActorIds))
@@ -42,7 +42,7 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
 
             await unitOfWork.CompleteAsync(cancellationToken);
 
-            var filmVm = mapper.Map<FilmVm>(film);
+            var filmVm = mapper.Map<FilmDetailsVm>(film);
             return filmVm;
         }
 

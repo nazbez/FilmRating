@@ -19,6 +19,8 @@ export class FilmInfoComponent implements OnInit {
     isUserAdmin: boolean;
     isUserAuthenticated: boolean;
     isLoading: boolean = true;
+    photoPath: string
+    timeStamp: number;
     
     constructor(
         private activateRoute: ActivatedRoute,
@@ -35,6 +37,7 @@ export class FilmInfoComponent implements OnInit {
         
         this.filmService.get(this.id).subscribe(f => {
             this.filmDetails = f;
+            this.setLinkPicture(f.photoPath);
             this.isLoading = false;
         });
     }
@@ -42,7 +45,7 @@ export class FilmInfoComponent implements OnInit {
     showActors(actors: ArtistModel[]): string {
         return actors
             .map(a => `${a.firstName} ${a.lastName}`)
-            .join(',');
+            .join(', ');
     }
 
     deleteFilm() {
@@ -67,10 +70,21 @@ export class FilmInfoComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => 
         {
-            this.filmService.get(this.id).subscribe(f => {
-                this.filmDetails = f;
-                this.isLoading = false;
-            });
+            this.filmDetails = result;
+            this.setLinkPicture(result.photoPath);
+            this.isLoading = false;
         });
+    }
+
+    getLinkPicture() {
+        if(this.timeStamp) {
+            return this.photoPath + '?' + this.timeStamp;
+        }
+        return this.photoPath;
+    }
+
+    setLinkPicture(url: string) {
+        this.photoPath = url;
+        this.timeStamp = (new Date()).getTime();
     }
 }

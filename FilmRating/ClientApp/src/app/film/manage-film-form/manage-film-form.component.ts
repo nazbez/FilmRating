@@ -131,7 +131,7 @@ export class ManageFilmFormComponent implements OnInit {
 
         this.filmService.update(this.data.id, formData)
             .subscribe({
-                next: (res: FilmModel) => 
+                next: (res: FilmDetailsModel) => 
                 {
                     this.dialogRef.close(res);
                 },
