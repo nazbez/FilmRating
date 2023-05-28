@@ -46,6 +46,9 @@ export class ErrorHandlerService implements HttpInterceptor {
             })
             return message.slice(0, -4);
         }
+        if (this.router.url.startsWith('/film')) {
+            return this.handleNotFound(error);
+        }
         else {
             return error.error ? error.error : error.message;
         }

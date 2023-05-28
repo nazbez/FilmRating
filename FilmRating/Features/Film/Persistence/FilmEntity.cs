@@ -51,6 +51,9 @@ public class FilmEntity : IEntity<int>
     public void UpdateActors(ICollection<ArtistEntity> actors) =>
         Actors = actors;
 
+    public static string GetBlobName(string title, int year) =>
+        $"{title}_{year}";
+
     public static FilmEntity Create(
         string title,
         int year,

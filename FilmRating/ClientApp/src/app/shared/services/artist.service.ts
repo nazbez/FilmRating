@@ -26,6 +26,14 @@ export class ArtistService {
         return this.http.get<ArtistModel[]>('api/Artist/All');
     }
     
+    public getDirectors = () => {
+        return this.http.get<ArtistModel[]>('api/Artist/Directors');
+    }
+    
+    public getActors = () => {
+        return this.http.get<ArtistModel[]>('api/Artist/Actors');
+    }
+    
     public getRoles = () => {
         return this.http.get<ArtistRoleModel[]>('api/Artist/Roles');
     }

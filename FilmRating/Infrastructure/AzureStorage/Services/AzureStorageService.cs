@@ -17,7 +17,7 @@ public class AzureStorageService : IAzureStorageService
         this.logger = logger;
     }
 
-    public async Task<BlobResponse> Upload(IFormFile file)
+    public async Task<BlobResponse> Upload(string blobFileName, IFormFile file)
     {
         BlobResponse response = new();
         
@@ -27,14 +27,14 @@ public class AzureStorageService : IAzureStorageService
         
         try 
         {
-            var client = container.GetBlobClient(file.FileName);
+            var client = container.GetBlobClient(blobFileName);
             
             await using (var data = file.OpenReadStream())
             {
                 await client.UploadAsync(data);
             }
             
-            response.Status = $"File {file.FileName} Uploaded Successfully";
+            response.Status = $"File {blobFileName} Uploaded Successfully";
             response.Error = false;
             response.Blob.Uri = client.Uri.AbsoluteUri;
             response.Blob.Name = client.Name;
@@ -42,8 +42,8 @@ public class AzureStorageService : IAzureStorageService
         }
         catch (RequestFailedException ex) when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
         {
-            logger.LogError(ex, "File with name {FileName} already exists in container. Set another name to store the file in the container: '{ContainerName}.'", file.FileName, azureStorageConfiguration.BlobContainerName);
-            response.Status = $"File with name {file.FileName} already exists. Please use another name to store your file.";
+            logger.LogError(ex, "File with name {FileName} already exists in container. Set another name to store the file in the container: '{ContainerName}.'", blobFileName, azureStorageConfiguration.BlobContainerName);
+            response.Status = $"File with name {blobFileName} already exists. Please use another name to store your file.";
             response.Error = true;
             return response;
         } 

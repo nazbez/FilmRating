@@ -17,7 +17,7 @@ public record FilmCreateCommand(
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds,
-    IFormFile Photo) : IRequest<FilmVm>
+    [Required] IFormFile Photo) : IRequest<FilmVm>
 {
     [UsedImplicitly]
     public class FilmCreateCommandHandler : IRequestHandler<FilmCreateCommand, FilmVm>
@@ -42,7 +42,9 @@ public record FilmCreateCommand(
                 .Find(new ArtistGetByIdsSpecification(request.ActorIds))
                 .ToList();
 
-            var blobResult = await azureStorageService.Upload(request.Photo);
+            var blobResult = await azureStorageService.Upload(
+                FilmEntity.GetBlobName(request.Title, request.Year),
+                request.Photo);
 
             var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
 

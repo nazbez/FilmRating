@@ -4,6 +4,7 @@ import { ArtistService } from "../../shared/services/artist.service";
 import { MatTable } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
 import { ManageArtistComponent } from "../manage-artist/manage-artist.component";
+import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
     selector: 'app-artist-table',
@@ -55,11 +56,22 @@ export class ArtistTableComponent {
     }
 
     removeArtist(id: string) {
-        this.artistService.delete(id)
-            .subscribe(_ => {
-                this.artists = this.artists.filter(x => x.id !== id);
-                this.table.renderRows();
-            })
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            width: '250px',
+            data: 'Delete artist'
+        });
+
+        dialogRef.afterClosed().subscribe(res => {
+            if (res) {
+                this.artistService.delete(id)
+                    .subscribe(_ => {
+                        this.artists = this.artists.filter(x => x.id !== id);
+                        this.table.renderRows();
+                    })
+            }
+        });
+        
+
     }
     
     mapRoles(roles: ArtistRoleModel[]) {

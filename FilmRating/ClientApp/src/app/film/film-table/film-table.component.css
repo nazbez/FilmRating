@@ -9,6 +9,7 @@
 
 td, th {
     width: 25%;
+    font-size: 16px
 }
 
 .film-photo {
@@ -22,4 +23,11 @@ td, th {
 .film-photo img {
     width: 60px;
     height: 80px;
+    transition: transform .2s;
+}
+
+.film-photo img:hover {
+    position: absolute;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transform: scale(4);
 }

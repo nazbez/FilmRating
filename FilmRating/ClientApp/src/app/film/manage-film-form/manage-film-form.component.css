@@ -1,0 +1,13 @@
+em{
+    color: #e71515;
+    font-weight: bold;
+    font-style: normal;
+}
+
+.ng-invalid.ng-touched{
+    border-color: red;
+}
+
+mat-select {
+    text-align: left;
+}

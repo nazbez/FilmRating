@@ -1,1 +1,3 @@
-﻿<app-film-table></app-film-table>
+﻿<app-add-film *ngIf="isUserAuthenticated && isUserAdmin"></app-add-film>
+
+<app-film-table></app-film-table>

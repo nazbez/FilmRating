@@ -1,0 +1,32 @@
+﻿<div *ngIf="!isLoading">
+    <div class="d-flex justify-content-between align-items-start mt-5">
+        <h2>{{filmDetails.title}}</h2>
+        <div class="d-flex justify-content-end">
+            <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
+                Edit
+            </button>
+            <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
+                Delete
+            </button>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-start mt-5">
+        <img class="w-20" [src]="getLinkPicture()" alt="{{filmDetails.title}}">
+        <div class="w-80">
+            <div class="mx-5">
+                <p class="text-medium">Rating: {{filmDetails.rating}}</p>
+                <p class="text-medium">Year: {{filmDetails.year}}</p>
+                <p class="text-medium">Director: {{filmDetails.director.firstName}} {{filmDetails.director.lastName}}</p>
+                <p class="text-medium">Genre: {{filmDetails.genre.name}}</p>
+                <p class="text-medium">Duration: {{filmDetails.duration}} minutes</p>
+                <p class="text-medium">Budget:  {{filmDetails.budget}}$</p>
+                <p class="text-medium">Actors: {{showActors(filmDetails.actors)}} and others</p>
+            </div>
+        </div>
+    </div>
+    <div class="mt-6">
+        <h3>What is the movie about:</h3>
+        <p class="text-medium mt-3">{{filmDetails.shortDescription}}</p>
+    </div>
+</div>

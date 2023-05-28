@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static FilmRating.Features.Film.Artist.ArtistRoleEntityConstants;
 
 namespace FilmRating.Features.Film.Artist;
 
@@ -20,7 +21,13 @@ public class ArtistRoleEntityMap : IEntityTypeConfiguration<ArtistRoleEntity>
             .IsUnique();
 
         builder.HasData(
-            ArtistRoleEntity.Create(1, "Director"),
-            ArtistRoleEntity.Create(2, "Actor"));
+            ArtistRoleEntity.Create(DirectorId, "Director"),
+            ArtistRoleEntity.Create(ActorId, "Actor"));
     }
+}
+
+public static class ArtistRoleEntityConstants
+{
+    public const int DirectorId = 1;
+    public const int ActorId = 2;
 }

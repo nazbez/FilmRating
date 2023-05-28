@@ -8,7 +8,7 @@ public record FilmUpdateModel(
     [Required] string ShortDescription,
     decimal Budget,
     int DurationInMinutes,
-    IFormFile Photo,
+    IFormFile? Photo,
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds);

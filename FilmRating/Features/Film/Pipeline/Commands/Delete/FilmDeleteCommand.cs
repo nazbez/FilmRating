@@ -1,4 +1,5 @@
 ﻿using FilmRating.Infrastructure.AzureStorage;
+using FilmRating.Infrastructure.Extensions;
 using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MediatR;
@@ -26,7 +27,7 @@ public record FilmDeleteCommand(int Id) : IRequest<Unit>
 
             if (film != null)
             {
-                await azureStorageService.Delete(film.PhotoPath);
+                await azureStorageService.Delete(film.PhotoPath.GetFileName());
                 unitOfWork.Repository<FilmEntity, int>().Remove(film);
                 await unitOfWork.CompleteAsync(cancellationToken);
             }

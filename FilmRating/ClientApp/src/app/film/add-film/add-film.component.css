@@ -1,8 +1,4 @@
-.demo-table {
-    width: 100%;
-}
-
-.demo-button-container {
+﻿.demo-button-container {
     float: right;
     padding-bottom: 16px;
 }
@@ -14,8 +10,4 @@
 .manage-artist {
     text-decoration: underline;
     color: black;
-}
-
-td, th {
-    font-size: 16px
 }

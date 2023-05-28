@@ -1,7 +1,10 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" [routerLink]="['/']">Film Rating</a>
+            <a class="navbar-brand d-flex align-items-center" [routerLink]="['/']">
+                <img class="logo-img me-2" src="icon.png" alt="Film Rater icon">
+                <span>FilmRater</span>
+            </a>
             <button
                     class="navbar-toggler"
                     type="button"
@@ -18,25 +21,20 @@
                     [ngClass]="{ show: isExpanded }"
             >
                 <ul class="navbar-nav flex-grow">
-                    <li class="nav-item" *ngIf="!isUserAuthenticated" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/register']"
-                        >Sign up</a
-                        >
+                    <li class="nav-item" [routerLinkActive]="['link-active']">
+                        <a class="nav-link text-dark" [routerLink]="['/']">Films</a>
                     </li>
                     <li class="nav-item" *ngIf="!isUserAuthenticated" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/login']"
-                        >Login</a
-                        >
+                        <a class="nav-link text-dark" [routerLink]="['/register']">Sign up</a>
                     </li>
-                    <li class="nav-item"  *ngIf="isUserAuthenticated && isUserAdmin" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/artist-management']"
-                        >Artists</a
-                        >
+                    <li class="nav-item" *ngIf="!isUserAuthenticated" [routerLinkActive]="['link-active']">
+                        <a class="nav-link text-dark" [routerLink]="['/login']">Login</a>
+                    </li>
+                    <li class="nav-item" *ngIf="isUserAuthenticated && isUserAdmin" [routerLinkActive]="['link-active']">
+                        <a class="nav-link text-dark" [routerLink]="['/artist-management']">Artists</a>
                     </li>
                     <li class="nav-item" *ngIf="isUserAuthenticated">
-                        <a class="nav-link text-dark" (click)="logout()"
-                        >Logout</a
-                        >
+                        <a class="nav-link text-dark" (click)="logout()">Logout</a>
                     </li>
                 </ul>
             </div>

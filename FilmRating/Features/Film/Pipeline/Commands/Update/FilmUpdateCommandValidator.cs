@@ -18,7 +18,7 @@ public class FilmUpdateCommandValidator : AbstractValidator<FilmUpdateCommand>
                         cmd.Model.Year, 
                         cmd.Model.Budget, 
                         cmd.Model.DurationInMinutes,
-                        cmd.Model.Photo,
+                        cmd.Model.Photo!,
                         cmd.Model.GenreId, 
                         cmd.Model.DirectorId,
                         cmd.Model.ActorIds))

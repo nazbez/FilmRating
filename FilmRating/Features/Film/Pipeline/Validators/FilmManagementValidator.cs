@@ -10,7 +10,7 @@ public record FilmManagementValidatorModel(
     int Year,
     decimal Budget,
     int DurationInMinutes,
-    IFormFile Photo,
+    IFormFile? Photo,
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds);
@@ -32,9 +32,12 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
         RuleFor(m => m.DurationInMinutes)
             .GreaterThan(filmConfiguration.MinimumDurationInMinutes);
 
-        RuleFor(m => m.Photo.FileName)
-            .Must(f => filmConfiguration.AllowedPhotoExtensions.Any(x => x == f.GetExtension()))
-            .WithMessage(PhotoErrorMessage(filmConfiguration.AllowedPhotoExtensions));
+        When(m => m.Photo != null, () =>
+        {
+            RuleFor(m => m.Photo!.FileName)
+                .Must(f => filmConfiguration.AllowedPhotoExtensions.Any(x => x == f.GetExtension()))
+                .WithMessage(PhotoErrorMessage(filmConfiguration.AllowedPhotoExtensions));
+        });
 
         RuleFor(m => m.GenreId)
             .Must(id =>
