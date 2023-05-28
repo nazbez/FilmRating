@@ -1,6 +1,5 @@
 ﻿using FilmRating.Features.Film.Artist;
 using FilmRating.Infrastructure.AzureStorage;
-using FilmRating.Infrastructure.Extensions;
 using FilmRating.Infrastructure.Repository;
 using JetBrains.Annotations;
 using MapsterMapper;
@@ -34,15 +33,8 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
             var film = unitOfWork.Repository<FilmEntity, int>()
                 .Find(new FilmGetByIdSpecification(request.Id, withActors: true))
                 .First();
-            
-            var photoPath = string.Empty;
 
-            if (request.Model.Photo != null)
-            {
-                await azureStorageService.Delete(film.PhotoPath.GetFileName());
-                var blobResult = await azureStorageService.Upload(request.Model.Photo);
-                photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
-            }
+            var photoPath = await UpdatePhoto(film.Title, film.Year, request.Model);
 
             var updatedFilm = UpdateFilm(film, request.Model, actors, photoPath!);
             
@@ -71,6 +63,21 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmVm
             }
 
             return film;
+        }
+
+        private async Task<string?> UpdatePhoto(string filmTitle, int filmYear, FilmUpdateModel model)
+        {
+            var photoPath = string.Empty;
+
+            if (model.Photo == null) 
+                return photoPath;
+            
+            var blobName = FilmEntity.GetBlobName(filmTitle, filmYear);
+            await azureStorageService.Delete(blobName);
+            var blobResult = await azureStorageService.Upload(blobName, model.Photo);
+            photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
+
+            return photoPath;
         }
     }
 }
