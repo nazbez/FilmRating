@@ -317,7 +317,7 @@ namespace FilmRating.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FilmRating.Features.Film.Rating.Persistence.RatingEntity", b =>
+            modelBuilder.Entity("FilmRating.Features.Film.Rating.RatingEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -373,13 +373,13 @@ namespace FilmRating.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "87f4f367-b48f-4f24-8c10-1e22486ae347",
+                            Id = "a77cd0ac-a81a-451e-852f-5061b4a6a2d1",
                             Name = "Critic",
                             NormalizedName = "CRITIC"
                         },
                         new
                         {
-                            Id = "d2f6d7eb-777f-4c25-a79b-209ba03fc68b",
+                            Id = "2b789031-ca50-4855-b335-e2f5cfb47bf4",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -540,7 +540,7 @@ namespace FilmRating.Migrations
                     b.Navigation("Genre");
                 });
 
-            modelBuilder.Entity("FilmRating.Features.Film.Rating.Persistence.RatingEntity", b =>
+            modelBuilder.Entity("FilmRating.Features.Film.Rating.RatingEntity", b =>
                 {
                     b.HasOne("FilmRating.Features.Film.FilmEntity", "Film")
                         .WithMany("Ratings")

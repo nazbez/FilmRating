@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static FilmRating.Features.Authentication.UserRoleEntityConstants;
 
 namespace FilmRating.Features.Film;
 
 [ApiController]
-// TODO Uncomment it when auth feature will be implemented [Authorize]
 [Route("api/[controller]")]
 public class FilmController : Controller
 {
@@ -16,6 +17,7 @@ public class FilmController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = Administrator)]
     public async Task<IActionResult> Create([FromForm] FilmCreateCommand command)
     {
         var result = await mediator.Send(command);
@@ -23,6 +25,7 @@ public class FilmController : Controller
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = Administrator)]
     public async Task<IActionResult> Update(int id, [FromForm] FilmUpdateModel model)
     {
         var command = new FilmUpdateCommand(id, model);
@@ -31,6 +34,7 @@ public class FilmController : Controller
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = Administrator)]
     public async Task<IActionResult> Delete(int id)
     {
         var command = new FilmDeleteCommand(id);
@@ -50,6 +54,14 @@ public class FilmController : Controller
     public async Task<IActionResult> Get(int id)
     {
         var query = new FilmGetQuery(id);
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("{id:int}/Rating")]
+    public async Task<IActionResult> GetRating(int id)
+    {
+        var query = new FilmGetRatingQuery(id);
         var result = await mediator.Send(query);
         return Ok(result);
     }

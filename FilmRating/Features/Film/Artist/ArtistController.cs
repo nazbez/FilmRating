@@ -3,11 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FilmRating.Features.Film.Artist.ArtistRoleEntityConstants;
+using static FilmRating.Features.Authentication.UserRoleEntityConstants;
 
 namespace FilmRating.Features.Film.Artist;
 
 [ApiController]
-[Authorize(Roles = "Administrator")]
+[Authorize(Roles = Administrator)]
 [Route("api/[controller]")]
 public class ArtistController : Controller
 {

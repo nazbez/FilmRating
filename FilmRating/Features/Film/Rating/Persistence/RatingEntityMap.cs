@@ -1,5 +1,4 @@
-﻿using FilmRating.Features.Film.Rating.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FilmRating.Features.Film.Rating;

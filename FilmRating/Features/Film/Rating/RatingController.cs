@@ -1,18 +1,15 @@
-﻿using FilmRating.Features.Film.Artist;
-using FilmRating.Features.Film.Rating.Models;
-using FilmRating.Features.Film.Rating.Pipeline.Commands;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static FilmRating.Features.Authentication.UserRoleEntityConstants;
 
 namespace FilmRating.Features.Film.Rating;
 
 [ApiController]
-/*[Authorize(Roles = "Critic")]*/
+[Authorize(Roles = Critic)]
 [Route("api/[controller]")]
 public class RatingController : Controller
 {
-
     private readonly IMediator mediator;
 
     public RatingController(IMediator mediator)
@@ -20,12 +17,35 @@ public class RatingController : Controller
         this.mediator = mediator;
     }
 
-    // TODO: remove userId string
     [HttpPost]
     public async Task<IActionResult> Create(RatingCreateModel model)
     {
-        var command = new RatingCreateCommand(model.FilmId, "a7d892c7-62d2-4e1e-bdce-92ac5589ea11", model.Rate);
+        var command = new RatingCreateCommand(model.FilmId, model.Rate);
         var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(RatingUpdateModel model)
+    {
+        var command = new RatingUpdateCommand(model.FilmId, model.Rate);
+        var result = await mediator.Send(command);
+        return Ok(result);
+    }
+
+    [HttpGet("Film/{filmId:int}/My")]
+    public async Task<IActionResult> GetUserFilmRate(int filmId)
+    {
+        var query = new RatingGetUserRateQuery(filmId);
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("Options")]
+    public async Task<IActionResult> GetOptions()
+    {
+        var query = new RatingGetOptionsQuery();
+        var result = await mediator.Send(query);
         return Ok(result);
     }
 }

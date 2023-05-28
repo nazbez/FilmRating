@@ -2,6 +2,6 @@
 
 namespace FilmRating.Features.Film.Rating;
 
-public record RatingCreateModel(
+public record RatingUpdateModel(
     [Required] int FilmId,
     [Required] int Rate);
