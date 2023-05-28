@@ -1,5 +1,6 @@
 ﻿using FilmRating.Features.Film.Artist;
 using FilmRating.Features.Film.Genre;
+using FilmRating.Features.Film.Rating;
 using FilmRating.Infrastructure.Repository;
 
 namespace FilmRating.Features.Film;
@@ -21,6 +22,7 @@ public class FilmEntity : IEntity<int>
     public ArtistEntity? Director { get; private set; } = null!;
 
     public ICollection<ArtistEntity> Actors { get; private set; } = new HashSet<ArtistEntity>();
+    public ICollection<RatingEntity> Ratings { get; private set; } = new HashSet<RatingEntity>();
 
     public void UpdateTitle(string title) =>
         Title = title;
@@ -48,6 +50,11 @@ public class FilmEntity : IEntity<int>
 
     public void UpdateActors(ICollection<ArtistEntity> actors) =>
         Actors = actors;
+
+    public void UpdateRating(IEnumerable<int> rates)
+    {
+        Rating = rates.Average();
+    }
 
     public static string GetBlobName(string title, int year) =>
         $"{title}_{year}";

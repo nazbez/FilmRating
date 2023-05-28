@@ -18,6 +18,8 @@ public class AuthenticationInjectModule : IInjectModule
         services.AddSingleton(authenticationConfiguration);
 
         services.AddScoped<IIdentityService, IdentityService>();
+
+        services.AddScoped<IUserProvider, UserProvider>();
         
         services.AddAuthentication(opt =>
         {

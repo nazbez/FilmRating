@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using static FilmRating.Features.Authentication.UserRoleEntityConstants;
 
 namespace FilmRating.Features.Authentication;
 
@@ -48,7 +49,7 @@ public class IdentityService : IIdentityService
             };
         }
         
-        await userManager.AddToRoleAsync(newUser, "Critic");
+        await userManager.AddToRoleAsync(newUser, Critic);
 
         var authenticationResult = await GenerateAuthenticationResult(newUser);
 
@@ -96,7 +97,7 @@ public class IdentityService : IIdentityService
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim("id", user.Id),
+                new Claim(JwtCustomClaimNames.Id, user.Id),
                 new Claim(JwtRegisteredClaimNames.Aud, authenticationConfiguration.Audience),
                 new Claim(JwtRegisteredClaimNames.Iss, authenticationConfiguration.Issuer),
             }),

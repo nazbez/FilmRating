@@ -10,6 +10,8 @@ import { ArtistModel } from "../../shared/models/artist.model";
 import { HttpErrorResponse } from "@angular/common/http";
 import { FilmModel } from "../../shared/models/film.model";
 import { FilmDetailsModel } from "../../shared/models/film-details.model";
+import {RatingService} from "../../shared/services/rating.service";
+import {RatingUserRateModel} from "../../shared/models/rating-user-rate.model";
 
 @Component({
     selector: 'app-manage-film-form',
@@ -33,8 +35,7 @@ export class ManageFilmFormComponent implements OnInit {
         public genreService: GenreService,
         public artistService: ArtistService,
         public dialogRef: MatDialogRef<ManageFilmFormComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: FilmDetailsModel) {
-    }
+        @Inject(MAT_DIALOG_DATA) public data: FilmDetailsModel) {}
 
     ngOnInit(): void {
         this.genreService.getAll()
@@ -45,17 +46,17 @@ export class ManageFilmFormComponent implements OnInit {
         this.artistService.getDirectors()
             .subscribe((d) => {
                 this.directors = d;
-            })
+            });
 
         this.artistService.getActors()
             .subscribe((a) => {
                 this.actors = a;
-            })
+            });
         
         this.filmService.getYears()
             .subscribe((y) => {
                 this.years = y
-            })
+            });
         
         if (this.data !== undefined) {
             this.isUpdating = true;
@@ -76,10 +77,10 @@ export class ManageFilmFormComponent implements OnInit {
     }
     
     validateControl = (controlName: string) => {
-        return this.filmFormGroup.get(controlName).invalid && this.filmFormGroup.get(controlName).touched
+        return this.filmFormGroup.get(controlName).invalid && this.filmFormGroup.get(controlName).touched;
     }
     hasError = (controlName: string, errorName: string) => {
-        return this.filmFormGroup.get(controlName).hasError(errorName)
+        return this.filmFormGroup.get(controlName).hasError(errorName);
     }
     
     save(value) {
@@ -136,7 +137,7 @@ export class ManageFilmFormComponent implements OnInit {
                     this.dialogRef.close(res);
                 },
                 error: (err: HttpErrorResponse) => console.log(err.error.errors)
-            })
+            });
     }
     
     onFileChange(event) {

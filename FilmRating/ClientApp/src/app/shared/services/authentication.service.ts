@@ -49,7 +49,18 @@ export class AuthenticationService {
             return false;
         
         const decodedToken = this.jwtHelper.decodeToken(token);
-        const role = decodedToken['role']
+        const role = decodedToken['role'];
         return role === 'Administrator';
+    }
+
+    public isUserCritic = (): boolean => {
+        const token = localStorage.getItem("token");
+
+        if (!token)
+            return false;
+
+        const decodedToken = this.jwtHelper.decodeToken(token);
+        const role = decodedToken['role'];
+        return role === 'Critic';
     }
 }

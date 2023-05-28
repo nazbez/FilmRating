@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static FilmRating.Features.Authentication.UserRoleEntityConstants;
 
 namespace FilmRating.Features.Authentication;
 
@@ -11,14 +12,22 @@ public class RoleEntityMap : IEntityTypeConfiguration<IdentityRole>
         builder.HasData(
             new IdentityRole
             {
-                Name = "Critic",
-                NormalizedName = "CRITIC"
+                Id = "a77cd0ac-a81a-451e-852f-5061b4a6a2d1",
+                Name = Critic,
+                NormalizedName = Critic.ToUpper()
             },
             new IdentityRole
             {
-                Name = "Administrator",
-                NormalizedName = "ADMINISTRATOR"
+                Id = "2b789031-ca50-4855-b335-e2f5cfb47bf4",
+                Name = Administrator,
+                NormalizedName = Administrator.ToUpper()
             }
         );
     }
+}
+
+public static class UserRoleEntityConstants
+{
+    public const string Critic = nameof(Critic);
+    public const string Administrator = nameof(Administrator);
 }

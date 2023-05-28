@@ -60,6 +60,12 @@
       <Compile Update="Infrastructure\AzureStorage\Services\AzureStorageService.cs">
         <DependentUpon>IAzureStorageService.cs</DependentUpon>
       </Compile>
+      <Compile Update="Features\Film\Rating\Persistence\RatingEntityMap.cs">
+        <DependentUpon>RatingEntity.cs</DependentUpon>
+      </Compile>
+      <Compile Update="Features\Authentication\Services\UserProvider.cs">
+        <DependentUpon>IUserProvider.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
