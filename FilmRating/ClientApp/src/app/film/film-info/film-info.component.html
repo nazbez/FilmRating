@@ -1,18 +1,20 @@
 ﻿<div *ngIf="!isLoading">
     <div class="d-flex justify-content-between align-items-start mt-5">
         <h2>{{filmDetails.title}}</h2>
-        <div class="d-flex justify-content-end">
-<!--            TODO Fix styles-->
-<!--            <p class="text-medium" *ngIf="isUserAuthenticated && isUserCritic && ratingUserRate.hasRate">Your rate: {{ratingUserRate.rate}}/10</p>-->
-            <button *ngIf="isUserAuthenticated && isUserCritic" (click)="rateFilm()" mat-raised-button class="btn">
-                Rate film
-            </button>
-            <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
-                Edit
-            </button>
-            <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
-                Delete
-            </button>
+        <div class="d-flex align-items-center">
+            <p class="text-medium mb-0 me-4" *ngIf="isUserAuthenticated && isUserCritic && ratingUserRate.hasRate">Your rate: {{ratingUserRate.rate}}/10</p>
+            <div>
+                <button *ngIf="isUserAuthenticated && isUserCritic" (click)="rateFilm()" mat-raised-button class="btn">
+                    <span *ngIf="ratingUserRate.hasRate">Rate again</span>
+                    <span *ngIf="!ratingUserRate.hasRate">Rate film</span>
+                </button>
+                <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
+                    Edit
+                </button>
+                <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
+                    Delete
+                </button>
+            </div>
         </div>
     </div>
 
