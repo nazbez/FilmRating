@@ -4,31 +4,44 @@
     </button>
 </div>
 
-<table mat-table [dataSource]="artists" class="mat-elevation-z8 demo-table">
-    <ng-container matColumnDef="fullName">
-        <th mat-header-cell *matHeaderCellDef>Full Name</th>
-        <td mat-cell *matCellDef="let element">{{element.firstName}} {{element.lastName}}</td>
-    </ng-container>
+<mat-form-field>
+    <mat-label class="text-medium">Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Enter something" #input>
+</mat-form-field>
 
-    <ng-container matColumnDef="jobs">
-        <th mat-header-cell *matHeaderCellDef>Jobs</th>
-        <td mat-cell *matCellDef="let element">{{mapRoles(element.roles)}}</td>
-    </ng-container>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8 demo-table">
+        <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="fullName">Full Name</th>
+            <td mat-cell *matCellDef="let element">{{element.firstName}} {{element.lastName}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="updateItem">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-            <a class="manage-artist" (click)="updateArtist(element.id)">Update</a>
-        </td>
-    </ng-container>
+        <ng-container matColumnDef="jobs">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="jobs">Jobs</th>
+            <td mat-cell *matCellDef="let element">{{mapRoles(element.roles)}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="deleteItem">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-            <a class="manage-artist" (click)="removeArtist(element.id)">Remove</a>
-        </td>
-    </ng-container>
+        <ng-container matColumnDef="updateItem">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <a class="manage-artist" (click)="updateArtist(element.id)">Update</a>
+            </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+        <ng-container matColumnDef="deleteItem">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <a class="manage-artist" (click)="removeArtist(element.id)">Remove</a>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+        </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of films"></mat-paginator>
+</div>

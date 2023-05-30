@@ -1,28 +1,65 @@
-﻿import { Component, ViewChild } from "@angular/core";
+﻿import { Component, OnInit, ViewChild } from "@angular/core";
 import { ArtistModel, ArtistRoleModel } from "../../shared/models/artist.model";
 import { ArtistService } from "../../shared/services/artist.service";
-import { MatTable } from "@angular/material/table";
+import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
 import { ManageArtistComponent } from "../manage-artist/manage-artist.component";
 import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmation-dialog.component";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
 
 @Component({
     selector: 'app-artist-table',
     templateUrl: './artist-table.component.html',
     styleUrls: ['./artist-table.component.css']
 })
-export class ArtistTableComponent {
+export class ArtistTableComponent implements OnInit {
     displayedColumns: string[] = ['fullName', 'jobs', 'updateItem', 'deleteItem'];
-    artists: ArtistModel[];
+    dataSource: MatTableDataSource<ArtistModel>;
 
-    constructor(public artistService: ArtistService, public dialog: MatDialog) {
-        artistService.getAll()
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort) sort: MatSort;
+
+    constructor(public artistService: ArtistService, public dialog: MatDialog) {}
+    
+    ngOnInit() {
+        this.artistService.getAll()
             .subscribe((a) => {
-                this.artists = a;
+                this.dataSource = new MatTableDataSource(a);
+
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             });
     }
 
-    @ViewChild(MatTable) table: MatTable<ArtistModel>;
+    applyFilter(event: Event) {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.dataSource.filter = filterValue.trim().toLowerCase();
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
+
+    sortData(sort: any) {
+        const data = this.dataSource.data;
+        if (!sort.active || sort.direction === '') {
+            this.dataSource.data = data;
+            return;
+        }
+
+        this.dataSource.data = data.sort((a, b) => {
+            const isAsc = sort.direction === 'asc';
+            switch (sort.active) {
+                case 'fullName':
+                    return this.compare(`${a.firstName} ${a.lastName}`, `${b.firstName} ${b.lastName}`, isAsc);
+                case 'jobs':
+                    return this.compare(this.mapRoles(a.roles), this.mapRoles(b.roles), isAsc);
+                default:
+                    return 0;
+            }
+        });
+    }
 
     createNewArtist() {
         const dialogRef = this.dialog.open(ManageArtistComponent, {
@@ -32,14 +69,15 @@ export class ArtistTableComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (typeof result === 'object') {
-                this.artists.push(result);
-                this.table.renderRows();
+                const newData = [ ...this.dataSource.data ];
+                newData.push(result);
+                this.dataSource.data = newData;
             }
         });
     }
     
     updateArtist(id: string) {
-        let artist = this.artists.find(x => x.id === id);
+        let artist = this.dataSource.data.find(x => x.id === id);
         
         const dialogRef = this.dialog.open(ManageArtistComponent, {
             width: '600px',
@@ -48,9 +86,10 @@ export class ArtistTableComponent {
 
         dialogRef.afterClosed().subscribe(result => {
             if (typeof result === 'object') {
-                this.artists = this.artists.filter(x => x.id !== id);
-                this.artists.push(result);
-                this.table.renderRows();
+                const newData = [ ...this.dataSource.data ];
+                let index = newData.findIndex(x => x.id === id);
+                newData[index] = result;
+                this.dataSource.data = newData;
             }
         });
     }
@@ -65,13 +104,10 @@ export class ArtistTableComponent {
             if (res) {
                 this.artistService.delete(id)
                     .subscribe(_ => {
-                        this.artists = this.artists.filter(x => x.id !== id);
-                        this.table.renderRows();
+                        this.dataSource.data = this.dataSource.data.filter(x => x.id !== id);
                     })
             }
         });
-        
-
     }
     
     mapRoles(roles: ArtistRoleModel[]) {
@@ -79,5 +115,9 @@ export class ArtistTableComponent {
             return '-'
         
         return roles.map(x => x.name).join(', ');
+    }
+
+    private compare(a: number | string, b: number | string, isAsc: boolean) {
+        return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
 }
