@@ -86,9 +86,11 @@ export class FilmInfoComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => 
         {
-            this.filmDetails = result;
-            this.setLinkPicture(result.photoPath);
-            this.isLoading = false;
+            if (typeof result === 'object') {
+                this.filmDetails = result;
+                this.setLinkPicture(result.photoPath);
+                this.isLoading = false; 
+            }
         });
     }
 
