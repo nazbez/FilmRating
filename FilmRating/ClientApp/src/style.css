@@ -36,11 +36,11 @@ h1 {
     float: right
 }
 
-body{
+body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: Roboto, sans-serif !important
+    font-family: Roboto, sans-serif !important;
 }
 
 .text-medium {
@@ -50,4 +50,28 @@ body{
 .nav-link:hover, .table-link:hover {
     cursor: pointer;
     color: #6F42C1 !important
-} 
+}
+
+.w-5 {
+    width: 5% !important
+}
+
+.w-10 {
+    width: 10% !important
+}
+
+.w-15 {
+    width: 15% !important
+}
+
+.w-30 {
+    width: 30% !important
+}
+
+.w-40 {
+    width: 40% !important
+}
+
+.w-50 {
+    width: 50% !important
+}
