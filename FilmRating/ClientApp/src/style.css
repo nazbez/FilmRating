@@ -75,3 +75,17 @@ body {
 .w-50 {
     width: 50% !important
 }
+
+.position-relative {
+    position: relative !important;
+}
+
+.close-button-box {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.h-48 {
+    height: 48px !important
+}
