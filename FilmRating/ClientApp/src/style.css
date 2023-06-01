@@ -47,6 +47,16 @@ body {
     font-size: 16px
 }
 
+.p-link {
+    text-decoration: none;
+    color: #6F42C1 !important
+}
+
+.p-link:hover {
+    cursor: pointer;
+    color: #56329A !important
+}
+
 .nav-link:hover, .table-link:hover {
     cursor: pointer;
     color: #6F42C1 !important
@@ -88,4 +98,28 @@ body {
 
 .h-48 {
     height: 48px !important
+}
+
+.mt-6 {
+    margin-top: 3rem !important
+}
+
+.mb-5 {
+    margin-bottom: 2rem !important
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #6F42C1;
+    border-color: #6F42C1;
+}
+
+.btn-primary:hover {
+    background-color: #56329A;
+    border-color: #56329A;
+}
+
+.btn:disabled {
+    background-color: #8965CD !important;
+    border-color: #8965CD !important;
 }
