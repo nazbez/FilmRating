@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using static FilmRating.Features.Authentication.UserRoleEntityConstants;
@@ -10,13 +11,16 @@ public class IdentityService : IIdentityService
 {
     private readonly UserManager<User> userManager;
     private readonly AuthenticationConfiguration authenticationConfiguration;
+    private readonly ILogger<IdentityService> logger;
 
     public IdentityService(
         UserManager<User> userManager,
-        AuthenticationConfiguration authenticationConfiguration)
+        AuthenticationConfiguration authenticationConfiguration,
+        ILogger<IdentityService> logger)
     {
         this.userManager = userManager;
         this.authenticationConfiguration = authenticationConfiguration;
+        this.logger = logger;
     }
     
     public async Task<AuthenticationResultModel> Register(RegisterModel model)
@@ -83,6 +87,53 @@ public class IdentityService : IIdentityService
         return authenticationResult;
     }
 
+    public async Task<AuthenticationResultModel> ExternalLogin(ExternalAuthenticationModel model)
+    {
+        try
+        {
+            var payload = await VerifyGoogleToken(model.IdToken);
+            
+            var info = new UserLoginInfo(model.Provider, payload.Subject, model.Provider);
+            
+            var user = await userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            
+            if (user == null)
+            {
+                user = await userManager.FindByEmailAsync(payload.Email);
+                
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Email = payload.Email, 
+                        UserName = payload.Email,
+                        FirstName = payload.GivenName,
+                        LastName = payload.FamilyName
+                    };
+                    
+                    await userManager.CreateAsync(user);
+                    await userManager.AddToRoleAsync(user, Critic);
+                    await userManager.AddLoginAsync(user, info);
+                }
+                else
+                {
+                    await userManager.AddLoginAsync(user, info);
+                }
+            }
+            
+            var authenticationResult = await GenerateAuthenticationResult(user);
+
+            return authenticationResult;
+        }
+        catch (Exception)
+        {
+            return new AuthenticationResultModel
+            {
+                ErrorMessages = new[] { "Invalid external authentication" }
+            };
+        }
+    }
+
     private async Task<AuthenticationResultModel> GenerateAuthenticationResult(User user)
     {
         var roles = (await userManager.GetRolesAsync(user))
@@ -116,5 +167,24 @@ public class IdentityService : IIdentityService
             Success = true,
             Token = tokenHandler.WriteToken(token)
         };
+    }
+    
+    private async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(string idToken)
+    {
+        try
+        {
+            var settings = new GoogleJsonWebSignature.ValidationSettings
+            {
+                Audience = new List<string> { authenticationConfiguration.GoogleAuthenticationConfiguration.ClientId }
+            };
+            
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+            return payload;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error during verifying google token");
+            throw;
+        }
     }
 }

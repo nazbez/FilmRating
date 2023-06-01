@@ -5,6 +5,8 @@ import { Injectable } from "@angular/core";
 import { LoginModel } from "../../login/login.model";
 import { Subject } from "rxjs";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
+import { ExternalAuthModel } from "../models/external-auth.model";
 
 @Injectable({
     providedIn: 'root'
@@ -12,11 +14,20 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 export class AuthenticationService {
     private isAdminSub = new Subject<boolean>()
     private authChangeSub = new Subject<boolean>();
+    private extAuthChangeSub = new Subject<SocialUser>();
     
     public authChanged = this.authChangeSub.asObservable();
     public isAdminChanged = this.isAdminSub.asObservable();
+    public extAuthChanged = this.extAuthChangeSub.asObservable();
     
-    constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+    constructor(
+        private http: HttpClient,
+        private jwtHelper: JwtHelperService,
+        private externalAuthService: SocialAuthService) {
+        this.externalAuthService.authState.subscribe((user) => {
+            this.extAuthChangeSub.next(user);
+        })
+    }
     
     public register = (body: RegisterModel) => {
         return this.http.post<AuthenticationResultModel>('api/Authentication/Register', body);
@@ -62,5 +73,13 @@ export class AuthenticationService {
         const decodedToken = this.jwtHelper.decodeToken(token);
         const role = decodedToken['role'];
         return role === 'Critic';
+    }
+    
+    public signOutExternal = () => {
+        this.externalAuthService.signOut();
+    }
+    
+    public externalLogin = (model: ExternalAuthModel) => {
+        return this.http.post<AuthenticationResultModel>('api/Authentication/ExternalLogin', model);
     }
 }

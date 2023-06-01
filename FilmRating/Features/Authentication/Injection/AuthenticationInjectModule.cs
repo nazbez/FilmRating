@@ -1,5 +1,4 @@
-﻿using System.Text;
-using FilmRating.Infrastructure.Injection;
+﻿using FilmRating.Infrastructure.Injection;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -20,7 +19,7 @@ public class AuthenticationInjectModule : IInjectModule
         services.AddScoped<IIdentityService, IdentityService>();
 
         services.AddScoped<IUserProvider, UserProvider>();
-        
+
         services.AddAuthentication(opt =>
         {
             opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

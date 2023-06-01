@@ -6,6 +6,7 @@ import { RegisterModel } from "./register.model";
 import { PasswordConfirmationValidator } from "../shared/validators/password-confirmation.validator";
 import { AuthenticationResultModel } from "../shared/models/authentication-result.model";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ExternalAuthModel } from "../shared/models/external-auth.model";
 
 @Component({
     selector: 'app-register',
@@ -23,7 +24,15 @@ export class RegisterComponent implements OnInit {
         private authService: AuthenticationService,
         private passConfValidator: PasswordConfirmationValidator,
         private router: Router,
-        private route: ActivatedRoute) { }
+        private route: ActivatedRoute) {
+        this.authService.extAuthChanged.subscribe(user => {
+            const externalAuth: ExternalAuthModel = {
+                provider: user.provider,
+                idToken: user.idToken
+            }
+            this.validateExternalAuth(externalAuth);
+        });
+    }
     
     ngOnInit(): void {
         this.registerForm = new FormGroup({
@@ -70,5 +79,21 @@ export class RegisterComponent implements OnInit {
                     this.showError = true;
                 }
             })
+    }
+
+    private validateExternalAuth(externalAuth: ExternalAuthModel) {
+        this.authService.externalLogin(externalAuth)
+            .subscribe({
+                next: (res) => {
+                    localStorage.setItem("token", res.token);
+                    this.authService.sendAuthStateChangeNotification(res.success);
+                    this.router.navigate([this.returnUrl]);
+                },
+                error: (err: HttpErrorResponse) => {
+                    this.errorMessage = err.message;
+                    this.showError = true;
+                    this.authService.signOutExternal();
+                }
+            });
     }
 }

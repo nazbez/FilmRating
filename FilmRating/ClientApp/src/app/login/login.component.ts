@@ -3,8 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthenticationService } from "../shared/services/authentication.service";
-import {LoginModel} from "./login.model";
-import {AuthenticationResultModel} from "../shared/models/authentication-result.model";
+import { LoginModel } from "./login.model";
+import { AuthenticationResultModel } from "../shared/models/authentication-result.model";
+import { ExternalAuthModel } from "../shared/models/external-auth.model";
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -16,7 +18,19 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     errorMessage: string = '';
     showError: boolean;
-    constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) { }
+    
+    constructor(
+        private authService: AuthenticationService,
+        private router: Router,
+        private route: ActivatedRoute) { 
+        this.authService.extAuthChanged.subscribe(user => {
+            const externalAuth: ExternalAuthModel = {
+                provider: user.provider,
+                idToken: user.idToken
+            }
+            this.validateExternalAuth(externalAuth);
+        });
+    }
 
     ngOnInit(): void {
         this.loginForm = new FormGroup({
@@ -50,5 +64,21 @@ export class LoginComponent implements OnInit {
                     this.errorMessage = err.message;
                     this.showError = true;
                 }})
+    }
+
+    private validateExternalAuth(externalAuth: ExternalAuthModel) {
+        this.authService.externalLogin(externalAuth)
+            .subscribe({
+                next: (res) => {
+                    localStorage.setItem("token", res.token);
+                    this.authService.sendAuthStateChangeNotification(res.success);
+                    this.router.navigate([this.returnUrl]);
+                },
+                error: (err: HttpErrorResponse) => {
+                    this.errorMessage = err.message;
+                    this.showError = true;
+                    this.authService.signOutExternal();
+                }
+            });
     }
 }

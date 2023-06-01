@@ -22,6 +22,12 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { ManageFilmFormComponent } from "./film/manage-film-form/manage-film-form.component";
 import { MatIconModule } from "@angular/material/icon";
 import { MatSelectModule } from "@angular/material/select";
+import {
+    GoogleLoginProvider,
+    GoogleSigninButtonModule,
+    SocialAuthServiceConfig,
+    SocialLoginModule
+} from "@abacritt/angularx-social-login";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -74,13 +80,29 @@ export function tokenGetter() {
         MatDialogModule,
         MatIconModule,
         MatSelectModule,
+        SocialLoginModule,
+        GoogleSigninButtonModule
     ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorHandlerService,
             multi: true
-        }],
+        },
+        {
+            provide: 'SocialAuthServiceConfig',
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider(
+                            '1021520435868-5q5uakcpjrp55lotat6io6cnjfeblhlt.apps.googleusercontent.com'
+                        )
+                    }
+                ]
+            } as SocialAuthServiceConfig,
+        },],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -38,4 +38,18 @@ public class AuthenticationController : Controller
 
         return Ok(result);
     }
+    
+    
+    [HttpPost("ExternalLogin")]
+    public async Task<IActionResult> ExternalLogin(ExternalAuthenticationModel model)
+    {
+        var result = await identityService.ExternalLogin(model);
+
+        if (!result.Success)
+        {
+            return BadRequest(result);
+        }
+
+        return Ok(result);
+    }
 }
