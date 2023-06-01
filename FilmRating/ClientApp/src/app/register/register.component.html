@@ -1,23 +1,23 @@
-<div class="card text-center">
+<div class="mt-6 text-center">
     <div class="card-body">
-        <h4 class="card-title">Register</h4>
+        <h4 class="card-title mb-5">Create new account</h4>
         <div *ngIf="showError" class="alert alert-danger" role="alert">
             <span [innerHTML]="errorMessage"></span>
         </div>
-        
+
         <form [formGroup]="registerForm" autocomplete="off" novalidate (ngSubmit)="registerUser(registerForm.value)" class="form-narrow">
             <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="First name" />
                 </div>
             </div>
             <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
-                    <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Last name"  />
+                <div class="col-md-4">
+                    <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Last name" />
                 </div>
             </div>
             <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <input type="email" id="email" formControlName="email" class="form-control" placeholder="Email" />
                 </div>
                 <div>
@@ -26,15 +26,15 @@
                 </div>
             </div>
             <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <input type="password" id="password" formControlName="password" class="form-control" placeholder="Password" />
                 </div>
                 <div>
                     <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
                 </div>
             </div>
-            <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+            <div class="mb-5 row justify-content-center">
+                <div class="col-md-4">
                     <input type="password" id="confirm" formControlName="confirm" class="form-control" placeholder="Confirm password" />
                 </div>
                 <div>
@@ -42,12 +42,28 @@
                     <em *ngIf="hasError('confirm', 'mustMatch')">Passwords must match</em>
                 </div>
             </div>
-            <br>
-            <div class="mb-3 row justify-content-center">
+            <div class="mb-4 row justify-content-center">
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-dark btn-block" [disabled]="!registerForm.valid">Register</button>
+                    <input class="btn btn-primary w-100" type="submit" [disabled]="!registerForm.valid" value="Create account" />
                 </div>
             </div>
         </form>
+
+        <p class="mt-3">Got an account? <a class="p-link" [routerLink]="['/login']">Log in</a></p>
+
+        <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-between align-items-center col-md-4 px-2">
+                <hr class="w-40" />
+                <span>OR</span>
+                <hr class="w-40" />
+            </div>
+        </div>
+
+        <a class="btn btn-google mt-3">
+            <div class="d-flex align-items-center">
+                <img class="google-icon" src="google_icon.png">
+                <span class="ms-2">Sign up with Google</span>
+            </div>
+        </a>
     </div>
 </div>

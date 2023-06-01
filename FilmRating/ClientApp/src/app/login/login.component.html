@@ -1,33 +1,49 @@
-﻿<div class="card text-center">
+﻿<div class="mt-6 text-center">
     <div class="card-body">
-        <h4 class="card-title">Login</h4>
+        <h4 class="card-title mb-5">Log in to your account</h4>
         <div *ngIf="showError" class="alert alert-danger" role="alert">
             {{errorMessage}}
         </div>
 
         <form [formGroup]="loginForm" autocomplete="off" novalidate (ngSubmit)="loginUser(loginForm.value)">
             <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <input type="text" id="username" formControlName="username" class="form-control" placeholder="Email" />
                 </div>
                 <div>
                     <em *ngIf="validateControl('username') && hasError('username', 'required')">Username is required</em>
                 </div>
             </div>
-            <div class="mb-3 row justify-content-center">
-                <div class="col-md-5">
+            <div class="mb-5 row justify-content-center">
+                <div class="col-md-4">
                     <input type="password" id="password" formControlName="password" class="form-control" placeholder="Password" />
                 </div>
                 <div>
                     <em *ngIf="validateControl('password') && hasError('password', 'required')">Password is required</em>
                 </div>
             </div>
-            <br>
-            <div class="mb-3 row justify-content-center">
-                <div class="col-md-1">
-                    <button type="submit" class="btn btn-dark" [disabled]="!loginForm.valid">Login</button>
+            <div class="mb-4 row justify-content-center">
+                <div class="col-md-4">
+                    <input class="btn btn-primary w-100" type="submit" [disabled]="!loginForm.valid" value="Log in" />
                 </div>
             </div>
         </form>
+
+        <p>Don't have an account? <a class="p-link" [routerLink]="['/register']">Sign up</a></p>
+
+        <div class="d-flex justify-content-center">
+            <div class="d-flex justify-content-between align-items-center col-md-4 px-2">
+                <hr class="w-40" />
+                <span>OR</span>
+                <hr class="w-40" />
+            </div>
+        </div>
+
+        <a class="btn btn-google mt-3">
+            <div class="d-flex align-items-center">
+                <img class="google-icon" src="google_icon.png">
+                <span class="ms-2">Log in with Google</span>
+            </div>
+        </a>
     </div>
 </div>

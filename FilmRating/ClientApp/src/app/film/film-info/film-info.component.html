@@ -8,12 +8,14 @@
                     <span *ngIf="ratingUserRate.hasRate">Rate again</span>
                     <span *ngIf="!ratingUserRate.hasRate">Rate film</span>
                 </button>
-                <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
-                    Edit
-                </button>
-                <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
-                    Delete
-                </button>
+                <div class="d-flex justify-content-between">
+                    <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
+                        Edit
+                    </button>
+                    <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="deleteFilm()" mat-raised-button class="btn">
+                        Delete
+                    </button>
+                </div>
             </div>
         </div>
     </div>
