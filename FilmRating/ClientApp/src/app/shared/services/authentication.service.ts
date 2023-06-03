@@ -26,7 +26,7 @@ export class AuthenticationService {
         private externalAuthService: SocialAuthService) {
         this.externalAuthService.authState.subscribe((user) => {
             this.extAuthChangeSub.next(user);
-        })
+        });
     }
     
     public register = (body: RegisterModel) => {
