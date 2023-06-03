@@ -28,6 +28,7 @@ import {
     SocialAuthServiceConfig,
     SocialLoginModule
 } from "@abacritt/angularx-social-login";
+import { GuestGuard } from "./shared/guards/guest.guard";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -54,8 +55,16 @@ export function tokenGetter() {
                 loadChildren: () => import('./film/film.module').then(m => m.FilmModule),
                 pathMatch: 'full'
             },
-            {path: 'register', component: RegisterComponent},
-            {path: 'login', component: LoginComponent},
+            {
+                path: 'register',
+                component: RegisterComponent,
+                canActivate: [GuestGuard]
+            },
+            {
+                path: 'login',
+                component: LoginComponent,
+                canActivate: [GuestGuard]
+            },
             {
                 path: 'artist-management',
                 loadChildren: () => import('./artist-management/artist-management.module').then(m => m.ArtistManagementModule),
@@ -64,7 +73,8 @@ export function tokenGetter() {
             {
                 path: 'film/:id',
                 component: FilmInfoComponent
-            }
+            },
+            { path: '**', redirectTo: '/' }
         ]),
         JwtModule.forRoot({
             config: {
