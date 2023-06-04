@@ -44,6 +44,7 @@ public class ArtistController : Controller
     }
 
     [HttpGet("All")]
+    [AllowAnonymous]
     public async Task<IActionResult> All()
     {
         var query = new ArtistGetAllQuery();
@@ -52,6 +53,7 @@ public class ArtistController : Controller
     }
 
     [HttpGet("Directors")]
+    [AllowAnonymous]
     public async Task<IActionResult> Directors()
     {
         var query = new ArtistGetByRoleQuery(DirectorId);
@@ -60,6 +62,7 @@ public class ArtistController : Controller
     }
     
     [HttpGet("Actors")]
+    [AllowAnonymous]
     public async Task<IActionResult> Actors()
     {
         var query = new ArtistGetByRoleQuery(ActorId);
@@ -68,6 +71,7 @@ public class ArtistController : Controller
     }
 
     [HttpGet("Roles")]
+    [AllowAnonymous]
     public async Task<IActionResult> Roles()
     {
         var query = new ArtistRolesQuery();
