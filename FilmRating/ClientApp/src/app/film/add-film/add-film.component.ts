@@ -10,8 +10,7 @@ import { Router } from "@angular/router";
 })
 export class AddFilmComponent {
 
-    constructor(public dialog: MatDialog, private router: Router) {
-    }
+    constructor(public dialog: MatDialog, private router: Router) { }
     
     createNewFilm() {
         const dialogRef = this.dialog.open(ManageFilmFormComponent, {

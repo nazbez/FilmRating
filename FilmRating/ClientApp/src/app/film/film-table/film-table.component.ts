@@ -22,10 +22,13 @@ export class FilmTableComponent implements OnInit {
     genres: GenreModel[];
     directors: ArtistModel[];
     actors: ArtistModel[];
+    years: number[];
     
     currentGenreFilter: number[] = [];
     currentDirectorFilter: string[] = [];
     currentActorsFilter: string[] = [];
+    minYearFilter: number;
+    maxYearFilter: number;
     panelOpenState: boolean = false;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -58,6 +61,12 @@ export class FilmTableComponent implements OnInit {
         this.artistService.getActors().subscribe(a => {
             this.actors = a;
         });
+        
+        this.filmService.getYears().subscribe(y => {
+            this.years = y.reverse();
+            this.minYearFilter = y[0];
+            this.maxYearFilter = y[y.length-1];
+        })
     }
 
     applyFilter(event: Event) {
@@ -90,13 +99,27 @@ export class FilmTableComponent implements OnInit {
         
         this.applyAdditionalFilters();
     }
+
+    applyMinYearFilter(year: any) {
+        this.minYearFilter = year;
+        
+        this.applyAdditionalFilters();
+    }
+
+    applyMaxYearFilter(year: any) {
+        this.maxYearFilter = year;
+
+        this.applyAdditionalFilters();
+    }
     
     applyAdditionalFilters() {
         this.dataSource.data = this.films.filter(f => {
             return (this.currentGenreFilter.length === 0 || this.currentGenreFilter.includes(f.genre.id)) &&
                 (this.currentDirectorFilter.length === 0 || this.currentDirectorFilter.includes(f.director.id)) &&
                 (this.currentActorsFilter.length === 0 || this.currentActorsFilter.some(a => f.actors
-                    .some(act => act.id === a)));
+                    .some(act => act.id === a))) &&
+                f.year >= this.minYearFilter &&
+                f.year <= this.maxYearFilter;
         })
     }
 }

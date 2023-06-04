@@ -35,3 +35,14 @@ td, th {
 .mat-mdc-form-field + .mat-mdc-form-field {
     margin-left: 8px;
 }
+
+mat-slider {
+    width: 500px;
+}
+
+.example-label-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px 0;
+    max-width: 284px;
+}

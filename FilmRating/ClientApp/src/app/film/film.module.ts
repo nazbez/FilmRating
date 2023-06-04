@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
 import { RateFilmComponent } from "./rate-film/rate-film.component";
 import { MatExpansionModule } from "@angular/material/expansion";
+import { MatSliderModule } from "@angular/material/slider";
 
 @NgModule({
     declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent, RateFilmComponent ],
@@ -37,6 +38,7 @@ import { MatExpansionModule } from "@angular/material/expansion";
         MatSelectModule,
         DecimalPipe,
         MatExpansionModule,
+        MatSliderModule,
     ]
 })
 export class FilmModule {}

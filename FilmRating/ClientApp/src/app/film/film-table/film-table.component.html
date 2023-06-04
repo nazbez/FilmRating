@@ -43,6 +43,15 @@
                 </mat-select>
             </mat-form-field>
         </div>
+        <div class="flex-item">
+            <div>
+                <label class="example-name-label">Between years</label>
+            </div>
+            <mat-slider min="{{years[0]}}" max="{{years[years.length-1]}}" step="1" showTickMarks discrete>
+                <input value="{{years[0]}}" (valueChange)="applyMinYearFilter($event)" matSliderStartThumb>
+                <input value="{{years[years.length-1]}}" (valueChange)="applyMaxYearFilter($event)" matSliderEndThumb>
+            </mat-slider>
+        </div>
     </div>
 </mat-expansion-panel>
 
@@ -83,7 +92,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openInfoPage(row.id)"></tr>
 
         <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell ps-5 py-4" colspan="4">Nothing was found for "{{input.value}}"</td>
+            <td class="mat-cell ps-5 py-4" colspan="4">Nothing was found</td>
         </tr>
     </table>
 
