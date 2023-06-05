@@ -11,15 +11,18 @@ public class IdentityService : IIdentityService
 {
     private readonly UserManager<User> userManager;
     private readonly AuthenticationConfiguration authenticationConfiguration;
+    private readonly AuthorizationConfiguration authorizationConfiguration;
     private readonly ILogger<IdentityService> logger;
 
     public IdentityService(
         UserManager<User> userManager,
         AuthenticationConfiguration authenticationConfiguration,
+        AuthorizationConfiguration authorizationConfiguration,
         ILogger<IdentityService> logger)
     {
         this.userManager = userManager;
         this.authenticationConfiguration = authenticationConfiguration;
+        this.authorizationConfiguration = authorizationConfiguration;
         this.logger = logger;
     }
     
@@ -52,9 +55,9 @@ public class IdentityService : IIdentityService
                 ErrorMessages = createdUser.Errors.Select(e => e.Description)
             };
         }
-        
-        await userManager.AddToRoleAsync(newUser, Critic);
 
+        await AddToRole(newUser);
+        
         var authenticationResult = await GenerateAuthenticationResult(newUser);
 
         return authenticationResult;
@@ -112,7 +115,7 @@ public class IdentityService : IIdentityService
                     };
                     
                     await userManager.CreateAsync(user);
-                    await userManager.AddToRoleAsync(user, Critic);
+                    await AddToRole(user);
                     await userManager.AddLoginAsync(user, info);
                 }
                 else
@@ -185,6 +188,18 @@ public class IdentityService : IIdentityService
         {
             logger.LogError(ex, "Error during verifying google token");
             throw;
+        }
+    }
+
+    private async Task AddToRole(User user)
+    {
+        if (authorizationConfiguration.AdminEmails.Contains(user.Email))
+        {
+            await userManager.AddToRoleAsync(user, Administrator);
+        }
+        else
+        {
+            await userManager.AddToRoleAsync(user, Critic);
         }
     }
 }

@@ -16,6 +16,12 @@ public class AuthenticationInjectModule : IInjectModule
 
         services.AddSingleton(authenticationConfiguration);
 
+        var authorizationConfiguration = new AuthorizationConfiguration();
+        configuration.GetSection(nameof(AuthorizationConfiguration))
+            .Bind(authorizationConfiguration);
+
+        services.AddSingleton(authorizationConfiguration);
+
         services.AddScoped<IIdentityService, IdentityService>();
 
         services.AddScoped<IUserProvider, UserProvider>();
