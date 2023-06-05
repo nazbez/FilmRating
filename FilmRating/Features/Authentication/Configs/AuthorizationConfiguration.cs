@@ -2,5 +2,5 @@
 
 public class AuthorizationConfiguration
 {
-    public string[] AdminEmails { get; set; }
+    public string[] AdminEmails { get; set; } = null!;
 }
