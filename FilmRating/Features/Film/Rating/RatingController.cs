@@ -48,4 +48,12 @@ public class RatingController : Controller
         var result = await mediator.Send(query);
         return Ok(result);
     }
+    
+    [HttpGet("IsFavourite/{filmId:int}/My")]
+    public async Task<IActionResult> GetIsFavourite(int filmId)
+    {
+        var query = new RatingGetUserIsFavouriteQuery(filmId);
+        var result = await mediator.Send(query);
+        return Ok(result);
+    }
 }
