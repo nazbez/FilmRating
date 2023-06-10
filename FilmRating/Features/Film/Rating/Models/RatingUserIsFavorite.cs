@@ -1,3 +1,3 @@
 ﻿namespace FilmRating.Features.Film.Rating;
 
-public record RatingUserIsFavorite(bool IsFavorite, int FilmId);
+public record RatingUserIsFavorite(bool HasRate, bool IsFavorite, int FilmId);

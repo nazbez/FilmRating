@@ -27,8 +27,8 @@ public record RatingGetUserIsFavouriteQuery(int FilmId) : IRequest<RatingUserIsF
                 .FirstOrDefault();
 
             var result = rate == null 
-                ? new RatingUserIsFavorite(false, request.FilmId)
-                : new RatingUserIsFavorite(rate.IsFavourite, request.FilmId);
+                ? new RatingUserIsFavorite(false, false, request.FilmId)
+                : new RatingUserIsFavorite(true, rate.IsFavourite, request.FilmId);
 
             return Task.FromResult(result);
         }

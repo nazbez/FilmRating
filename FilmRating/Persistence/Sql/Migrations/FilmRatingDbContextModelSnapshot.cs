@@ -332,7 +332,6 @@ namespace FilmRating.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("Rate")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
