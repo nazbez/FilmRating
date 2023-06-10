@@ -37,9 +37,10 @@ h1 {
 }
 
 body {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
+    justify-content:start;
     font-family: Roboto, sans-serif !important;
 }
 
@@ -137,4 +138,8 @@ body {
 
 .google-icon {
     width: 32px
+}
+
+.mat-expansion-panel-body {
+    padding: 0 24px 0 !important
 }

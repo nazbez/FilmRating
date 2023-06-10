@@ -8,8 +8,8 @@
         <mat-panel-title class="text-medium">
             Additional filters
         </mat-panel-title>
-        <mat-panel-description class="text-medium">
-            {{panelOpenState ? "Set filters" : "Open panel to set filters"}}
+        <mat-panel-description class="text-medium d-flex justify-content-end me-0">
+            Click here to {{panelOpenState ? 'close' : 'open'}} filters
         </mat-panel-description>
     </mat-expansion-panel-header>
     <div *ngIf="panelOpenState" class="flex-container row">
@@ -43,13 +43,12 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="flex-item">
-            <div>
-                <label class="example-name-label">Between years</label>
-            </div>
+        <div class="flex-item mb-3">
+            <p class="text-medium">Years</p>
+            <p class="mb-0">From {{minYear.value}} to {{maxYear.value}}</p>
             <mat-slider min="{{years[0]}}" max="{{years[years.length-1]}}" step="1" showTickMarks discrete>
-                <input value="{{years[0]}}" (valueChange)="applyMinYearFilter($event)" matSliderStartThumb>
-                <input value="{{years[years.length-1]}}" (valueChange)="applyMaxYearFilter($event)" matSliderEndThumb>
+                <input value="{{years[0]}}" (valueChange)="applyMinYearFilter($event)" matSliderStartThumb #minYear>
+                <input value="{{years[years.length-1]}}" (valueChange)="applyMaxYearFilter($event)" matSliderEndThumb #maxYear>
             </mat-slider>
         </div>
     </div>
