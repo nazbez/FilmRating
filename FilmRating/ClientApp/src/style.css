@@ -121,8 +121,9 @@ body {
 }
 
 .btn:disabled {
-    background-color: #8965CD !important;
-    border-color: #8965CD !important;
+    background-color: #E1D8F2 !important;
+    border-color: #E1D8F2 !important;
+    color: #4A4554 !important;
 }
 
 .btn-google {
@@ -142,4 +143,8 @@ body {
 
 .mat-expansion-panel-body {
     padding: 0 24px 0 !important
+}
+
+.mat-content.mat-content-hide-toggle {
+    margin-right: 0 !important
 }
