@@ -37,9 +37,10 @@ h1 {
 }
 
 body {
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
+    justify-content:start;
     font-family: Roboto, sans-serif !important;
 }
 
@@ -120,8 +121,9 @@ body {
 }
 
 .btn:disabled {
-    background-color: #8965CD !important;
-    border-color: #8965CD !important;
+    background-color: #E1D8F2 !important;
+    border-color: #E1D8F2 !important;
+    color: #4A4554 !important;
 }
 
 .btn-google {
@@ -137,4 +139,12 @@ body {
 
 .google-icon {
     width: 32px
+}
+
+.mat-expansion-panel-body {
+    padding: 0 24px 0 !important
+}
+
+.mat-content.mat-content-hide-toggle {
+    margin-right: 0 !important
 }
