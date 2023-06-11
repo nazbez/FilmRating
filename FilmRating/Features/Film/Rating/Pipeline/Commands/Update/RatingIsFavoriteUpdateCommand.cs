@@ -30,11 +30,18 @@ public record RatingIsFavoriteUpdateCommand(int FilmId, bool IsFavorite) : IRequ
             
             var rating = unitOfWork.Repository<RatingEntity, int>()
                 .Find(new RatingGetByUserIdAndFilmId(request.FilmId, userId))
-                .FirstOrDefault()!;
-            
-            rating.UpdateIsFavorite(request.IsFavorite);
-            
-            unitOfWork.Repository<RatingEntity, int>().Update(rating);
+                .FirstOrDefault();
+
+            if (rating is null)
+            {
+                rating = RatingEntity.Create(request.FilmId, userId, null, request.IsFavorite);
+                unitOfWork.Repository<RatingEntity, int>().Add(rating);
+            }
+            else
+            {
+                rating.UpdateIsFavorite(request.IsFavorite);
+                unitOfWork.Repository<RatingEntity, int>().Update(rating);
+            }
 
             await unitOfWork.CompleteAsync(cancellationToken);
 

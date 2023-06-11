@@ -32,9 +32,4 @@ public class RatingEntity : IEntity<int>
             Rate = rate,
             IsFavourite = isFavorite
         };
-    
-    protected void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<RatingEntity>().Property(m => m.Rate).IsRequired(false);            
-    }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmRating.Migrations
 {
     [DbContext(typeof(FilmRatingDbContext))]
-    [Migration("20230610212841_IsFavourite_feature")]
-    partial class IsFavourite_feature
+    [Migration("20230611105507_Rating_add_IsFavourite")]
+    partial class Rating_add_IsFavourite
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -335,7 +335,6 @@ namespace FilmRating.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("Rate")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")

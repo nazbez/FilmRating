@@ -12,18 +12,15 @@ public record RatingIsFavoriteCreateCommand(int FilmId, bool IsFavorite) : IRequ
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserProvider userProvider;
-        private readonly IPublisher publisher;
         private readonly IRepository<RatingEntity, int> repository;
 
         public RatingIsFavoriteCreateCommandHandler(
             IRepository<RatingEntity, int> repository,
             IUnitOfWork unitOfWork, 
-            IUserProvider userProvider,
-            IPublisher publisher)
+            IUserProvider userProvider)
         {
             this.unitOfWork = unitOfWork;
             this.userProvider = userProvider;
-            this.publisher = publisher;
             this.repository = repository;
         }
 

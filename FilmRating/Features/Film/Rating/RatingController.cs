@@ -36,7 +36,7 @@ public class RatingController : Controller
     [HttpGet("Film/{filmId:int}/My")]
     public async Task<IActionResult> GetUserFilmRate(int filmId)
     {
-        var query = new RatingGetUserRateQuery(filmId);
+        var query = new RatingGetUserRateAndIsFavoriteQuery(filmId);
         var result = await mediator.Send(query);
         return Ok(result);
     }
@@ -49,29 +49,6 @@ public class RatingController : Controller
         return Ok(result);
     }
     
-    [HttpGet("IsFavourite/All")]
-    public async Task<IActionResult> GetMyFavourite()
-    {
-        var query = new RatingGetMyFavoriteQuery();
-        var result = await mediator.Send(query);
-        return Ok(result);
-    }
-    
-    [HttpGet("IsFavourite/{filmId:int}/My")]
-    public async Task<IActionResult> GetIsFavourite(int filmId)
-    {
-        var query = new RatingGetUserIsFavouriteQuery(filmId);
-        var result = await mediator.Send(query);
-        return Ok(result);
-    }
-    [HttpPost("IsFavourite")]
-    public async Task<IActionResult> CreateIsFavorite(RatingIsFavoriteCreateModel model)
-    {
-        var command = new RatingIsFavoriteCreateCommand(model.FilmId, model.IsFavorite);
-        var result = await mediator.Send(command);
-        return Ok(result);
-    }
-
     [HttpPut("IsFavourite")]
     public async Task<IActionResult> UpdateIsFavorite(RatingisFavoriteUpdateModel model)
     {
