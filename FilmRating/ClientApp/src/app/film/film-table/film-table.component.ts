@@ -2,7 +2,7 @@
 import { FilmModel } from "../../shared/models/film.model";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
+import { MatSort, Sort } from "@angular/material/sort";
 import { FilmService } from "../../shared/services/film.service";
 import { Router } from "@angular/router";
 import { GenreModel } from "../../shared/models/genre.model";
@@ -23,6 +23,8 @@ export class FilmTableComponent implements OnInit {
     directors: ArtistModel[];
     actors: ArtistModel[];
     years: number[];
+    isDesc: boolean = false;
+    sortColumn: string = "";
     
     currentGenreFilter: number[] = [];
     currentDirectorFilter: string[] = [];
@@ -121,5 +123,10 @@ export class FilmTableComponent implements OnInit {
                 f.year >= this.minYearFilter &&
                 f.year <= this.maxYearFilter;
         })
+    }
+
+    announceSortChange(sortState: Sort) {
+        this.isDesc = sortState.direction != 'asc';
+        this.sortColumn = sortState.direction === '' ? '' : sortState.active;
     }
 }

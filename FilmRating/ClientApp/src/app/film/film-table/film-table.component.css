@@ -46,3 +46,19 @@ mat-slider {
     margin: 20px 10px 0;
     max-width: 284px;
 }
+
+.pointer {
+    cursor: pointer;
+}
+
+.pointer.active.desc:after {
+    content: '\25BE';
+    color: #6F42C1;
+    font-size: 20px;
+}
+
+.pointer.active.asc:after {
+    content: '\25B4';
+    color: #6F42C1;
+    font-size: 20px;
+}

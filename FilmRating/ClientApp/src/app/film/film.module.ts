@@ -7,7 +7,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
-import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
+import { DecimalPipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { AddFilmComponent } from "./add-film/add-film.component";
@@ -39,6 +39,7 @@ import { MatSliderModule } from "@angular/material/slider";
         DecimalPipe,
         MatExpansionModule,
         MatSliderModule,
+        NgClass,
     ]
 })
 export class FilmModule {}
