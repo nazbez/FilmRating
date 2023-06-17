@@ -125,8 +125,12 @@ export class FilmTableComponent implements OnInit {
         })
     }
 
-    announceSortChange(sortState: Sort) {
+    applySortChange(sortState: Sort) {
         this.isDesc = sortState.direction != 'asc';
         this.sortColumn = sortState.direction === '' ? '' : sortState.active;
+        
+        if (this.sortColumn === '') {
+            this.dataSource.data.sort((a, b) => b.rating - a.rating);
+        }
     }
 }
