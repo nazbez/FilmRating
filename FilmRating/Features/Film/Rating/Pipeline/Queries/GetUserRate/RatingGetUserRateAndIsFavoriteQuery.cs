@@ -5,21 +5,21 @@ using MediatR;
 
 namespace FilmRating.Features.Film.Rating;
 
-public record RatingGetUserRateQuery(int FilmId) : IRequest<RatingUserRate>
+public record RatingGetUserRateAndIsFavoriteQuery(int FilmId) : IRequest<RatingUserRateAndIsFavorite>
 {
     [UsedImplicitly]
-    public class RatingGetUserRateQueryHandler : IRequestHandler<RatingGetUserRateQuery, RatingUserRate>
+    public class RatingGetUserRateAndIsFavoriteQueryHandler : IRequestHandler<RatingGetUserRateAndIsFavoriteQuery, RatingUserRateAndIsFavorite>
     {
         private readonly IRepository<RatingEntity, int> repository;
         private readonly IUserProvider userProvider;
 
-        public RatingGetUserRateQueryHandler(IRepository<RatingEntity, int> repository, IUserProvider userProvider)
+        public RatingGetUserRateAndIsFavoriteQueryHandler(IRepository<RatingEntity, int> repository, IUserProvider userProvider)
         {
             this.repository = repository;
             this.userProvider = userProvider;
         }
 
-        public Task<RatingUserRate> Handle(RatingGetUserRateQuery request, CancellationToken cancellationToken)
+        public Task<RatingUserRateAndIsFavorite> Handle(RatingGetUserRateAndIsFavoriteQuery request, CancellationToken cancellationToken)
         {
             var userId = userProvider.GetUserId()!;
 
@@ -27,8 +27,8 @@ public record RatingGetUserRateQuery(int FilmId) : IRequest<RatingUserRate>
                 .FirstOrDefault();
 
             var result = rate == null 
-                ? new RatingUserRate(false, null, request.FilmId)
-                : new RatingUserRate(true, rate.Rate, request.FilmId);
+                ? new RatingUserRateAndIsFavorite(false, null, request.FilmId)
+                : new RatingUserRateAndIsFavorite(true, rate.Rate, request.FilmId, rate.IsFavourite);
 
             return Task.FromResult(result);
         }

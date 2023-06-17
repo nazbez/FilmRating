@@ -22,7 +22,7 @@ public record FilmRatedEvent(int FilmId) : INotification
             var film = unitOfWork.Repository<FilmEntity, int>().FindById(notification.FilmId)!;
             var filmRatings = unitOfWork.Repository<RatingEntity, int>()
                 .Find(new RatingGetByFilmId(notification.FilmId))
-                .Select(x => x.Rate);
+                .Select(x => x.Rate.Value);
             
             film.UpdateRating(filmRatings);
             unitOfWork.Repository<FilmEntity, int>().Update(film);
