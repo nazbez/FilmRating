@@ -1,8 +1,9 @@
 ﻿import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { RatingUserRateModel } from "../models/rating-user-rate.model";
+import { UserFilmRatingInfoModel } from "../models/user-film-rating-info.model";
 import { RatingCreateModel } from "../models/rating-create.model";
 import { RatingUpdateModel } from "../models/rating-update.model";
+import {RatingIsFavouriteUpdateModel} from "../models/rating-is-favourite-update.model";
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +19,12 @@ export class RatingService {
         return this.http.put('api/Rating', model);
     }
     
-    public getUserFilmRate = (filmId: number) => {
-        return this.http.get<RatingUserRateModel>(`api/Rating/Film/${filmId}/My`);
+    public updateIsFavorite = (model: RatingIsFavouriteUpdateModel) => {
+        return this.http.put('api/Rating/IsFavourite', model);
+    }
+    
+    public getUserFilmRatingInfo = (filmId: number) => {
+        return this.http.get<UserFilmRatingInfoModel>(`api/Rating/Film/${filmId}/My/Info`);
     }
     
     public getOptions = () => {

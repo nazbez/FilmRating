@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild } from "@angular/core";
+﻿import {Component, Input, OnInit, ViewChild} from "@angular/core";
 import { FilmModel } from "../../shared/models/film.model";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
@@ -35,6 +35,8 @@ export class FilmTableComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
+
+    @Input() isFavourites: boolean = false;
     
     constructor(
         private filmService: FilmService,
@@ -43,14 +45,25 @@ export class FilmTableComponent implements OnInit {
         private artistService: ArtistService) { }
     
     ngOnInit() {
-        this.filmService.getAll()
-            .subscribe(val => {
-                this.dataSource = new MatTableDataSource(val);
-                this.films = [...val];
+        if (this.isFavourites) {
+            this.filmService.getMyFavourite()
+                .subscribe(val => {
+                    this.dataSource = new MatTableDataSource(val);
+                    this.films = [...val];
 
-                this.dataSource.paginator = this.paginator;
-                this.dataSource.sort = this.sort;
-            });
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                });
+        } else {
+            this.filmService.getAll()
+                .subscribe(val => {
+                    this.dataSource = new MatTableDataSource(val);
+                    this.films = [...val];
+
+                    this.dataSource.paginator = this.paginator;
+                    this.dataSource.sort = this.sort;
+                });
+        }
         
         this.genreService.getAll().subscribe(g => {
             this.genres = g;

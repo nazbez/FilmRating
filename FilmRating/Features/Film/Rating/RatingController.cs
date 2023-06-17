@@ -33,10 +33,10 @@ public class RatingController : Controller
         return Ok(result);
     }
 
-    [HttpGet("Film/{filmId:int}/My")]
-    public async Task<IActionResult> GetUserFilmRate(int filmId)
+    [HttpGet("Film/{filmId:int}/My/Info")]
+    public async Task<IActionResult> GetUserFilmRatingInfo(int filmId)
     {
-        var query = new RatingGetUserRateAndIsFavoriteQuery(filmId);
+        var query = new UserFilmRatingInfoGetQuery(filmId);
         var result = await mediator.Send(query);
         return Ok(result);
     }
@@ -50,9 +50,9 @@ public class RatingController : Controller
     }
     
     [HttpPut("IsFavourite")]
-    public async Task<IActionResult> UpdateIsFavorite(RatingisFavoriteUpdateModel model)
+    public async Task<IActionResult> UpdateIsFavorite(RatingIsFavouriteUpdateModel model)
     {
-        var command = new RatingIsFavoriteUpdateCommand(model.FilmId, model.IsFavorite);
+        var command = new RatingIsFavouriteUpdateCommand(model.FilmId, model.IsFavourite);
         var result = await mediator.Send(command);
         return Ok(result);
     }

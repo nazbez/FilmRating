@@ -13,6 +13,10 @@ export class FilmService {
         return this.http.get<FilmModel[]>('api/Film/All');
     }
     
+    public getMyFavourite = () => {
+        return this.http.get<FilmModel[]>('api/Film/IsFavourite/All');
+    }
+    
     public get = (id: number) => {
         return this.http.get<FilmDetailsModel>(`api/Film/${id}`)
     }

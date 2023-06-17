@@ -5,7 +5,7 @@
 namespace FilmRating.Migrations
 {
     /// <inheritdoc />
-    public partial class Rating_add_IsFavourite : Migration
+    public partial class Rating_Add_IsFavourite : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

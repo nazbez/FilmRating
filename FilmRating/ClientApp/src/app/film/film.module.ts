@@ -18,7 +18,7 @@ import { MatSliderModule } from "@angular/material/slider";
 
 @NgModule({
     declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent ],
-    exports: [ FilmComponent ],
+    exports: [FilmComponent, FilmTableComponent],
     imports: [
         RouterModule.forChild([
             {path: '', component: FilmComponent},

@@ -69,7 +69,7 @@ public record FilmUpdateCommand(int Id, FilmUpdateModel Model) : IRequest<FilmDe
         {
             var photoPath = string.Empty;
 
-            if (model.Photo == null) 
+            if (model.Photo is null) 
                 return photoPath;
             
             var blobName = FilmEntity.GetBlobName(filmTitle, filmYear);

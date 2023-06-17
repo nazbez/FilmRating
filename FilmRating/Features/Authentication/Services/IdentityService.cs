@@ -30,7 +30,7 @@ public class IdentityService : IIdentityService
     {
         var existingUser = await userManager.FindByEmailAsync(model.Email);
 
-        if (existingUser != null)
+        if (existingUser is not null)
         {
             return new AuthenticationResultModel
             {
@@ -67,7 +67,7 @@ public class IdentityService : IIdentityService
     {
         var user = await userManager.FindByEmailAsync(email);
 
-        if (user == null)
+        if (user is null)
         {
             return new AuthenticationResultModel
             {
@@ -100,11 +100,11 @@ public class IdentityService : IIdentityService
             
             var user = await userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             
-            if (user == null)
+            if (user is null)
             {
                 user = await userManager.FindByEmailAsync(payload.Email);
                 
-                if (user == null)
+                if (user is null)
                 {
                     user = new User
                     {

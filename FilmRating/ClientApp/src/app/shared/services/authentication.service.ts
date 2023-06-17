@@ -12,12 +12,14 @@ import { ExternalAuthModel } from "../models/external-auth.model";
     providedIn: 'root'
 })
 export class AuthenticationService {
-    private isAdminSub = new Subject<boolean>()
+    private isAdminSub = new Subject<boolean>();
+    private isCriticSub = new Subject<boolean>();
     private authChangeSub = new Subject<boolean>();
     private extAuthChangeSub = new Subject<SocialUser>();
     
     public authChanged = this.authChangeSub.asObservable();
     public isAdminChanged = this.isAdminSub.asObservable();
+    public isCriticChanged = this.isCriticSub.asObservable();
     public extAuthChanged = this.extAuthChangeSub.asObservable();
     
     constructor(
@@ -40,6 +42,7 @@ export class AuthenticationService {
     public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
         this.authChangeSub.next(isAuthenticated);
         this.isAdminSub.next(this.isUserAdmin());
+        this.isCriticSub.next(this.isUserCritic());
     }
 
     public logout = () => {
