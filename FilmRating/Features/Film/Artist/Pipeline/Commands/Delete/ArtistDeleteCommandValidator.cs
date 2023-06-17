@@ -22,7 +22,7 @@ public class ArtistDeleteCommandValidator : AbstractValidator<ArtistDeleteComman
                                 new ArtistGetByIdSpecification(id, withDirectorFilms: true, withActorFilms: true))
                             .First();
 
-                        return !artist.DirectorFilms.Any() || artist.ActorFilms.Any();
+                        return !artist.DirectorFilms.Any() && !artist.ActorFilms.Any();
                     })
                     .WithMessage(cmd => ErrorMessage(cmd.Id));
             });
