@@ -29,6 +29,7 @@ import {
     SocialLoginModule
 } from "@abacritt/angularx-social-login";
 import { GuestGuard } from "./shared/guards/guest.guard";
+import { ErrorDialogComponent } from "./error-dialog/error-dialog.component";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -43,7 +44,8 @@ export function tokenGetter() {
         FooterComponent,
         FilmInfoComponent,
         ConfirmationDialogComponent,
-        ManageFilmFormComponent
+        ManageFilmFormComponent,
+        ErrorDialogComponent,
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),

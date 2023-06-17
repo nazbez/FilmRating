@@ -3,12 +3,14 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { MatDialog } from "@angular/material/dialog";
+import { ErrorDialogComponent } from "../../error-dialog/error-dialog.component";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ErrorHandlerService implements HttpInterceptor {
-    constructor(private router: Router) { }
+    constructor(private router: Router, private dialog: MatDialog) { }
     
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req)
@@ -50,7 +52,8 @@ export class ErrorHandlerService implements HttpInterceptor {
             return this.handleNotFound(error);
         }
         else {
-            return error.error ? error.error : error.message;
+            this.dialog.open(ErrorDialogComponent, {data: {errorMessage: error.error ? error.error[0]['ErrorMessage'] : error.error.message}});
+            return "BadResult";
         }
     }
 

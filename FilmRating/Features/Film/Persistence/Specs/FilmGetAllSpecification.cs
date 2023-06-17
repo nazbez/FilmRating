@@ -20,5 +20,7 @@ public class FilmGetAllSpecification : BaseSpecification<FilmEntity>
         {
             AddInclude(f => f.Actors);
         }
+
+        ApplyOrderByDescending(x => x.Rating);
     }
 }

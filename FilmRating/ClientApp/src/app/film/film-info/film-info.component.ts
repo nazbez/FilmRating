@@ -7,7 +7,6 @@ import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmat
 import { MatDialog } from "@angular/material/dialog";
 import { ManageFilmFormComponent } from "../manage-film-form/manage-film-form.component";
 import { ArtistModel } from "../../shared/models/artist.model";
-import { RateFilmComponent } from "../rate-film/rate-film.component";
 import { RatingUserRateModel } from "../../shared/models/rating-user-rate.model";
 import { RatingService } from "../../shared/services/rating.service";
 
@@ -27,6 +26,7 @@ export class FilmInfoComponent implements OnInit {
     rating: number;
     ratingUserRate: RatingUserRateModel;
     timeStamp: number;
+    stars: boolean[];
     
     constructor(
         private activateRoute: ActivatedRoute,
@@ -47,6 +47,13 @@ export class FilmInfoComponent implements OnInit {
             this.ratingService.getUserFilmRate(this.id)
                 .subscribe(r => {
                     this.ratingUserRate = r;
+
+                    this.ratingService.getOptions().subscribe(r => {
+                        this.stars = Array(r.length).fill(false);
+                        if (this.ratingUserRate.hasRate) {
+                            this.stars = this.stars.map((_, i) => this.ratingUserRate.rate > i);
+                        }
+                    });
                 });
         }
         
@@ -107,21 +114,23 @@ export class FilmInfoComponent implements OnInit {
         this.timeStamp = (new Date()).getTime();
     }
 
-    rateFilm() {
-        const dialogRef = this.dialog.open(RateFilmComponent, {
-            width: '600px',
-            data: this.ratingUserRate
-        });
-
-        dialogRef.afterClosed().subscribe(result =>
-        {
-            if (typeof result === 'number') {
-                this.ratingUserRate.hasRate = true;
-                this.ratingUserRate.rate = result;
-                this.filmService.getRating(this.id)
-                    .subscribe(r => this.rating = r);
-                this.isLoading = false;
-            }
-        });
+    rateFilm(rate: number) {
+        this.stars = this.stars.map((_, i) => rate > i);
+        let isUpdating = this.ratingUserRate.hasRate;
+        if (isUpdating) {
+            this.ratingService.update({filmId: this.ratingUserRate.filmId, rate: rate})
+                .subscribe(() => this.updateFilmRating(rate));
+        } else {
+            this.ratingService.create({filmId: this.ratingUserRate.filmId, rate: rate})
+                .subscribe(() => this.updateFilmRating(rate));
+        }
+    }
+    
+    private updateFilmRating(rate: number) {
+        this.ratingUserRate.hasRate = true;
+        this.ratingUserRate.rate = rate;
+        this.filmService.getRating(this.id)
+            .subscribe(r => this.rating = r);
+        this.isLoading = false;
     }
 }

@@ -18,7 +18,7 @@ public record RatingGetOptionsQuery : IRequest<IEnumerable<int>>
         public Task<IEnumerable<int>> Handle(RatingGetOptionsQuery request, CancellationToken cancellationToken)
         {
             return Task.FromResult(
-                Enumerable.Range(ratingConfiguration.MinRate, ratingConfiguration.MaxRate + 1));
+                Enumerable.Range(ratingConfiguration.MinRate, ratingConfiguration.MaxRate));
         }
     }
 }

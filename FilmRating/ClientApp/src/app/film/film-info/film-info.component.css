@@ -26,3 +26,14 @@
 .min-height-container {
     min-height: 100vh;
 }
+
+.btn-secondary {
+    color: #000 !important;
+    background-color: #F5F5F5;
+    border-color: #F5F5F5;
+}
+
+.btn-secondary:hover {
+    background-color: #E2D9F2;
+    border-color: #E2D9F2;
+}

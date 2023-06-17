@@ -4,12 +4,12 @@
 </mat-form-field>
 
 <mat-expansion-panel hideToggle (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-    <mat-expansion-panel-header>
+    <mat-expansion-panel-header >
         <mat-panel-title class="text-medium">
             Additional filters
         </mat-panel-title>
-        <mat-panel-description class="text-medium">
-            {{panelOpenState ? "Set filters" : "Open panel to set filters"}}
+        <mat-panel-description class="text-medium d-flex justify-content-end me-0">
+            Click here to {{panelOpenState ? 'close' : 'open'}} filters
         </mat-panel-description>
     </mat-expansion-panel-header>
     <div *ngIf="panelOpenState" class="flex-container row">
@@ -43,13 +43,12 @@
                 </mat-select>
             </mat-form-field>
         </div>
-        <div class="flex-item">
-            <div>
-                <label class="example-name-label">Between years</label>
-            </div>
+        <div class="flex-item mb-3">
+            <p class="text-medium">Years</p>
+            <p class="mb-0">From {{minYear.value}} to {{maxYear.value}}</p>
             <mat-slider min="{{years[0]}}" max="{{years[years.length-1]}}" step="1" showTickMarks discrete>
-                <input value="{{years[0]}}" (valueChange)="applyMinYearFilter($event)" matSliderStartThumb>
-                <input value="{{years[years.length-1]}}" (valueChange)="applyMaxYearFilter($event)" matSliderEndThumb>
+                <input value="{{years[0]}}" (valueChange)="applyMinYearFilter($event)" matSliderStartThumb #minYear>
+                <input value="{{years[years.length-1]}}" (valueChange)="applyMaxYearFilter($event)" matSliderEndThumb #maxYear>
             </mat-slider>
         </div>
     </div>
@@ -58,7 +57,7 @@
 <div class="mat-mdc-form-field-subscript-wrapper mat-mdc-form-field-bottom-align"></div>
 
 <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" (matSortChange)="applySortChange($event)">
         <ng-container matColumnDef="photo">
             <th mat-header-cell *matHeaderCellDef class="w-10"></th>
             <td mat-cell *matCellDef="let row" class="w-10">
@@ -69,22 +68,34 @@
         </ng-container>
 
         <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-50"> Title </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-50">
+                Title
+                <div  [ngClass]="{pointer: true, active:sortColumn === 'title', desc:isDesc, asc:!isDesc}"></div>
+            </th>
             <td mat-cell *matCellDef="let row" class="table-link w-50"> {{row.title}} </td>
         </ng-container>
         
         <ng-container matColumnDef="year">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-15"> Year </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-15">
+                Year
+                <div  [ngClass]="{pointer:true, active:sortColumn === 'year', desc:isDesc, asc:!isDesc}"></div>
+            </th>
             <td mat-cell *matCellDef="let row" class="w-15"> {{row.year}} </td>
         </ng-container>
         
         <ng-container matColumnDef="genre">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-15"> Genre </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="w-15"> 
+                Genre
+                <div  [ngClass]="{pointer:true, active:sortColumn === 'genre', desc:isDesc, asc:!isDesc}"></div>
+            </th>
             <td mat-cell *matCellDef="let row" class="w-15"> {{row.genre.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="rating">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Rating </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                Rating
+                <div  [ngClass]="{pointer:true, active:sortColumn === 'rating', desc:isDesc, asc:!isDesc}"></div>
+            </th>
             <td mat-cell *matCellDef="let row"> {{row.rating | number:'0.1-2'}} </td>
         </ng-container>
 

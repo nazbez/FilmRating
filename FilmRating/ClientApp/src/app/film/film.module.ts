@@ -7,18 +7,17 @@ import { MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatSortModule } from "@angular/material/sort";
 import { MatIconModule } from "@angular/material/icon";
-import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
+import { DecimalPipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { MatDialogModule } from "@angular/material/dialog";
 import { AddFilmComponent } from "./add-film/add-film.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSelectModule } from "@angular/material/select";
-import { RateFilmComponent } from "./rate-film/rate-film.component";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatSliderModule } from "@angular/material/slider";
 
 @NgModule({
-    declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent, RateFilmComponent ],
+    declarations: [ FilmComponent, FilmTableComponent, AddFilmComponent ],
     exports: [ FilmComponent ],
     imports: [
         RouterModule.forChild([
@@ -39,6 +38,7 @@ import { MatSliderModule } from "@angular/material/slider";
         DecimalPipe,
         MatExpansionModule,
         MatSliderModule,
+        NgClass,
     ]
 })
 export class FilmModule {}
