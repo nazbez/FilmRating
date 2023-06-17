@@ -32,7 +32,7 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
         RuleFor(m => m.DurationInMinutes)
             .GreaterThan(filmConfiguration.MinimumDurationInMinutes);
 
-        When(m => m.Photo != null, () =>
+        When(m => m.Photo is not null, () =>
         {
             RuleFor(m => m.Photo!.FileName)
                 .Must(f => filmConfiguration.AllowedPhotoExtensions.Any(x => x == f.GetExtension()))
@@ -44,7 +44,7 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
             {
                 var genre = genreRepository.FindById(id);
 
-                return genre != null;
+                return genre is not null;
             })
             .WithMessage(m => GenreErrorMessage(m.GenreId));
 
@@ -55,7 +55,7 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
                         new ArtistGetByIdSpecification(id, withRoles: true))
                     .FirstOrDefault();
 
-                return artist != null && artist.Roles.Any(x => x.Id == filmConfiguration.DirectorRoleId);
+                return artist is not null && artist.Roles.Any(x => x.Id == filmConfiguration.DirectorRoleId);
             })
             .WithMessage(m => DirectorErrorMessage(m.DirectorId));
 

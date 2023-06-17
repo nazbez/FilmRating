@@ -5,14 +5,13 @@ using MediatR;
 
 namespace FilmRating.Features.Film.Rating;
 
-public record RatingIsFavoriteUpdateCommand(int FilmId, bool IsFavorite) : IRequest<Unit>
+public record RatingIsFavouriteUpdateCommand(int FilmId, bool IsFavorite) : IRequest<Unit>
 {
     [UsedImplicitly]
-    public class RatingIsFavoriteUpdateCommandHandler : IRequestHandler<RatingIsFavoriteUpdateCommand, Unit>
+    public class RatingIsFavoriteUpdateCommandHandler : IRequestHandler<RatingIsFavouriteUpdateCommand, Unit>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserProvider userProvider;
-        private readonly IPublisher publisher;
 
         public RatingIsFavoriteUpdateCommandHandler(
             IUnitOfWork unitOfWork, 
@@ -21,10 +20,9 @@ public record RatingIsFavoriteUpdateCommand(int FilmId, bool IsFavorite) : IRequ
         {
             this.unitOfWork = unitOfWork;
             this.userProvider = userProvider;
-            this.publisher = publisher;
         }
 
-        public async Task<Unit> Handle(RatingIsFavoriteUpdateCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(RatingIsFavouriteUpdateCommand request, CancellationToken cancellationToken)
         {
             var userId = userProvider.GetUserId()!;
             

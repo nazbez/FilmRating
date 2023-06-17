@@ -25,7 +25,7 @@ public record FilmDeleteCommand(int Id) : IRequest<Unit>
             var film = unitOfWork.Repository<FilmEntity, int>()
                 .FindById(request.Id);
 
-            if (film != null)
+            if (film is not null)
             {
                 await azureStorageService.Delete(film.PhotoPath.GetFileName());
                 unitOfWork.Repository<FilmEntity, int>().Remove(film);

@@ -7,6 +7,5 @@ public class RatingGetFavoriteByUserId : BaseSpecification<RatingEntity>
     public RatingGetFavoriteByUserId(string userId)
         : base(x => x.UserId == userId && x.IsFavourite)
     {
-        AddInclude(e => e.Film!);
     }
 }

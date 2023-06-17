@@ -11,6 +11,7 @@ export class NavMenuComponent implements OnInit {
     isExpanded = false;
     isUserAuthenticated: boolean;
     isUserAdmin: boolean;
+    isUserCritic: boolean;
     
     constructor(private authService: AuthenticationService, private router: Router) {
         this.authService.authChanged
@@ -21,6 +22,11 @@ export class NavMenuComponent implements OnInit {
         this.authService.isAdminChanged
             .subscribe(res => {
                 this.isUserAdmin = res;
+            });
+
+        this.authService.isCriticChanged
+            .subscribe(res => {
+                this.isUserCritic = res;
             });
     }
     
@@ -33,6 +39,11 @@ export class NavMenuComponent implements OnInit {
         this.authService.isAdminChanged
             .subscribe(res => {
                 this.isUserAdmin = res;
+            });
+
+        this.authService.isCriticChanged
+            .subscribe(res => {
+                this.isUserCritic = res;
             });
     }
 

@@ -5,30 +5,30 @@ using MediatR;
 
 namespace FilmRating.Features.Film.Rating;
 
-public record RatingGetUserIsFavouriteQuery(int FilmId) : IRequest<RatingUserIsFavorite>
+public record UserFilmRatingInfoGetQuery(int FilmId) : IRequest<UserFilmRatingInfo>
 {
     [UsedImplicitly]
-    public class RatingGetUserIsFavouriteQueryHandler : IRequestHandler<RatingGetUserIsFavouriteQuery, RatingUserIsFavorite>
+    public class UserFilmRatingInfoGetQueryHandler : IRequestHandler<UserFilmRatingInfoGetQuery, UserFilmRatingInfo>
     {
         private readonly IRepository<RatingEntity, int> repository;
         private readonly IUserProvider userProvider;
 
-        public RatingGetUserIsFavouriteQueryHandler(IRepository<RatingEntity, int> repository, IUserProvider userProvider)
+        public UserFilmRatingInfoGetQueryHandler(IRepository<RatingEntity, int> repository, IUserProvider userProvider)
         {
             this.repository = repository;
             this.userProvider = userProvider;
         }
 
-        public Task<RatingUserIsFavorite> Handle(RatingGetUserIsFavouriteQuery request, CancellationToken cancellationToken)
+        public Task<UserFilmRatingInfo> Handle(UserFilmRatingInfoGetQuery request, CancellationToken cancellationToken)
         {
             var userId = userProvider.GetUserId()!;
 
             var rate = repository.Find(new RatingGetByUserIdAndFilmId(request.FilmId, userId))
                 .FirstOrDefault();
 
-            var result = rate == null 
-                ? new RatingUserIsFavorite(false, false, request.FilmId)
-                : new RatingUserIsFavorite(true, rate.IsFavourite, request.FilmId);
+            var result = rate is null 
+                ? new UserFilmRatingInfo(false, null, request.FilmId)
+                : new UserFilmRatingInfo(true, rate.Rate, request.FilmId, rate.IsFavourite);
 
             return Task.FromResult(result);
         }

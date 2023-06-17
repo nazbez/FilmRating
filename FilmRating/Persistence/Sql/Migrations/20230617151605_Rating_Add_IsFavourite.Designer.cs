@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmRating.Migrations
 {
     [DbContext(typeof(FilmRatingDbContext))]
-    [Migration("20230611105507_Rating_add_IsFavourite")]
-    partial class Rating_add_IsFavourite
+    [Migration("20230617151605_Rating_Add_IsFavourite")]
+    partial class Rating_Add_IsFavourite
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

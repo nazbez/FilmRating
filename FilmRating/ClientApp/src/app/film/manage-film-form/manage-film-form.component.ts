@@ -11,7 +11,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FilmModel } from "../../shared/models/film.model";
 import { FilmDetailsModel } from "../../shared/models/film-details.model";
 import {RatingService} from "../../shared/services/rating.service";
-import {RatingUserRateModel} from "../../shared/models/rating-user-rate.model";
+import {UserFilmRatingInfoModel} from "../../shared/models/user-film-rating-info.model";
 
 @Component({
     selector: 'app-manage-film-form',

@@ -7,7 +7,7 @@ import { ConfirmationDialogComponent } from "../../confirmation-dialog/confirmat
 import { MatDialog } from "@angular/material/dialog";
 import { ManageFilmFormComponent } from "../manage-film-form/manage-film-form.component";
 import { ArtistModel } from "../../shared/models/artist.model";
-import { RatingUserRateModel } from "../../shared/models/rating-user-rate.model";
+import { UserFilmRatingInfoModel } from "../../shared/models/user-film-rating-info.model";
 import { RatingService } from "../../shared/services/rating.service";
 
 @Component({
@@ -24,7 +24,7 @@ export class FilmInfoComponent implements OnInit {
     isLoading: boolean = true;
     photoPath: string;
     rating: number;
-    ratingUserRate: RatingUserRateModel;
+    ratingUserRate: UserFilmRatingInfoModel;
     timeStamp: number;
     stars: boolean[];
     
@@ -44,7 +44,7 @@ export class FilmInfoComponent implements OnInit {
         this.isUserAuthenticated = this.authService.isUserAuthenticated();
         
         if (this.isUserCritic && this.isUserAuthenticated) {
-            this.ratingService.getUserFilmRate(this.id)
+            this.ratingService.getUserFilmRatingInfo(this.id)
                 .subscribe(r => {
                     this.ratingUserRate = r;
 
@@ -124,6 +124,20 @@ export class FilmInfoComponent implements OnInit {
             this.ratingService.create({filmId: this.ratingUserRate.filmId, rate: rate})
                 .subscribe(() => this.updateFilmRating(rate));
         }
+    }
+
+    addToFavorites() {
+        this.ratingService.updateIsFavorite({filmId: this.ratingUserRate.filmId, isFavourite: true })
+            .subscribe(() => {
+                this.ratingUserRate.isFavorite = true;
+            });
+    }
+
+    deleteFromFavorites() {
+        this.ratingService.updateIsFavorite({filmId: this.ratingUserRate.filmId, isFavourite: false })
+            .subscribe(() => {
+                this.ratingUserRate.isFavorite = false;
+            });
     }
     
     private updateFilmRating(rate: number) {

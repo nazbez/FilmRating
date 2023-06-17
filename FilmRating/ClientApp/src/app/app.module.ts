@@ -30,6 +30,9 @@ import {
 } from "@abacritt/angularx-social-login";
 import { GuestGuard } from "./shared/guards/guest.guard";
 import { ErrorDialogComponent } from "./error-dialog/error-dialog.component";
+import { FavouriteFilmsComponent } from "./film/favourite-films/favourite-films.component";
+import { CriticGuard } from "./shared/guards/critic.guard";
+import { FilmModule } from "./film/film.module";
 
 export function tokenGetter() {
     return localStorage.getItem("token");
@@ -46,6 +49,7 @@ export function tokenGetter() {
         ConfirmationDialogComponent,
         ManageFilmFormComponent,
         ErrorDialogComponent,
+        FavouriteFilmsComponent
     ],
     imports: [
         BrowserModule.withServerTransition({appId: 'ng-cli-universal'}),
@@ -76,7 +80,12 @@ export function tokenGetter() {
                 path: 'film/:id',
                 component: FilmInfoComponent
             },
-            { path: '**', redirectTo: '/' }
+            {
+                path: 'favourite-films',
+                component: FavouriteFilmsComponent,
+                canActivate: [AuthGuard, CriticGuard]
+            },
+            {path: '**', redirectTo: '/'}
         ]),
         JwtModule.forRoot({
             config: {
@@ -93,7 +102,8 @@ export function tokenGetter() {
         MatIconModule,
         MatSelectModule,
         SocialLoginModule,
-        GoogleSigninButtonModule
+        GoogleSigninButtonModule,
+        FilmModule
     ],
     providers: [
         {

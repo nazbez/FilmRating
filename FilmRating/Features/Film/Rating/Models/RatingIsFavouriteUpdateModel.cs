@@ -2,6 +2,6 @@
 
 namespace FilmRating.Features.Film.Rating;
 
-public record RatingisFavoriteUpdateModel(
+public record RatingIsFavouriteUpdateModel(
     [Required] int FilmId,
-    [Required] bool IsFavorite);
+    [Required] bool IsFavourite);

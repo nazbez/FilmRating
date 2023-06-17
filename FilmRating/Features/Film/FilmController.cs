@@ -1,5 +1,4 @@
-﻿using FilmRating.Features.Film.Rating;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FilmRating.Features.Authentication.UserRoleEntityConstants;
@@ -78,8 +77,7 @@ public class FilmController : Controller
     [HttpGet("IsFavourite/All")]
     public async Task<IActionResult> GetMyFavourite()
     {
-        Console.WriteLine("IsFavourite/All");
-        var query = new GetMyFavoriteQuery();
+        var query = new FilmGetMyFavoriteQuery();
         var result = await mediator.Send(query);
         return Ok(result);
     }
