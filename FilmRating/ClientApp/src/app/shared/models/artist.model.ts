@@ -9,3 +9,9 @@ export interface ArtistRoleModel {
     id: number;
     name: string;
 }
+
+export interface ArtisteTableItemModel {
+    id: string;
+    fullName: string;
+    roles: ArtistRoleModel[];
+}

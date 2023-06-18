@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, ViewChild } from "@angular/core";
-import { ArtistModel, ArtistRoleModel } from "../../shared/models/artist.model";
+import { ArtisteTableItemModel, ArtistModel, ArtistRoleModel } from "../../shared/models/artist.model";
 import { ArtistService } from "../../shared/services/artist.service";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatDialog } from "@angular/material/dialog";
@@ -15,7 +15,7 @@ import { MatSort } from "@angular/material/sort";
 })
 export class ArtistTableComponent implements OnInit {
     displayedColumns: string[] = ['fullName', 'jobs', 'updateItem', 'deleteItem'];
-    dataSource: MatTableDataSource<ArtistModel>;
+    dataSource: MatTableDataSource<ArtisteTableItemModel>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -25,7 +25,9 @@ export class ArtistTableComponent implements OnInit {
     ngOnInit() {
         this.artistService.getAll()
             .subscribe((a) => {
-                this.dataSource = new MatTableDataSource(a);
+                let data = a.map(x => this.toArtistItemModel(x));
+                
+                this.dataSource = new MatTableDataSource(data);
 
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.sort = this.sort;
@@ -52,7 +54,7 @@ export class ArtistTableComponent implements OnInit {
             const isAsc = sort.direction === 'asc';
             switch (sort.active) {
                 case 'fullName':
-                    return this.compare(`${a.firstName} ${a.lastName}`, `${b.firstName} ${b.lastName}`, isAsc);
+                    return this.compare(a.fullName, b.fullName, isAsc);
                 case 'jobs':
                     return this.compare(this.mapRoles(a.roles), this.mapRoles(b.roles), isAsc);
                 default:
@@ -70,7 +72,7 @@ export class ArtistTableComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             if (typeof result === 'object') {
                 const newData = [ ...this.dataSource.data ];
-                newData.push(result);
+                newData.push(this.toArtistItemModel(result));
                 this.dataSource.data = newData;
             }
         });
@@ -81,14 +83,14 @@ export class ArtistTableComponent implements OnInit {
         
         const dialogRef = this.dialog.open(ManageArtistComponent, {
             width: '600px',
-            data: artist
+            data: this.toArtistModel(artist),
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (typeof result === 'object') {
                 const newData = [ ...this.dataSource.data ];
                 let index = newData.findIndex(x => x.id === id);
-                newData[index] = result;
+                newData[index] = this.toArtistItemModel(result);
                 this.dataSource.data = newData;
             }
         });
@@ -119,5 +121,24 @@ export class ArtistTableComponent implements OnInit {
 
     private compare(a: number | string, b: number | string, isAsc: boolean) {
         return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+    }
+
+    private toArtistModel(item: ArtisteTableItemModel): ArtistModel {
+        let fullNameArr = item.fullName.split(' ');
+
+        return {
+            id: item.id,
+            firstName: fullNameArr[0],
+            lastName: fullNameArr[1],
+            roles: item.roles,
+        }
+    }
+
+    private toArtistItemModel(model: ArtistModel): ArtisteTableItemModel {
+        return {
+            id: model.id,
+            fullName: `${model.firstName} ${model.lastName}`,
+            roles: model.roles,
+        };
     }
 }

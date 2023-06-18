@@ -13,7 +13,7 @@
     <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortData($event)" class="mat-elevation-z8 demo-table">
         <ng-container matColumnDef="fullName">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="fullName" class="ps-5 w-40">Full Name</th>
-            <td mat-cell *matCellDef="let element" class=" ps-5 w-40">{{element.firstName}} {{element.lastName}}</td>
+            <td mat-cell *matCellDef="let element" class=" ps-5 w-40">{{element.fullName}}</td>
         </ng-container>
 
         <ng-container matColumnDef="jobs">
