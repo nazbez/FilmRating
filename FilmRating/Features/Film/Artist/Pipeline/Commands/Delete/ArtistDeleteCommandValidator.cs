@@ -28,5 +28,5 @@ public class ArtistDeleteCommandValidator : AbstractValidator<ArtistDeleteComman
             });
     }
     
-    private static string ErrorMessage(Guid id) => $"Cannot delete artist with {id}. Artist has related films";
+    private static string ErrorMessage(Guid id) => $"Cannot delete this artist. Artist has related films";
 }
