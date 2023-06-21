@@ -117,8 +117,7 @@ export class FilmInfoComponent implements OnInit {
     rateFilm(rate: number) {
         this.stars = this.stars.map((_, i) => rate > i);
         let isUpdating = this.ratingUserRate.hasRate;
-        let isFavourite = this.ratingUserRate.isFavorite;
-        if (isUpdating || isFavourite) {
+        if (isUpdating) {
             this.ratingService.update({filmId: this.ratingUserRate.filmId, rate: rate})
                 .subscribe(() => this.updateFilmRating(rate));
         } else {
