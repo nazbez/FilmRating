@@ -26,7 +26,7 @@ public record UserFilmRatingInfoGetQuery(int FilmId) : IRequest<UserFilmRatingIn
             var rate = repository.Find(new RatingGetByUserIdAndFilmId(request.FilmId, userId))
                 .FirstOrDefault();
 
-            var result = rate is null 
+            var result = rate is null || rate.Rate is null
                 ? new UserFilmRatingInfo(false, null, request.FilmId)
                 : new UserFilmRatingInfo(true, rate.Rate, request.FilmId, rate.IsFavourite);
 
