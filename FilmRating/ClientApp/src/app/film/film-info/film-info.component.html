@@ -3,22 +3,21 @@
         <h2 class="mb-0">{{filmDetails.title}}</h2>
         <div class="d-flex align-items-center">
             <p class="text-medium mb-0 me-4 mt-1" *ngIf="isUserAuthenticated && isUserCritic && ratingUserRate.hasRate">Your rate: {{ratingUserRate.rate}}/10</p>
+            <p class="text-medium mb-0 me-4 mt-1" *ngIf="isUserAuthenticated && isUserCritic && !ratingUserRate.hasRate">Rate film:</p>
             <div>
-                 <span
-                         *ngFor="let star of stars; let i = index"
-                         (click)="rateFilm(i + 1)"
-                 >
-                        <ng-container *ngIf="star; else noStar">
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.0003 23.027L24.2403 28.0003L22.0537 18.627L29.3337 12.3203L19.747 11.507L16.0003 2.66699L12.2537 11.507L2.66699 12.3203L9.94699 18.627L7.76033 28.0003L16.0003 23.027Z" fill="#FFC107"/>
-                            </svg>
-                        </ng-container>
-                        <ng-template #noStar>
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M16.0003 20.5203L10.987 23.547L12.307 17.8403L7.88033 14.0003L13.7203 13.507L16.0003 8.12033L18.2803 13.507L24.1203 14.0003L19.6937 17.8403L21.0137 23.547M29.3337 12.3203L19.747 11.507L16.0003 2.66699L12.2537 11.507L2.66699 12.3203L9.93366 18.627L7.76033 28.0003L16.0003 23.027L24.2403 28.0003L22.0537 18.627L29.3337 12.3203Z" fill="#666666"/>
-                            </svg>
-                        </ng-template>
-                 </span>
+                <span *ngFor="let star of stars; let i = index"
+                      (click)="rateFilm(i + 1)">
+                    <ng-container *ngIf="star; else noStar">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.0003 23.027L24.2403 28.0003L22.0537 18.627L29.3337 12.3203L19.747 11.507L16.0003 2.66699L12.2537 11.507L2.66699 12.3203L9.94699 18.627L7.76033 28.0003L16.0003 23.027Z" fill="#FFC107" />
+                        </svg>
+                    </ng-container>
+                    <ng-template #noStar>
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.0003 20.5203L10.987 23.547L12.307 17.8403L7.88033 14.0003L13.7203 13.507L16.0003 8.12033L18.2803 13.507L24.1203 14.0003L19.6937 17.8403L21.0137 23.547M29.3337 12.3203L19.747 11.507L16.0003 2.66699L12.2537 11.507L2.66699 12.3203L9.93366 18.627L7.76033 28.0003L16.0003 23.027L24.2403 28.0003L22.0537 18.627L29.3337 12.3203Z" fill="#666666" />
+                        </svg>
+                    </ng-template>
+                </span>
                 <div class="d-flex justify-content-between">
                     <button *ngIf="isUserAuthenticated && isUserAdmin" (click)="update()" mat-raised-button class="btn">
                         Edit
