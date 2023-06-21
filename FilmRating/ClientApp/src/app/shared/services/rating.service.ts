@@ -11,12 +11,8 @@ import {RatingIsFavouriteUpdateModel} from "../models/rating-is-favourite-update
 export class RatingService {
     constructor(private http: HttpClient) { }
     
-    public create = (model: RatingCreateModel) => {
-        return this.http.post('api/Rating', model);
-    }
-
     public update = (model: RatingUpdateModel) => {
-        return this.http.put('api/Rating', model);
+        return this.http.post('api/Rating', model);
     }
     
     public updateIsFavorite = (model: RatingIsFavouriteUpdateModel) => {

@@ -18,14 +18,6 @@ public class RatingController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(RatingCreateModel model)
-    {
-        var command = new RatingCreateCommand(model.FilmId, model.Rate);
-        var result = await mediator.Send(command);
-        return Ok(result);
-    }
-
-    [HttpPut]
     public async Task<IActionResult> Update(RatingUpdateModel model)
     {
         var command = new RatingUpdateCommand(model.FilmId, model.Rate);

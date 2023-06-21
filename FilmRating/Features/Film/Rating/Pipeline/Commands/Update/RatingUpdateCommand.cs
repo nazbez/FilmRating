@@ -31,10 +31,17 @@ public record RatingUpdateCommand(int FilmId, int Rate) : IRequest<Unit>
             var rating = unitOfWork.Repository<RatingEntity, int>()
                 .Find(new RatingGetByUserIdAndFilmId(request.FilmId, userId))
                 .FirstOrDefault()!;
-            
-            rating.UpdateRate(request.Rate);
-            
-            unitOfWork.Repository<RatingEntity, int>().Update(rating);
+
+            if (rating is null)
+            {
+                rating = RatingEntity.Create(request.FilmId, userId!, request.Rate);
+                unitOfWork.Repository<RatingEntity, int>().Add(rating);
+            }
+            else
+            {
+                rating.UpdateRate(request.Rate);
+                unitOfWork.Repository<RatingEntity, int>().Update(rating);
+            }
 
             await unitOfWork.CompleteAsync(cancellationToken);
 
