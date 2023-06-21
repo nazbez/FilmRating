@@ -26,11 +26,19 @@ public record UserFilmRatingInfoGetQuery(int FilmId) : IRequest<UserFilmRatingIn
             var rate = repository.Find(new RatingGetByUserIdAndFilmId(request.FilmId, userId))
                 .FirstOrDefault();
 
-            var result = rate is null || rate.Rate is null
-                ? new UserFilmRatingInfo(false, null, request.FilmId)
-                : new UserFilmRatingInfo(true, rate.Rate, request.FilmId, rate.IsFavourite);
+            var result = GetUserFilmRatingInfo(request, rate);
 
             return Task.FromResult(result);
+        }
+
+        private UserFilmRatingInfo GetUserFilmRatingInfo(UserFilmRatingInfoGetQuery request, RatingEntity? rate)
+        {
+            if (rate is null)
+                return new UserFilmRatingInfo(false, null, request.FilmId);
+            else if (rate.Rate is null)
+                return new UserFilmRatingInfo(false, null, rate.FilmId, rate.IsFavourite);
+            else 
+                return new UserFilmRatingInfo(true, rate.Rate, request.FilmId, rate.IsFavourite);
         }
     }
 }
