@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  filmrating:
+    image: ${DOCKER_REGISTRY-}filmrating
+    build:
+      context: .
+      dockerfile: FilmRating/Dockerfile
+    container_name: filmrating
+    ports:
+      - "5000:80"
+    depends_on:
+        - db
+
+  filmrating_client:
+    image: ${DOCKER_REGISTRY-}filmrating_client
+    build:
+      context: .
+      dockerfile: FilmRating/ClientApp/Dockerfile
+    ports:
+      - "4200:4200" 
+      - "49153:49153"
+    volumes:
+      - ./FilmRating/ClientApp:/app
+   
+  db:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: filmrating_db
+    ports:
+        - "1433:1433"
+    volumes:
+        - ./mssql/data:/var/opt/mssql/data
+    environment:
+        SA_PASSWORD: "Q1w2e3r4!"
+        ACCEPT_EULA: "Y"
