@@ -2,6 +2,7 @@ using FilmRating.Infrastructure.Injection;
 using FilmRating.Infrastructure.Pipeline;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,9 @@ builder.Services.Configure<FormOptions>(o =>
 
 builder.Services.RegisterDependencies(configuration);
 
+builder.Host.UseSerilog((context, config) => 
+    config.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 app.UseStaticFiles();
@@ -43,6 +47,8 @@ else
 {
     app.UseSpaStaticFiles();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseRouting();
 

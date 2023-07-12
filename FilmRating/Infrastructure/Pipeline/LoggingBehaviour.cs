@@ -27,7 +27,7 @@ public class LoggingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         }
         var response = await next();
         
-        logger.LogInformation("Handled {Response.Name}", typeof(TRequest).Name);
+        logger.LogInformation("Handled {ResponseName}", typeof(TRequest).Name);
         return response;
     }
 }
