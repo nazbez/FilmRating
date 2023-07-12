@@ -1,5 +1,4 @@
 ﻿using FilmRating.Features.Authentication;
-using FilmRating.Infrastructure.Repository;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static System.Reflection.Assembly;
@@ -13,11 +12,11 @@ public class FilmRatingDbContext : IdentityDbContext<User>
     {
     }
     
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
         var assembly = GetExecutingAssembly();
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.RegisterAllEntities<IEntity>(assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+        base.OnModelCreating(builder);
+        builder.RegisterAllEntities(assembly);
+        builder.ApplyConfigurationsFromAssembly(assembly);
     }
 }

@@ -2,9 +2,8 @@
 
 namespace FilmRating.Features.Film.Artist;
 
-public class ArtistEntity : IEntity<Guid>
+public class ArtistEntity : Entity<Guid>
 {
-    public Guid Id { get; private set; }
     public string FirstName { get; private set; } = null!;
     public string LastName { get; private set; } = null!;
 

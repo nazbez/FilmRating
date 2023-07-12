@@ -5,30 +5,29 @@ using MediatR;
 
 namespace FilmRating.Features.Film;
 
-public record FilmGetAllQuery : IRequest<IEnumerable<FilmVm>>
+public class FilmGetAllQuery : IRequest<IEnumerable<FilmVm>> {}
+
+[UsedImplicitly]
+public class FilmGetAllQueryHandler : IRequestHandler<FilmGetAllQuery, IEnumerable<FilmVm>>
 {
-    [UsedImplicitly]
-    public class FilmGetAllQueryHandler : IRequestHandler<FilmGetAllQuery, IEnumerable<FilmVm>>
+    private readonly IRepository<FilmEntity, int> filmRepository;
+    private readonly IMapper mapper;
+
+    public FilmGetAllQueryHandler(
+        IRepository<FilmEntity, int> filmRepository,
+        IMapper mapper)
     {
-        private readonly IRepository<FilmEntity, int> filmRepository;
-        private readonly IMapper mapper;
-
-        public FilmGetAllQueryHandler(
-            IRepository<FilmEntity, int> filmRepository,
-            IMapper mapper)
-        {
-            this.filmRepository = filmRepository;
-            this.mapper = mapper;
-        }
+        this.filmRepository = filmRepository;
+        this.mapper = mapper;
+    }
         
-        public Task<IEnumerable<FilmVm>> Handle(FilmGetAllQuery request, CancellationToken cancellationToken)
-        {
-            var films = filmRepository.Find(
-                new FilmGetAllSpecification(true, true, true));
+    public Task<IEnumerable<FilmVm>> Handle(FilmGetAllQuery request, CancellationToken cancellationToken)
+    {
+        var films = filmRepository.Find(
+            new FilmGetAllSpecification(true, true, true));
 
-            var filmVms = mapper.Map<IEnumerable<FilmVm>>(films);
+        var filmVms = mapper.Map<IEnumerable<FilmVm>>(films);
 
-            return Task.FromResult(filmVms);
-        }
+        return Task.FromResult(filmVms);
     }
 }

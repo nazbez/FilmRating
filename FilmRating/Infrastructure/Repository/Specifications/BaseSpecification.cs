@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 
 namespace FilmRating.Infrastructure.Repository;
 
@@ -15,8 +16,8 @@ public abstract class BaseSpecification<T> : ISpecification<T>
     }
     
     public Expression<Func<T, bool>> Criteria { get; } = null!;
-    public List<Expression<Func<T, object>>> Includes { get; } = new();
-    public List<string> IncludeStrings { get; } = new();
+    public ICollection<Expression<Func<T, object>>> Includes { get; } = new Collection<Expression<Func<T, object>>>();
+    public ICollection<string> IncludeStrings { get; } = new Collection<string>();
     public Expression<Func<T, object>> OrderBy { get; private set; } = null!;
     public Expression<Func<T, object>> OrderByDescending { get; private set; } = null!;
     public Expression<Func<T, object>> GroupBy { get; private set; } = null!;

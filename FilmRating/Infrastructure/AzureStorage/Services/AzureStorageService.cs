@@ -36,7 +36,7 @@ public class AzureStorageService : IAzureStorageService
             
             response.Status = $"File {blobFileName} Uploaded Successfully";
             response.Error = false;
-            response.Blob.Uri = client.Uri.AbsoluteUri;
+            response.Blob.Uri = client.Uri;
             response.Blob.Name = client.Name;
 
         }

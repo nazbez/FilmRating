@@ -2,9 +2,8 @@
 
 namespace FilmRating.Features.Film.Artist;
 
-public class ArtistRoleEntity : IEntity<int>
+public class ArtistRoleEntity : Entity<int>
 {
-    public int Id { get; private set; }
     public string Name { get; private set; } = null!;
 
     public ICollection<ArtistEntity> Artists { get; private set; } = new HashSet<ArtistEntity>();

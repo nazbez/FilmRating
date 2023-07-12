@@ -24,7 +24,7 @@ public class FilmEntityMap : IEntityTypeConfiguration<FilmEntity>
 
         builder.Property(x => x.Budget)
             .IsRequired()
-            .HasColumnType("decimal(18,4)");;
+            .HasColumnType("decimal(18,4)");
         
         builder.Property(x => x.Duration)
             .IsRequired();

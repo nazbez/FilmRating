@@ -34,7 +34,7 @@ public sealed class UnitOfWork : IUnitOfWork
         if (repositories.ContainsKey(type)) 
             return (IRepository<TEntity, T>)repositories[type]!;
         
-        var repositoryType = typeof(Repository<TEntity, T>);
+        var repositoryType = typeof(EfRepository<TEntity, T>);
 
         var repositoryInstance =
             Activator.CreateInstance(repositoryType, context);

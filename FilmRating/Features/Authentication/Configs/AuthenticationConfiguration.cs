@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Text;
 
 namespace FilmRating.Features.Authentication;
 
@@ -10,7 +11,7 @@ public class AuthenticationConfiguration
     public int ExpiryInHours { get; set; }
     public GoogleAuthenticationConfiguration GoogleAuthenticationConfiguration { get; set; } = null!;
 
-    public byte[] EncodedKey => Encoding.UTF8.GetBytes(Key);
+    public ReadOnlyCollection<byte> EncodedKey => new(Encoding.UTF8.GetBytes(Key));
 }
 
 public class GoogleAuthenticationConfiguration

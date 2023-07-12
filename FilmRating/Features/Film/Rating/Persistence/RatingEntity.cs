@@ -1,14 +1,12 @@
 ﻿using FilmRating.Features.Authentication;
 using FilmRating.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
 
 namespace FilmRating.Features.Film.Rating;
 
-public class RatingEntity : IEntity<int>
+public class RatingEntity : Entity<int>
 {
-    public int Id { get; private set; }
-    public int? Rate { get; private set; } = null;
-    public bool IsFavourite { get; private set; } = false;
+    public int? Rate { get; private set; }
+    public bool IsFavourite { get; private set; }
     public int FilmId { get; private set; }
     public string UserId { get; private set; } = null!;
     public FilmEntity? Film { get; private set; }

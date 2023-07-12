@@ -6,7 +6,7 @@ public class SpecificationEvaluator<TEntity, T>
     where TEntity : class, IEntity<T> 
     where T: struct
 {
-    public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity>? specification)
+    public IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity>? specification)
     {
         var query = inputQuery;
 

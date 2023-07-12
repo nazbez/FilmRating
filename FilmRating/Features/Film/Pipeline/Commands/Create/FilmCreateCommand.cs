@@ -17,54 +17,53 @@ public record FilmCreateCommand(
     int GenreId,
     Guid DirectorId,
     IEnumerable<Guid> ActorIds,
-    [Required] IFormFile Photo) : IRequest<FilmVm>
+    [Required] IFormFile Photo) : IRequest<FilmVm>;
+    
+[UsedImplicitly]
+public class FilmCreateCommandHandler : IRequestHandler<FilmCreateCommand, FilmVm>
 {
-    [UsedImplicitly]
-    public class FilmCreateCommandHandler : IRequestHandler<FilmCreateCommand, FilmVm>
+    private readonly IMapper mapper;
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IAzureStorageService azureStorageService;
+
+    public FilmCreateCommandHandler(
+        IMapper mapper,
+        IUnitOfWork unitOfWork, 
+        IAzureStorageService azureStorageService)
     {
-        private readonly IMapper mapper;
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IAzureStorageService azureStorageService;
+        this.mapper = mapper;
+        this.unitOfWork = unitOfWork;
+        this.azureStorageService = azureStorageService;
+    }
 
-        public FilmCreateCommandHandler(
-            IMapper mapper,
-            IUnitOfWork unitOfWork, 
-            IAzureStorageService azureStorageService)
-        {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
-            this.azureStorageService = azureStorageService;
-        }
+    public async Task<FilmVm> Handle(FilmCreateCommand request, CancellationToken cancellationToken)
+    {
+        var actors = unitOfWork.Repository<ArtistEntity, Guid>()
+            .Find(new ArtistGetByIdsSpecification(request.ActorIds))
+            .ToList();
 
-        public async Task<FilmVm> Handle(FilmCreateCommand request, CancellationToken cancellationToken)
-        {
-            var actors = unitOfWork.Repository<ArtistEntity, Guid>()
-                .Find(new ArtistGetByIdsSpecification(request.ActorIds))
-                .ToList();
+        var blobResult = await azureStorageService.Upload(
+            FilmEntity.GetBlobName(request.Title, request.Year),
+            request.Photo);
 
-            var blobResult = await azureStorageService.Upload(
-                FilmEntity.GetBlobName(request.Title, request.Year),
-                request.Photo);
+        var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri?.AbsoluteUri;
 
-            var photoPath = blobResult.Error ? string.Empty : blobResult.Blob.Uri;
-
-            var film = FilmEntity.Create(
-                request.Title,
-                request.Year,
-                request.ShortDescription,
-                request.Budget,
-                TimeSpan.FromMinutes(request.DurationInMinutes),
-                photoPath!,
-                request.GenreId,
-                request.DirectorId,
-                actors);
+        var film = FilmEntity.Create(
+            request.Title,
+            request.Year,
+            request.ShortDescription,
+            request.Budget,
+            TimeSpan.FromMinutes(request.DurationInMinutes),
+            photoPath!,
+            request.GenreId,
+            request.DirectorId,
+            actors);
             
-            unitOfWork.Repository<FilmEntity, int>().Add(film);
+        unitOfWork.Repository<FilmEntity, int>().Add(film);
 
-            await unitOfWork.CompleteAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
 
-            var filmVm = mapper.Map<FilmVm>(film);
-            return filmVm;
-        }
+        var filmVm = mapper.Map<FilmVm>(film);
+        return filmVm;
     }
 }

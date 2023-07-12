@@ -40,7 +40,7 @@ public class AuthenticationInjectModule : IInjectModule
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = authenticationConfiguration.Issuer,
                 ValidAudience = authenticationConfiguration.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(authenticationConfiguration.EncodedKey)
+                IssuerSigningKey = new SymmetricSecurityKey(authenticationConfiguration.EncodedKey.ToArray())
             };
         });
         

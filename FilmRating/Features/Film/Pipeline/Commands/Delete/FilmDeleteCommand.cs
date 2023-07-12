@@ -6,33 +6,32 @@ using MediatR;
 
 namespace FilmRating.Features.Film;
 
-public record FilmDeleteCommand(int Id) : IRequest<Unit>
+public record FilmDeleteCommand(int Id) : IRequest<Unit>;
+
+[UsedImplicitly]
+public class FilmDeleteCommandHandler : IRequestHandler<FilmDeleteCommand, Unit>
 {
-    [UsedImplicitly]
-    public class FilmDeleteCommandHandler : IRequestHandler<FilmDeleteCommand, Unit>
+    private readonly IUnitOfWork unitOfWork;
+    private readonly IAzureStorageService azureStorageService;
+
+    public FilmDeleteCommandHandler(IUnitOfWork unitOfWork, IAzureStorageService azureStorageService)
     {
-        private readonly IUnitOfWork unitOfWork;
-        private readonly IAzureStorageService azureStorageService;
+        this.unitOfWork = unitOfWork;
+        this.azureStorageService = azureStorageService;
+    }
 
-        public FilmDeleteCommandHandler(IUnitOfWork unitOfWork, IAzureStorageService azureStorageService)
+    public async Task<Unit> Handle(FilmDeleteCommand request, CancellationToken cancellationToken)
+    {
+        var film = unitOfWork.Repository<FilmEntity, int>()
+            .FindById(request.Id);
+
+        if (film is not null)
         {
-            this.unitOfWork = unitOfWork;
-            this.azureStorageService = azureStorageService;
+            await azureStorageService.Delete(film.PhotoPath.GetFileName());
+            unitOfWork.Repository<FilmEntity, int>().Remove(film);
+            await unitOfWork.CompleteAsync(cancellationToken);
         }
 
-        public async Task<Unit> Handle(FilmDeleteCommand request, CancellationToken cancellationToken)
-        {
-            var film = unitOfWork.Repository<FilmEntity, int>()
-                .FindById(request.Id);
-
-            if (film is not null)
-            {
-                await azureStorageService.Delete(film.PhotoPath.GetFileName());
-                unitOfWork.Repository<FilmEntity, int>().Remove(film);
-                await unitOfWork.CompleteAsync(cancellationToken);
-            }
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

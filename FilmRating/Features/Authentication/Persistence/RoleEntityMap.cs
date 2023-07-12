@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static FilmRating.Features.Authentication.UserRoleEntityConstants;
@@ -14,13 +15,13 @@ public class RoleEntityMap : IEntityTypeConfiguration<IdentityRole>
             {
                 Id = "a77cd0ac-a81a-451e-852f-5061b4a6a2d1",
                 Name = Critic,
-                NormalizedName = Critic.ToUpper()
+                NormalizedName = Critic.ToUpper(CultureInfo.InvariantCulture)
             },
             new IdentityRole
             {
                 Id = "2b789031-ca50-4855-b335-e2f5cfb47bf4",
                 Name = Administrator,
-                NormalizedName = Administrator.ToUpper()
+                NormalizedName = Administrator.ToUpper(CultureInfo.InvariantCulture)
             }
         );
     }

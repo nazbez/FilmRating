@@ -51,10 +51,12 @@ app.UseAuthorization();
 
 app.UseFluentValidationExceptionHandler();
 
+#pragma warning disable ASP0014
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
+#pragma warning restore ASP0014
 
 app.UseSpa(spa =>
 {

@@ -2,5 +2,5 @@
 
 public class AuthorizationConfiguration
 {
-    public string[] AdminEmails { get; set; } = null!;
+    public IReadOnlyCollection<string> AdminEmails { get; set; } = null!;
 }

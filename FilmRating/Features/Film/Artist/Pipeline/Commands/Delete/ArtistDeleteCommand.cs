@@ -4,29 +4,28 @@ using MediatR;
 
 namespace FilmRating.Features.Film.Artist;
 
-public record ArtistDeleteCommand(Guid Id) : IRequest<Unit>
+public record ArtistDeleteCommand(Guid Id) : IRequest<Unit>;
+
+[UsedImplicitly]
+public class ArtistDeleteCommandHandler : IRequestHandler<ArtistDeleteCommand, Unit>
 {
-    [UsedImplicitly]
-    public class ArtistDeleteCommandHandler : IRequestHandler<ArtistDeleteCommand, Unit>
+    private readonly IUnitOfWork unitOfWork;
+
+    public ArtistDeleteCommandHandler(IUnitOfWork unitOfWork)
     {
-        private readonly IUnitOfWork unitOfWork;
+        this.unitOfWork = unitOfWork;
+    }
 
-        public ArtistDeleteCommandHandler(IUnitOfWork unitOfWork)
+    public async Task<Unit> Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
+    {
+        var artist = unitOfWork.Repository<ArtistEntity, Guid>().FindById(request.Id);
+
+        if (artist is not null)
         {
-            this.unitOfWork = unitOfWork;
+            unitOfWork.Repository<ArtistEntity, Guid>().Remove(artist);
+            await unitOfWork.CompleteAsync(cancellationToken);
         }
-
-        public async Task<Unit> Handle(ArtistDeleteCommand request, CancellationToken cancellationToken)
-        {
-            var artist = unitOfWork.Repository<ArtistEntity, Guid>().FindById(request.Id);
-
-            if (artist is not null)
-            {
-                unitOfWork.Repository<ArtistEntity, Guid>().Remove(artist);
-                await unitOfWork.CompleteAsync(cancellationToken);
-            }
             
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

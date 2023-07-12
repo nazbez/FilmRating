@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FilmRating.Infrastructure.Repository;
 
-public class Repository<TEntity, T> : IRepository<TEntity, T>
+public class EfRepository<TEntity, T> : IRepository<TEntity, T>
     where TEntity : class, IEntity<T> 
     where T: struct
 {
     private readonly FilmRatingDbContext context;
 
-    public Repository(FilmRatingDbContext context)
+    public EfRepository(FilmRatingDbContext context)
     {
         this.context = context;
     }
@@ -73,6 +73,7 @@ public class Repository<TEntity, T> : IRepository<TEntity, T>
 
     private IQueryable<TEntity> ApplySpecification(ISpecification<TEntity> spec)
     {
-        return SpecificationEvaluator<TEntity, T>.GetQuery(context.Set<TEntity>().AsQueryable(), spec);
+        return new SpecificationEvaluator<TEntity, T>()
+            .GetQuery(context.Set<TEntity>().AsQueryable(), spec);
     }
 }

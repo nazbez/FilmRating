@@ -128,8 +128,10 @@ public class IdentityService : IIdentityService
 
             return authenticationResult;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(ex, "Error during external login");
+            
             return new AuthenticationResultModel
             {
                 ErrorMessages = new[] { "Invalid external authentication" }
@@ -157,7 +159,7 @@ public class IdentityService : IIdentityService
             }),
             Expires = DateTime.UtcNow.AddHours(authenticationConfiguration.ExpiryInHours),
             SigningCredentials = new SigningCredentials(
-                new SymmetricSecurityKey(authenticationConfiguration.EncodedKey), 
+                new SymmetricSecurityKey(authenticationConfiguration.EncodedKey.ToArray()), 
                 SecurityAlgorithms.HmacSha256Signature)
         };
         

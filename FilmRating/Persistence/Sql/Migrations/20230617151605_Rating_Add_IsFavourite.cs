@@ -5,7 +5,9 @@
 namespace FilmRating.Migrations
 {
     /// <inheritdoc />
+#pragma warning disable CA1707
     public partial class Rating_Add_IsFavourite : Migration
+#pragma warning restore CA1707
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -5,9 +5,8 @@ using FilmRating.Infrastructure.Repository;
 
 namespace FilmRating.Features.Film;
 
-public class FilmEntity : IEntity<int>
+public class FilmEntity : Entity<int>
 {
-    public int Id { get; private set; }
     public string Title { get; private set; } = null!;
     public int Year { get; private set; }
     public string ShortDescription { get; private set; } = null!;

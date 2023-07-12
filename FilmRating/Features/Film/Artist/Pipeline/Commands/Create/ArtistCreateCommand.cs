@@ -8,35 +8,34 @@ namespace FilmRating.Features.Film.Artist;
 public record ArtistCreateCommand(
     string FirstName,
     string LastName, 
-    IEnumerable<int> RoleIds) : IRequest<ArtistVm>
+    IEnumerable<int> RoleIds) : IRequest<ArtistVm>;
+    
+[UsedImplicitly]
+public class ArtistCreateCommandHandler : IRequestHandler<ArtistCreateCommand, ArtistVm>
 {
-    [UsedImplicitly]
-    public class ArtistCreateCommandHandler : IRequestHandler<ArtistCreateCommand, ArtistVm>
+    private readonly IMapper mapper;
+    private readonly IUnitOfWork unitOfWork;
+
+    public ArtistCreateCommandHandler(IMapper  mapper, IUnitOfWork unitOfWork)
     {
-        private readonly IMapper mapper;
-        private readonly IUnitOfWork unitOfWork;
+        this.mapper = mapper;
+        this.unitOfWork = unitOfWork;
+    }
 
-        public ArtistCreateCommandHandler(IMapper  mapper, IUnitOfWork unitOfWork)
-        {
-            this.mapper = mapper;
-            this.unitOfWork = unitOfWork;
-        }
+    public async Task<ArtistVm> Handle(ArtistCreateCommand request, CancellationToken cancellationToken)
+    {
+        var roles = unitOfWork.Repository<ArtistRoleEntity, int>().Find(
+                new ArtistRoleGetByIdsSpecification(request.RoleIds))
+            .ToList();
 
-        public async Task<ArtistVm> Handle(ArtistCreateCommand request, CancellationToken cancellationToken)
-        {
-            var roles = unitOfWork.Repository<ArtistRoleEntity, int>().Find(
-                    new ArtistRoleGetByIdsSpecification(request.RoleIds))
-                .ToList();
-
-            var artist = ArtistEntity.Create(request.FirstName, request.LastName, roles);
+        var artist = ArtistEntity.Create(request.FirstName, request.LastName, roles);
             
-            unitOfWork.Repository<ArtistEntity, Guid>().Add(artist);
+        unitOfWork.Repository<ArtistEntity, Guid>().Add(artist);
 
-            await unitOfWork.CompleteAsync(cancellationToken);
+        await unitOfWork.CompleteAsync(cancellationToken);
 
-            var artistVm = mapper.Map<ArtistVm>(artist);
+        var artistVm = mapper.Map<ArtistVm>(artist);
 
-            return artistVm;
-        }
+        return artistVm;
     }
 }

@@ -17,6 +17,8 @@ public record FilmManagementValidatorModel(
 
 public class FilmManagementValidator : AbstractValidator<FilmManagementValidatorModel>
 {
+    public const string ActorsErrorMessage = "All actors must exist and have required role";
+    
     public FilmManagementValidator(
         IRepository<GenreEntity, int> genreRepository,
         IRepository<ArtistEntity, Guid> artistRepository,
@@ -35,7 +37,7 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
         When(m => m.Photo is not null, () =>
         {
             RuleFor(m => m.Photo!.FileName)
-                .Must(f => filmConfiguration.AllowedPhotoExtensions.Any(x => x == f.GetExtension()))
+                .Must(f => filmConfiguration.AllowedPhotoExtensions.ToList().Exists(x => x == f.GetExtension()))
                 .WithMessage(PhotoErrorMessage(filmConfiguration.AllowedPhotoExtensions));
         });
 
@@ -68,13 +70,13 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
                         new ArtistGetByIdsSpecification(idsList, withRoles: true))
                     .ToList();
 
-                return artists.All(x => x.Roles.Any(r => r.Id == filmConfiguration.ActorRoleId))
+                return artists.TrueForAll(x => x.Roles.Any(r => r.Id == filmConfiguration.ActorRoleId))
                        && artists.Count == idsList.Count;
             })
-            .WithMessage(_ => ActorsErrorMessage());
+            .WithMessage(_ => ActorsErrorMessage);
     }
 
-    private static string PhotoErrorMessage(string[] extensions) =>
+    private static string PhotoErrorMessage(IReadOnlyCollection<string> extensions) =>
         $"Uploaded photo must have these extensions: {string.Join(';', extensions)}";
 
     private static string GenreErrorMessage(int id) =>
@@ -82,7 +84,4 @@ public class FilmManagementValidator : AbstractValidator<FilmManagementValidator
 
     private static string DirectorErrorMessage(Guid id) =>
         $"Artist with id = {id} does not exist or not have required role to be director";
-
-    private static string ActorsErrorMessage() =>
-        "All actors must exist and have required role";
 }
