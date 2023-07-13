@@ -14,4 +14,6 @@ public class GenreEntity : Entity<int>
             Id = id,
             Name = name
         };
+
+    public static explicit operator string(GenreEntity genre) => genre.Name;
 }

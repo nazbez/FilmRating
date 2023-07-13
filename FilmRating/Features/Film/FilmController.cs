@@ -81,4 +81,11 @@ public class FilmController : Controller
         var result = await mediator.Send(query);
         return Ok(result);
     }
+
+    [HttpPost("search")]
+    public async Task<IActionResult> Search(FilmSearchQuery filmSearchQuery)
+    {
+        var result = await mediator.Send(filmSearchQuery);
+        return Ok(result);
+    }
 }

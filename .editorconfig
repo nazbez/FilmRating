@@ -144,3 +144,4 @@ dotnet_style_object_initializer = true:suggestion
 dotnet_diagnostic.CA1848.severity = silent
 dotnet_diagnostic.CA1031.severity = silent
 dotnet_diagnostic.CA1034.severity = silent
+dotnet_diagnostic.CA2225.severity = silent
